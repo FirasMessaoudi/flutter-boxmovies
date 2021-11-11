@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "802120854516",
+    "project_id": "box-movies-9cfcf",
+    "storage_bucket": "box-movies-9cfcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802120854516:android:aa732cdc40fc6093b867a1",
+        "android_client_info": {
+          "package_name": "com.example.moviebox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802120854516-ar3dhg1tsh75pr3r7q6ppbtl3s2da513.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP71-sW_B-S3tl0EVSaj8q5UsW5pzJUzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802120854516-ar3dhg1tsh75pr3r7q6ppbtl3s2da513.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

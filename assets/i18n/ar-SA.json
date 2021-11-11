@@ -1,0 +1,181 @@
+{
+  "edit_profile": {
+    "title": "تعديل الملف الشخصي",
+    "general_info": "معلومات عامة",
+    "photo": "صورة الملف الشخصي",
+    "cover": "صورة الغلاف",
+    "character": "شخصيتك المفضلة",
+    "character_description": "الشخصية التي تمثلك",
+    "personal_info": "المعلومات الشخصية",
+    "name": "الاسم",
+    "birthdate": "تاريخ الميلاد",
+    "country": "البلد",
+    "settings": "الاعدادات",
+    "language": "اللغة",
+    "dark_mode": "الوضع الليلي",
+    "light_mode": "وضع الضوء",
+    "quote": "إقتباس",
+    "description": "صف نفسك",
+    "email": "البريد الإلكتروني"
+  },
+  "info_user":{
+    "episode_watched": "الحلقات التي تمت مشاهدتها",
+    "movie_watched": "الافلام التي تمت مشاهدتها",
+    "fav": "المفضلة لدي",
+    "my_shows": "مسلسلاتي",
+    "my_movies": "أفلامي",
+    "custom_lists": "مجموعاتي",
+    "following": "ممثلي المفضلين",
+
+    "stat": "الاحصاءات",
+    "settings": "الاعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "login": {
+    "password": "كلمة المرور",
+    "login": "تسجيل الدخول",
+    "forgot_password": "نسيت كلمة المرور",
+    "or": "أو",
+    "no_account": "ليس لديك حساب؟",
+    "register": "إنشاء حساب",
+
+    "name": "الاسم واللقب",
+    "have_account": "لديك حساب بالفعل",
+    "back": "العودة",
+    "login_failed": "عفوا! فشل الاتصال",
+
+    "login_error": " الرجاءالتحقق من بريدك الإلكتروني و/أو كلمة المرور ",
+    "register_failed": "عفوا! فشل التسجيل",
+    "validation_error": "خطأ التحقق من الصحة",
+
+    "validation_message": "الرجاءالتحقق من المعلومات المدخلة",
+    "register_success": "تم إنشاء حسابك",
+    "email_exist": "عنوان البريد الإلكتروني الذي تم إدخاله قيد الاستخدام بالفعل"
+
+  },
+
+  "home": {
+    "now_playing": "أفلام في السينما",
+    "popular_tv": "اشهر السلسلات",
+    "new_episodes": "حلقات جديدة",
+    "top_rated": "أفضل الأفلام",
+    "coming_soon": "قريبا",
+    "play_button": "شاهد",
+    "movies": "أفلام",
+    "series": "مسلسلات",
+    "feedback": "رأيك",
+    "home": "القائمة الرئيسية",
+    "discover": "فئات",
+    "networks": "المنصات",
+    "profile": "الملف الشخصي",
+    "genres": "فئات",
+    "see_all": "شاهد الكل"
+
+
+  },
+  "discover":{
+    "search": "بحث",
+    "search_label": "البحث عن ممثل، فيلم، سلسلة..",
+    "popular_genres": "الفئات الأكثر بحثا",
+    "browse_all": "جميع الفئات"
+
+  },
+
+  "networks": {
+    "popular_network": "أفضل المنصات",
+    "popular_studios": "أفضل الشركات"
+
+  },
+
+  "movie_info": {
+    "overview": "نظرة عامة",
+    "trailers": "مقاطع تشويقية",
+    "cast": "الممثلين",
+    "about_movie": "معلومات حول هذا الفيلم",
+    "about_tv": "معلومات حول هذه السلسلة",
+    "runtime": "مدة",
+    "writers": "المؤلف",
+    "director": "المخرج",
+    "released_movie": "تاريخ الإصدار",
+    "rating": "تصنيف",
+    "similar_movie": "أفلام مماثلة",
+    "similar_tv": "مسلسلات  مماثلة",
+    "watch_on": "شاهد على ",
+    "nb_seasons": "عدد المواسم",
+
+    "episode_runtime": "طول الحلقة",
+    "released_tv": "تاريخ إصدار الحلقة الأولى",
+    "tagline_tv": "شعار المسلسل",
+    "tagline_movie": "شعار الفيلم",
+    "seasons": "مواسم",
+    "guest": "الضيوف",
+    "show_more": "عرض المزيد",
+    "show_less": "إظهر أقل",
+    "premiered": "تم إصداره في "
+
+  },
+  "cast":{
+    "info": "المعلومات الشخصية",
+    "known_for": "معروف عن",
+    "gender": "جنس",
+    "birthplace": "مكان الميلاد",
+    "image_of": "صور ",
+    "bio": "السيرة الذاتية"
+  },
+  "actions":{
+    "watch_later": "شاهد لاحقا",
+    "finished": "تمت مشاهدته بالفعل",
+    "fav": "اضافة ال القائمة المفضلة",
+    "share": "شارك"
+  },
+  "filter":{
+    "sort_by": "الفرز حسب",
+    "popularity": "الشعبية",
+    "vote": "التقييم",
+    "companies": "المؤسسات",
+    "networks": "المنصات",
+    "certifications": "التصنيف الرقابي",
+    "reset": "اعاده تعيين",
+    "apply": "طبق"
+  },
+  "my_list": {
+    "my_favorites": "المفضلة لدي",
+    "how_was_it": "كيف حدث ذلك؟",
+    "remove_from_watchlist": "إزالة من قائمة المراقبة",
+    "remove_from_favorite": "إزالة من المفضلة",
+    "add_to_list": "إضافة إلى القائمة",
+    "all": "كل",
+    "finished": "منته",
+    "not_started": "غير مذكور",
+    "remove_from_collection": "إزالة من المجموعة",
+    "confirm_delete_collection": "هل تريد حقا إزالة المجموعة بأكملها؟",
+    "btn_remove": "أبعد",
+    "btn_cancel": "إلغاء الأمر",
+    "created_on": "تم الإنشاء على ",
+    "collection_bar_title": "الأفلام والبرامج التلفزيونية",
+    "movies": "أفلام",
+    "shows": "عروض تلفزيونية",
+    "episodes": "حلقات",
+    "actors": "ممثلون",
+    "empty_watchlist_title": "قائمة مراقبتك فارغة",
+    "empty_watchlist_message": "أضف العروض والأفلام إلى قائمة المشاهدة وتتبع ما تريد مشاهدته ..",
+    "empty_favorite_title": "قائمة المفضلة لديك فارغة",
+    "empty_favorite_message": "أضف أفلامك وبرامجك التلفزيونية المفضلة لتتبع قائمة مفضلاتك ...",
+    "my_collections": " المجموعات",
+    "collection_name": "أعط اسمًا لمجموعتك.",
+    "added_to_collection": "تمت الإضافة إلى المجموعة",
+    "create_add": "إنشاء وإضافة",
+    "added_to_favorites": "تمت الإضافة إلى المفضلة",
+    "added_to_watchlist": "تمت الإضافة إلى قائمة المشاهدة",
+    "new_collection": "مجموعة جديدة",
+    "btn_empty_collection": "أضف أفلامًا وبرامج تلفزيونية جديدة",
+    "empty_collection_title": "ليس لديك أي مجموعات",
+    "empty_collection_message": "أنشئ مجموعتك الخاصة من الأفلام والبرامج التلفزيونية.",
+    "watched": "تم مشاهدته" ,
+    "not_watched": "لم أشاهد بعد"
+  }
+}
+
+
+
+
