@@ -1,18 +1,14 @@
 import 'dart:async';
 
-
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_movies_event.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_movies_state.dart';
 import 'package:moviebox/src/core/model/cast_info.dart';
-import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/tv_model.dart';
 import 'package:moviebox/src/core/repo/cast_movies.dart';
 import 'package:moviebox/src/core/repo/movies_repo.dart';
-
 
 class CastMoviesBloc extends Bloc<CastMoviesEvent, CastMoviesState> {
   CastMoviesBloc() : super(CastMoviesInitial());

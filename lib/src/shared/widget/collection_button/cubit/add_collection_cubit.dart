@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,8 +29,8 @@ class CollectionCubit extends Cubit<CollectionState> {
       }
     });
   }
-  deleteFromCollection(String devid,String movieid) async{
 
+  deleteFromCollection(String devid, String movieid) async {
     await FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)
@@ -48,8 +47,18 @@ class CollectionCubit extends Cubit<CollectionState> {
         .delete();
     emit(state.copyWith(isCollection: false));
   }
-  addToExistingCollection(String devid, String name, String movieid,String title, String image, String backdrop, double rate, String date,bool isMovie) async{
-   await FirebaseFirestore.instance
+
+  addToExistingCollection(
+      String devid,
+      String name,
+      String movieid,
+      String title,
+      String image,
+      String backdrop,
+      double rate,
+      String date,
+      bool isMovie) async {
+    await FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)
         .collection('Collections')
@@ -74,9 +83,18 @@ class CollectionCubit extends Cubit<CollectionState> {
       "inCollection": name,
     });
     emit(state.copyWith(isCollection: true));
-
   }
-  addToNewCollection(String devid,String name, String movieid,String title, String image, double rate,String date, String backdrop, bool isMovie ) async {
+
+  addToNewCollection(
+      String devid,
+      String name,
+      String movieid,
+      String title,
+      String image,
+      double rate,
+      String date,
+      String backdrop,
+      bool isMovie) async {
     await FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)
@@ -93,16 +111,12 @@ class CollectionCubit extends Cubit<CollectionState> {
       "backdrop": backdrop,
       "isMovie": isMovie,
     });
-   await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)
         .collection('CollectionInfo')
         .doc(name)
-        .set({
-      "name": name,
-      "image": image,
-      "time": DateTime.now()
-    });
+        .set({"name": name, "image": image, "time": DateTime.now()});
     await FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)

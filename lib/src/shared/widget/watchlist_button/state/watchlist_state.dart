@@ -1,16 +1,18 @@
-
 import 'package:equatable/equatable.dart';
 
 class WatchlistState extends Equatable {
   final bool isWatchlist;
+
   const WatchlistState(
-      this.isWatchlist,
-      );
+    this.isWatchlist,
+  );
+
   factory WatchlistState.initial() {
     return WatchlistState(
       false,
     );
   }
+
   @override
   List<Object> get props => [isWatchlist];
 

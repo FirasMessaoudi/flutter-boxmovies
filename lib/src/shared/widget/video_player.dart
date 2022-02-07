@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class VideoPlayer extends StatefulWidget {
   final String id;
+
   const VideoPlayer({
     Key? key,
     required this.id,

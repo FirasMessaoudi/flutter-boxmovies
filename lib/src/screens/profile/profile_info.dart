@@ -1,34 +1,91 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:decorated_icon/decorated_icon.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/bloc/collection_tab/collection_tab_bloc.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/core/model/user.dart';
-import 'package:moviebox/src/screens/watchlist/add_to_watchlist_fav.dart';
-import 'package:moviebox/src/screens/home/navigation.dart';
-import 'package:moviebox/src/screens/profile/edit_profile.dart';
+import 'package:moviebox/src/core/repo/watchlist_repo.dart';
 import 'package:moviebox/src/core/service/auth_service.dart';
 import 'package:moviebox/src/core/service/facebook_provider.dart';
 import 'package:moviebox/src/core/service/google_provider.dart';
 import 'package:moviebox/src/core/service/twitter_provider.dart';
 import 'package:moviebox/src/screens/collection/collection_tab.dart';
 import 'package:moviebox/src/screens/favorite/favorite_tab.dart';
-import 'package:moviebox/src/screens/watchlist/watchlist_tab.dart';
+import 'package:moviebox/src/screens/home/navigation.dart';
+import 'package:moviebox/src/screens/profile/edit_profile.dart';
+import 'package:moviebox/src/screens/watchlist/movies/watchlist_tab.dart';
+import 'package:moviebox/src/screens/watchlist/tv/watchlist_tv_tab.dart';
 import 'package:moviebox/src/shared/util/profile_list_items.dart';
 import 'package:moviebox/src/shared/widget/image_view.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
+
 import '../../../themes.dart';
 
-class ProfileAppBar extends StatelessWidget {
+class ProfileAppBar extends StatefulWidget {
+  @override
+  State<ProfileAppBar> createState() => _ProfileAppBarState();
+}
+
+class _ProfileAppBarState extends State<ProfileAppBar> {
+  final user = FirebaseAuth.instance.currentUser!;
+  final AuthService _auth = new AuthService();
+  final watchListRepo = new WatchListRepo();
+  int nbWatchedMovie = 0;
+  int nbWatchedEpisodes = 0;
+  int nbCountMovies = 0;
+  int nbCountTv = 0;
+  int nbCountCollections = 0;
+  int nbCountFav = 0;
+
+  int nbMinutesWatched = 0;
+
+  String period = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Provider.of<WatchListRepo>(context, listen: false)
+        .getNbWatchedMovies()
+        .then((value) => {nbWatchedMovie = value});
+    watchListRepo
+        .getNbWatchedEpisode()
+        .then((value) => { nbWatchedEpisodes = value});
+
+    watchListRepo.getMovieListCount().then((value) => {nbCountMovies = value});
+    watchListRepo.getTvListCount().then((value) => {nbCountTv = value});
+    watchListRepo
+        .getCollectionCount()
+        .then((value) => {nbCountCollections = value});
+    watchListRepo.getFavCount().then((value) => {nbCountFav = value});
+    watchListRepo.getNbMinutesOfEpisodes().then((value) => {
+          nbMinutesWatched = value,
+          period = timeConvert(nbMinutesWatched),
+        });
+    super.initState();
+  }
+
+  String timeConvert(int time) {
+    String t = "";
+
+    double j = time / (24 * 60);
+    double h = (time % (24 * 60)) / 60;
+    double m = (time % (24 * 60)) % 60;
+
+    t = j.toInt().toString() +
+        "d " +
+        h.toInt().toString() +
+        "h " +
+        m.toInt().toString() +
+        "m";
+    return t;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    final AuthService _auth = new AuthService();
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -63,7 +120,10 @@ class ProfileAppBar extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot<MyUser?> snapshot) {
               if (snapshot.hasData) {
                 print(snapshot.data);
-                return SingleChildScrollView(
+                return
+                  RefreshIndicator(
+
+                  child:SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -74,71 +134,83 @@ class ProfileAppBar extends StatelessWidget {
                             Row(
                               children: <Widget>[
                                 Expanded(
-                                  child:
-                                  GestureDetector(
-                                 onTap: (){
-                                   if(snapshot.data!.cover!=null)
-                                     Navigator.push(
-                                       context,
-                                       MaterialPageRoute(
-                                         builder: (context) => ViewPhotos(
-                                           imageList: [
-                                             ImageBackdrop(image: snapshot.data!.cover),
-                                           ],
-                                           imageIndex: 0,
-                                           color: Colors.white,
-                                         ),
-                                       ),
-                                     );
-                                 },
-
-                                  child:Container(
+                                    child: GestureDetector(
+                                  onTap: () {
+                                    if (snapshot.data!.cover != null)
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ViewPhotos(
+                                            imageList: [
+                                              ImageBackdrop(
+                                                  image: snapshot.data!.cover),
+                                            ],
+                                            imageIndex: 0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      );
+                                  },
+                                  child: Container(
                                     height: 250.0,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: (snapshot.data!.cover!=null && snapshot.data!.cover!='')?NetworkImage(snapshot.data!.cover) as ImageProvider:AssetImage(
-                                                'assets/img/adventure.jpg'))),
+                                            image: (snapshot.data!.cover !=
+                                                        null &&
+                                                    snapshot.data!.cover != '')
+                                                ? NetworkImage(
+                                                        snapshot.data!.cover)
+                                                    as ImageProvider
+                                                : AssetImage(
+                                                    'assets/img/adventure.jpg'))),
                                   ),
                                 ))
                               ],
                             ),
                             Positioned(
-                              top: 170.0,
-                              child:
-                              GestureDetector(
-                                onTap: (){
-                                  if(snapshot.data!.photo!=null || user.photoURL!=null)
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ViewPhotos(
-                                        imageList: [
-                                          ImageBackdrop(image: snapshot.data!.photo!=null?snapshot.data!.photo:user.photoURL!),
-                                        ],
-                                        imageIndex: 0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              child:Container(
-                                height: 130.0,
-                                width: 130.0,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: snapshot.data!.photo!=null?NetworkImage(snapshot.data!.photo):user.photoURL!=null
-                                          ? NetworkImage(user.photoURL!)
-                                          : AssetImage(
-                                                  'assets/img/avatarprofile.png')
-                                              as ImageProvider,
-                                    ),
-                                    border: Border.all(
-                                        color: Colors.white, width: 3.0)),
-                              ),
-                            )),
+                                top: 170.0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (snapshot.data!.photo != null ||
+                                        user.photoURL != null)
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ViewPhotos(
+                                            imageList: [
+                                              ImageBackdrop(
+                                                  image: snapshot.data!.photo !=
+                                                          null
+                                                      ? snapshot.data!.photo
+                                                      : user.photoURL!),
+                                            ],
+                                            imageIndex: 0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      );
+                                  },
+                                  child: Container(
+                                    height: 130.0,
+                                    width: 130.0,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: snapshot.data!.photo != null
+                                              ? NetworkImage(
+                                                  snapshot.data!.photo)
+                                              : user.photoURL != null
+                                                  ? NetworkImage(user.photoURL!)
+                                                  : AssetImage(
+                                                          'assets/img/avatarprofile.png')
+                                                      as ImageProvider,
+                                        ),
+                                        border: Border.all(
+                                            color: Colors.white, width: 3.0)),
+                                  ),
+                                )),
                           ],
                         ),
                       ),
@@ -154,35 +226,28 @@ class ProfileAppBar extends StatelessWidget {
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           ),
 
-                       /*   SizedBox(
-                            width: 5.0,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.edit, color: Colors.grey),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => new EditProfile(user: snapshot.data!)));
-                            },
-                          )*/
                         ],
                       ),
-                      SizedBox(height: 12.0,),
-                      Container(
-                          child: Text(snapshot.data!.description,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontFamily: 'Spectral',
-                            fontStyle: FontStyle.italic
-
-                          ),)
+                      SizedBox(
+                        height: 12.0,
                       ),
-                      SizedBox(height: 10.0,),
+                      Container(
+                          child: Text(
+                        snapshot.data!.description,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            fontFamily: 'Spectral',
+                            fontStyle: FontStyle.italic),
+                      )),
+                      SizedBox(
+                        height: 10.0,
+                      ),
                       Card(
-                         margin: EdgeInsets.symmetric(
+                        margin: EdgeInsets.symmetric(
                             vertical: 10, horizontal: 20.0),
                         clipBehavior: Clip.antiAlias,
-                       // color: Colors.grey,
+                        // color: Colors.grey,
                         elevation: 2.0,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -204,12 +269,12 @@ class ProfileAppBar extends StatelessWidget {
                                       height: 5.0,
                                     ),
                                     Text(
-                                      "5200",
+                                      nbWatchedEpisodes.toString(),
                                       style: TextStyle(
                                         fontSize: 20.0,
-                                       // color: Colors.pinkAccent,
+                                        // color: Colors.pinkAccent,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -217,7 +282,7 @@ class ProfileAppBar extends StatelessWidget {
                                 child: Column(
                                   children: <Widget>[
                                     Text(
-                                      "info_user.movie_watched".tr(),
+                                      "info_user.time_spent".tr(),
                                       style: TextStyle(
                                         color: Colors.redAccent,
                                         fontSize: 16.0,
@@ -228,12 +293,12 @@ class ProfileAppBar extends StatelessWidget {
                                       height: 5.0,
                                     ),
                                     Text(
-                                      "28.5K",
+                                      period,
                                       style: TextStyle(
                                         fontSize: 20.0,
-                                       // color: Colors.pinkAccent,
+                                        // color: Colors.pinkAccent,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -247,58 +312,78 @@ class ProfileAppBar extends StatelessWidget {
                           ProfileListItem(
                             icon: Icons.favorite,
                             text: 'info_user.fav'.tr(),
-                            item:ProfileItems.fav,
+                            item: ProfileItems.fav,
                             user: snapshot.data!,
+                            count: nbCountFav,
                           ),
                           ProfileListItem(
-                            icon: Icons.tv,
-                            text: 'info_user.my_shows'.tr(),
-                            item:ProfileItems.series,
-                            user: snapshot.data!,
-
-                          ),
+                              icon: Icons.tv,
+                              text: 'info_user.my_shows'.tr(),
+                              item: ProfileItems.series,
+                              user: snapshot.data!,
+                              count: nbCountTv),
                           ProfileListItem(
-                            icon: Icons.movie,
-                            text: 'info_user.my_movies'.tr(),
-                            item:ProfileItems.movies,
-                            user: snapshot.data!,
-
-                          ),
-
+                              icon: Icons.movie,
+                              text: 'info_user.my_movies'.tr(),
+                              item: ProfileItems.movies,
+                              user: snapshot.data!,
+                              count: nbCountMovies),
                           ProfileListItem(
-                            icon: Icons.list,
-                            text: 'info_user.custom_lists'.tr(),
-                            item:ProfileItems.collections,
-                            user: snapshot.data!,
-
-                          ),
+                              icon: Icons.list,
+                              text: 'info_user.custom_lists'.tr(),
+                              item: ProfileItems.collections,
+                              user: snapshot.data!,
+                              count: nbCountCollections),
                           ProfileListItem(
                             icon: Icons.legend_toggle,
                             text: 'info_user.stat'.tr(),
-                            item:ProfileItems.stat,
+                            item: ProfileItems.stat,
                             user: snapshot.data!,
-
                           ),
                           ProfileListItem(
                             icon: Icons.settings,
                             text: 'info_user.settings'.tr(),
-                            item:ProfileItems.settings,
+                            item: ProfileItems.settings,
                             user: snapshot.data!,
-
                           ),
                           ProfileListItem(
                             icon: Icons.logout,
                             text: 'info_user.logout'.tr(),
-                            item:ProfileItems.logout,
+                            item: ProfileItems.logout,
                             hasNavigation: false,
                             user: snapshot.data!,
-
                           ),
                         ]),
                       ),
                     ],
                   ),
-                );
+                ),
+                      onRefresh:(){
+                        return Future.delayed(Duration(seconds: 1),
+                                (){
+                              setState(() {
+                                Provider.of<WatchListRepo>(context, listen: false)
+                                    .getNbWatchedMovies()
+                                    .then((value) => {nbWatchedMovie = value});
+                                watchListRepo
+                                    .getNbWatchedEpisode()
+                                    .then((value) => { nbWatchedEpisodes = value});
+
+                                watchListRepo.getMovieListCount().then((value) => {nbCountMovies = value});
+                                watchListRepo.getTvListCount().then((value) => {nbCountTv = value});
+                                watchListRepo
+                                    .getCollectionCount()
+                                    .then((value) => {nbCountCollections = value});
+                                watchListRepo.getFavCount().then((value) => {nbCountFav = value});
+                                watchListRepo.getNbMinutesOfEpisodes().then((value) => {
+                                  nbMinutesWatched = value,
+                                  period = timeConvert(nbMinutesWatched),
+                                });
+                              });
+                            }
+                        );
+                      }
+                  );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                     child: CircularProgressIndicator(
@@ -307,10 +392,7 @@ class ProfileAppBar extends StatelessWidget {
               } else {
                 return Center(child: Text('No user found'));
               }
-            })
-            );
-
-
+            }));
   }
 }
 
@@ -320,21 +402,26 @@ class ProfileListItem extends StatelessWidget {
   final bool hasNavigation;
   final ProfileItems item;
   final MyUser user;
-  const ProfileListItem({
-    Key? key,
-    required this.icon,
-    required this.text,
-    required this.item,
-    this.hasNavigation = true,
-    required this.user
-  }) : super(key: key);
+  final int? count;
+
+  const ProfileListItem(
+      {Key? key,
+      required this.icon,
+      required this.text,
+      required this.item,
+      this.hasNavigation = true,
+      this.count,
+      required this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthService>(context, listen: false);
-    final googleProvider = Provider.of<GoogleSignInProvider>(context, listen: false);
+    final googleProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
     final fbProvider = Provider.of<FacebookProvider>(context, listen: false);
-    final twitterProvider = Provider.of<TwitterProvider>(context, listen: false);
+    final twitterProvider =
+        Provider.of<TwitterProvider>(context, listen: false);
     return GestureDetector(
       onTap: () async {
         if (!this.hasNavigation) {
@@ -349,25 +436,29 @@ class ProfileListItem extends StatelessWidget {
           );
         }
         if (item == ProfileItems.settings) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => new EditProfile(user: user)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => new EditProfile(user: user)));
         }
-        if(item==ProfileItems.movies || item==ProfileItems.series){
+        if (item == ProfileItems.movies) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => new WatchlistTab(type: item)));
+        }
+        if (item == ProfileItems.series) {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => new WatchlistTab(type:item)));
+              MaterialPageRoute(builder: (context) => new WatchListTvTab()));
         }
         if (item == ProfileItems.fav) {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => new FavoritesTab()));
         }
         if (item == ProfileItems.collections) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) =>  BlocProvider<CollectionTabBloc>(
-                create: (context) => CollectionTabBloc()..add(LoadCollections()),
-                child: CollectionsTab(),
-              ),));
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => BlocProvider<CollectionTabBloc>(
+              create: (context) => CollectionTabBloc()..add(LoadCollections()),
+              child: CollectionsTab(),
+            ),
+          ));
         }
-
       },
       child: Container(
         height: 55,
@@ -382,7 +473,11 @@ class ProfileListItem extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             color: Colors.transparent,
-            border: Border.all(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black, width: 1)),
+            border: Border.all(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+                width: 1)),
         child: Row(
           children: <Widget>[
             Icon(
@@ -391,7 +486,7 @@ class ProfileListItem extends StatelessWidget {
             ),
             SizedBox(width: 15),
             Text(
-              this.text,
+              this.count == null ? this.text : this.text + '   ($count)',
               style: kTitleTextStyle.copyWith(
                   fontWeight: FontWeight.w500, fontFamily: "Poppins"),
             ),

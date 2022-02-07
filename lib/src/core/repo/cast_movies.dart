@@ -1,12 +1,11 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:moviebox/src/core/model/cast_info.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/people_model.dart';
 import 'package:moviebox/src/core/model/tv_model.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:moviebox/src/shared/util/constant.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 
@@ -58,9 +57,10 @@ class CastMovies {
     final data6 = json.decode(response6.body);
     return SocialMediaInfo.fromJson(data6);
   }
-  Future<PeopleModelList> findPopular(int page) async{
+
+  Future<PeopleModelList> findPopular(int page) async {
     final urlNew = Uri.parse(
-        'https://api.themoviedb.org/3/person/popular?api_key=$apiKey&language=en-US');
+        'https://api.themoviedb.org/3/person/popular?api_key=$apiKey&language=en-US&page=$page');
     final response6 = await http.get(urlNew);
     final data6 = json.decode(response6.body);
     return PeopleModelList.fromJson(data6['results']);

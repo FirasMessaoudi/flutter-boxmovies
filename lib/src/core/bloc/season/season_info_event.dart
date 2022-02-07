@@ -10,6 +10,7 @@ abstract class SeasonInfoEvent extends Equatable {
 class LoadSeasonInfo extends SeasonInfoEvent {
   final String id;
   final String snum;
+
   LoadSeasonInfo({
     required this.id,
     required this.snum,

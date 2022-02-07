@@ -5,20 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moviebox/src/core/model/categorie.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/shared/util/fav_type.dart';
 import 'package:moviebox/src/shared/widget/actions_bottom_sheet.dart';
-import 'package:moviebox/src/shared/widget/watchlist_button/state/watchlist_cubit.dart';
-import 'package:moviebox/src/shared/widget/watchlist_button/widget/watchlist_icon.dart';
-import 'package:easy_localization/easy_localization.dart';
-import '../../../themes.dart';
-import 'collection_button/add_collection_button.dart';
-import 'collection_button/cubit/add_collection_cubit.dart';
+
 import 'favorite_button/cubit/fav_cubit.dart';
 import 'favorite_button/fav_button.dart';
 import 'image_view.dart';
-import 'package:share/share.dart';
 
 class SliverAppBarCast extends StatelessWidget {
   const SliverAppBarCast(
@@ -36,11 +29,9 @@ class SliverAppBarCast extends StatelessWidget {
       this.age = '',
       this.isActor = false,
       this.homePage,
-        this.trailer,
-        this.isSeason = false,
-        this.genres
-
-      })
+      this.trailer,
+      this.isSeason = false,
+      this.genres})
       : super(key: key);
   final Color textColor;
   final String title;
@@ -58,6 +49,7 @@ class SliverAppBarCast extends StatelessWidget {
   final String? trailer;
   final bool? isSeason;
   final List<int>? genres;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -90,7 +82,8 @@ class SliverAppBarCast extends StatelessWidget {
                   )
                 : IconButton(
                     onPressed: () {
-                      if (FirebaseAuth.instance.currentUser != null && isSeason==false)
+                      if (FirebaseAuth.instance.currentUser != null &&
+                          isSeason == false)
                         showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
@@ -102,12 +95,21 @@ class SliverAppBarCast extends StatelessWidget {
                               return BottomSheet(
                                   backgroundColor: color,
                                   onClosing: () {},
-                                  builder: (context) =>
-                                      ActionsBottomSheet(id, title, poster, releaseDate,
-                                          isMovie, rate, image, textColor, type, homePage, age, genres)
+                                  builder: (context) => ActionsBottomSheet(
+                                      id,
+                                      title,
+                                      poster,
+                                      releaseDate,
+                                      isMovie,
+                                      rate,
+                                      image,
+                                      textColor,
+                                      type,
+                                      homePage,
+                                      age,
+                                      genres)
 
-
-                                     /* Container(
+                                  /* Container(
                                           child: ListView(
                                         shrinkWrap: true,
                                         children: [
@@ -173,7 +175,7 @@ class SliverAppBarCast extends StatelessWidget {
                                           )
                                         ],
                                       ))*/
-                              );
+                                  );
                             });
                     },
                     icon: DecoratedIcon(

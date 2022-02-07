@@ -8,6 +8,7 @@ class ExpandableGroup extends StatefulWidget {
   final Widget? collapsedIcon;
   final EdgeInsets? headerEdgeInsets;
   final Color? headerBackgroundColor;
+
   ExpandableGroup(
       {Key? key,
       this.isExpanded = false,

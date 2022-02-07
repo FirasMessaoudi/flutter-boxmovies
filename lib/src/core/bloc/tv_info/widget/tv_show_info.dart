@@ -1,39 +1,30 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:moviebox/src/core/bloc/tv_info/show_info_state.dart';
-import 'package:moviebox/src/core/bloc/tv_info/widget/seasons_widget.dart';
 import 'package:moviebox/src/core/model/cast_info.dart';
 import 'package:moviebox/src/screens/cast/cast_list.dart';
-import 'package:moviebox/src/core/bloc/cast_info/cast_info.dart';
 import 'package:moviebox/src/screens/network/network_info.dart';
 import 'package:moviebox/src/shared/util/fav_type.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/src/shared/widget/error_page.dart';
-import 'package:moviebox/src/shared/widget/image_view.dart';
+import 'package:moviebox/src/shared/widget/expandable_seasons.dart';
 import 'package:moviebox/src/shared/widget/movie_poster.dart';
 import 'package:moviebox/src/shared/widget/sliver_app_bar.dart';
-import 'package:moviebox/src/shared/widget/season_poster.dart';
 import 'package:moviebox/src/shared/widget/trailers_widget.dart';
-import 'package:readmore/readmore.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../../themes.dart';
+import '../../../../shared/widget/loading.dart';
+import '../../../../shared/widget/star_icon.dart';
 import '../../../model/movie_info_model.dart';
 import '../../../model/tv_model.dart';
 import '../../../model/tv_shows_info.dart';
-import '../../../../shared/widget/appbar.dart';
-import '../../../../shared/widget/expandable.dart';
-import '../../../../shared/widget/loading.dart';
-import '../../../../shared/widget/star_icon.dart';
 import '../show_info_bloc.dart';
 import 'about_shows.dart';
 import 'overview_widget.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class TvInfo extends StatelessWidget {
   final String image;
@@ -61,16 +52,15 @@ class TvInfo extends StatelessWidget {
                 images.addAll(state.images);
                 print(state.color);
                 return TvInfoScrollableWidget(
-                  info: state.tmdbData,
-                  backdrops: state.backdrops,
-                  similar: state.similar,
-                  castList: state.cast,
-                  color: state.color,
-                  trailers: state.trailers,
-                  textColor: state.textColor,
-                  images: images,
-                  sinfo:state.sinfo
-                );
+                    info: state.tmdbData,
+                    backdrops: state.backdrops,
+                    similar: state.similar,
+                    castList: state.cast,
+                    color: state.color,
+                    trailers: state.trailers,
+                    textColor: state.textColor,
+                    images: images,
+                    sinfo: state.sinfo);
               } else if (state is ShowInfoError) {
                 return ErrorPage();
               } else {
@@ -92,18 +82,19 @@ class TvInfoScrollableWidget extends StatelessWidget {
   final List<TvModel> similar;
   final Color color;
   final SocialMediaInfo sinfo;
-  TvInfoScrollableWidget({
-    Key? key,
-    required this.info,
-    required this.backdrops,
-    required this.trailers,
-    required this.castList,
-    required this.textColor,
-    required this.similar,
-    required this.color,
-    required this.images,
-    required this.sinfo
-  }) : super(key: key);
+
+  TvInfoScrollableWidget(
+      {Key? key,
+      required this.info,
+      required this.backdrops,
+      required this.trailers,
+      required this.castList,
+      required this.textColor,
+      required this.similar,
+      required this.color,
+      required this.images,
+      required this.sinfo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,21 +104,18 @@ class TvInfoScrollableWidget extends StatelessWidget {
         physics: BouncingScrollPhysics(parent: BouncingScrollPhysics()),
         slivers: [
           SliverAppBarCast(
-            image: info.backdrops,
-            title: info.title,
-            color: color,
-            textColor: textColor,
-            id: info.id.toString(),
-            type: FavType.tv,
-            releaseDate: info.date,
-            poster: info.poster,
-            rate: info.rateing,
-            isMovie: false,
-            homePage: info.homepage,
-            genres:getOnlyIds(info.genres)
-
-
-          ),
+              image: info.backdrops,
+              title: info.title,
+              color: color,
+              textColor: textColor,
+              id: info.id.toString(),
+              type: FavType.tv,
+              releaseDate: info.date,
+              poster: info.poster,
+              rate: info.rateing,
+              isMovie: false,
+              homePage: info.homepage,
+              genres: getOnlyIds(info.genres)),
           SliverToBoxAdapter(
             child: IconTheme(
               data: IconThemeData(
@@ -148,7 +136,7 @@ class TvInfoScrollableWidget extends StatelessWidget {
                     IconButton(
                       icon: FaIcon(FontAwesomeIcons.twitterSquare, size: 40),
                       onPressed: () {
-                         launch(sinfo.twitter);
+                        launch(sinfo.twitter);
                       },
                     ),
                     IconButton(
@@ -195,7 +183,7 @@ class TvInfoScrollableWidget extends StatelessWidget {
                         Icon(Icons.calendar_today, color: textColor),
                         SizedBox(width: 5),
                         Text(
-                          info.date,
+                          convertDate(info.date, context.locale.languageCode),
                           style: normalText.copyWith(color: textColor),
                         )
                       ],
@@ -245,7 +233,7 @@ class TvInfoScrollableWidget extends StatelessWidget {
                                   onTap: () {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                            builder: (conetex) => NetworkInfo(
+                                        builder: (context) => NetworkInfo(
                                                   id: info.networks[i].id,
                                                   title: info.networks[i].name,
                                                 )));
@@ -292,8 +280,8 @@ class TvInfoScrollableWidget extends StatelessWidget {
                   SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(14.0),
-                    child:
-                        Text("movie_info.cast".tr(), style: heading.copyWith(color: textColor)),
+                    child: Text("movie_info.cast".tr(),
+                        style: heading.copyWith(color: textColor)),
                   ),
                   CastList(castList: castList, textColor: textColor),
                 ],
@@ -304,7 +292,8 @@ class TvInfoScrollableWidget extends StatelessWidget {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-              child: Text("movie_info.seasons".tr(), style: heading.copyWith(color: textColor)),
+              child: Text("my_list.episodes".tr(),
+                  style: heading.copyWith(color: textColor)),
             ),
           ),
           // ...info.seasons
@@ -321,15 +310,47 @@ class TvInfoScrollableWidget extends StatelessWidget {
                 SizedBox(height: 20),
                 SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
                     children: [
                       for (var i = 0; i < this.info.seasons.length; i++)
-                        SeasonPoster(
-                          info: this.info,
-                          season:this.info.seasons[i],
-                          color: textColor
-                        )
+                        if (this.info.seasons[i].name != 'Specials')
+                          ExpandableSeason(
+                            tvName: info.title,
+                            backdrop: info.backdrops,
+                            epRuntime: info.episoderuntime,
+                            tvDate: info.date,
+                            tvRate: info.rateing,
+                            tvImage: info.poster,
+                            tvGenre:
+                                getCatgoryNameFromCatgeoryObject(info.genres),
+                            textColor: textColor,
+                            headerBackgroundColor: color,
+                            items: [],
+                            tvId: this.info.id,
+                            season: this.info.seasons[i],
+                            isExpanded: false,
+                            expandedIcon: Icon(
+                              Icons.arrow_drop_up,
+                              color: textColor != Colors.white
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
+                            collapsedIcon: Icon(
+                              Icons.arrow_drop_down,
+                              color: textColor != Colors.white
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
+                            header: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Text(
+                                this.info.seasons[i].name,
+                                style: heading.copyWith(color: textColor),
+                              ),
+                            ),
+                          )
                     ],
                   ),
                 ),

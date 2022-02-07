@@ -26,10 +26,11 @@
     "my_movies": "أفلامي",
     "custom_lists": "مجموعاتي",
     "following": "ممثلي المفضلين",
-
     "stat": "الاحصاءات",
     "settings": "الاعدادات",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "time_spent": "الوقت المقضى"
+
   },
   "login": {
     "password": "كلمة المرور",
@@ -102,9 +103,9 @@
     "similar_tv": "مسلسلات  مماثلة",
     "watch_on": "شاهد على ",
     "nb_seasons": "عدد المواسم",
-
     "episode_runtime": "طول الحلقة",
     "released_tv": "تاريخ إصدار الحلقة الأولى",
+    "next_episode": "موعد الحلقة التالية",
     "tagline_tv": "شعار المسلسل",
     "tagline_movie": "شعار الفيلم",
     "seasons": "مواسم",
@@ -112,7 +113,6 @@
     "show_more": "عرض المزيد",
     "show_less": "إظهر أقل",
     "premiered": "تم إصداره في "
-
   },
   "cast":{
     "info": "المعلومات الشخصية",
@@ -128,13 +128,19 @@
     "fav": "اضافة ال القائمة المفضلة",
     "share": "شارك"
   },
-  "filter":{
+  "filter": {
+    "all": "الكل",
+    "finished": "منتهي",
+    "watching": "في طور المشاهدة",
+    "up_to_date": "محدث",
+    "not_started": "لم تبدأ في المشاهدة",
     "sort_by": "الفرز حسب",
     "popularity": "الشعبية",
     "vote": "التقييم",
     "companies": "المؤسسات",
     "networks": "المنصات",
     "certifications": "التصنيف الرقابي",
+    "countries": "اللغة الأصلية",
     "reset": "اعاده تعيين",
     "apply": "طبق"
   },
@@ -173,6 +179,15 @@
     "empty_collection_message": "أنشئ مجموعتك الخاصة من الأفلام والبرامج التلفزيونية.",
     "watched": "تم مشاهدته" ,
     "not_watched": "لم أشاهد بعد"
+  },
+  "bottom_sheet_actions":
+  {
+    "add_to_watchlist": "إضافة إلى قائمة المراقبة",
+    "remove_from_watchlist": "إزالة من قائمة المراقبة",
+    "add_to_collection": "إضافة إلى المجموعة",
+    "already_in": "موجود بالفعل",
+    "add_to_favourite": "إضافة إلى قائمة المفضلة",
+    "remove_from_favourite": "إزالة من قائمة المفضلة"
   }
 }
 

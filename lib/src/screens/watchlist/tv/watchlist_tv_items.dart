@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/watchlist.dart';
-import 'package:moviebox/src/core/repo/movies_repo.dart';
-import 'package:moviebox/src/core/repo/watchlist_repo.dart';
 import 'package:moviebox/src/core/streams/watchlist_stream.dart';
-import 'package:moviebox/src/shared/util/fav_type.dart';
+import 'package:moviebox/src/screens/watchlist/tv/tv_list_item.dart';
 import 'package:moviebox/src/shared/util/profile_list_items.dart';
 import 'package:moviebox/src/shared/widget/empty_poster.dart';
 import 'package:moviebox/src/shared/widget/error_page.dart';
 import 'package:moviebox/themes.dart';
 
-import '../favorite/fav_item.dart';
+import '../../favorite/fav_item.dart';
 
-class WatchlistItems extends StatefulWidget {
-  final ProfileItems type;
-  final bool? watched;
-  const WatchlistItems({Key? key, required this.type, this.watched}) : super(key: key);
+class WatchlistTvItems extends StatefulWidget {
+  final String sortBy;
+  const WatchlistTvItems({Key? key, required this.sortBy})
+      : super(key: key);
+
   @override
-  _WatchlistItemsState createState() => _WatchlistItemsState();
+  _WatchlistTvItemsState createState() => _WatchlistTvItemsState();
 }
 
-class _WatchlistItemsState extends State<WatchlistItems> {
-  final WatchListStream repo = WatchListStream();
+class _WatchlistTvItemsState extends State<WatchlistTvItems> {
+   WatchListStream repo = WatchListStream();
   ScrollController controller = ScrollController();
-  bool isLoading=false;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    repo.addData(widget.type,widget.watched);
+    repo.addData(ProfileItems.series,null);
     controller.addListener(_scrollListener);
   }
 
@@ -37,9 +35,9 @@ class _WatchlistItemsState extends State<WatchlistItems> {
         !controller.position.outOfRange) {
       print("at the end of list");
       if (!repo.isfinish) {
-        isLoading=true;
-        repo.getNextMovies(widget.type,widget.watched);
-        isLoading=false;
+        isLoading = true;
+        repo.getNextMovies(ProfileItems.series,null);
+        isLoading = false;
       }
     }
   }
@@ -52,7 +50,10 @@ class _WatchlistItemsState extends State<WatchlistItems> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+
+    return
+      RefreshIndicator(child:
+      CustomScrollView(
       physics: BouncingScrollPhysics(),
       controller: controller,
       slivers: [
@@ -63,7 +64,6 @@ class _WatchlistItemsState extends State<WatchlistItems> {
               stream: repo.controller.stream,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  //final movies = snapshot.data!;
                   if (repo.movies.isNotEmpty) {
                     return Container(
                       child: Column(
@@ -77,17 +77,15 @@ class _WatchlistItemsState extends State<WatchlistItems> {
                               ),
                               if (repo.movies.isNotEmpty)
                                 ...repo.movies
-                                    .map((movie) => FavoriteMovieContainer(
+                                    .map((movie) => TvListItem(
                                           movie: movie,
-                                          isFavorite: false,
-                                  isMovie: widget.type==ProfileItems.movies?true:false,
-
-                                ))
+                                  sortBy: widget.sortBy,
+                                        ))
                                     .toList(),
                               Row(children: [
-                                widget.type == ProfileItems.movies
-                                    ? EmptyPoster(isMovie: true, action: ProfileItems.movies)
-                                    : EmptyPoster(isMovie: false, action: ProfileItems.movies),
+                                 EmptyPoster(
+                                        isMovie: false,
+                                        action: ProfileItems.movies),
                               ])
                             ],
                           ),
@@ -106,30 +104,41 @@ class _WatchlistItemsState extends State<WatchlistItems> {
                       ),
                     );
                   } else {
-                     return Emptywatchlist(isMovie: widget.type == ProfileItems.movies?true:false);
+                    return Emptywatchlist(
+                        isMovie: false);
                     //return Container();
                   }
-                } else if(snapshot.connectionState==ConnectionState.waiting) {
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
                   return Container(
                       height: 500,
                       child: Center(
                           child: CircularProgressIndicator(
                         color: redColor,
                       )));
-                }else{
-
-                     return Row(children: [
-                        widget.type == ProfileItems.movies
-                            ? EmptyPoster(isMovie: true, action: ProfileItems.movies)
-                            : EmptyPoster(isMovie: false, action: ProfileItems.movies),
-                      ]);
+                } else {
+                  return Row(children: [
+                   EmptyPoster(
+                            isMovie: false, action: ProfileItems.movies),
+                  ]);
                 }
               },
             ),
           ),
         ),
-
       ],
-    );
+    ),
+          onRefresh:(){
+           return Future.delayed(Duration(seconds: 1),
+               (){
+             setState(() {
+              repo = new WatchListStream();
+              repo.addData(ProfileItems.series,null);
+             });
+               }
+           );
+          }
+      )
+    ;
   }
 }

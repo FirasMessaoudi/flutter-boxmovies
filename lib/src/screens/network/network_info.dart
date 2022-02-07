@@ -1,21 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:moviebox/src/core/model/movie_model.dart';
-import 'package:moviebox/src/core/model/tv_model.dart';
-import 'package:moviebox/src/responsive/responsive.dart';
-import 'package:moviebox/src/core/streams/genre_movies.dart';
-import 'package:moviebox/src/core/streams/genre_tv.dart';
-import 'package:moviebox/src/core/streams/network_stream.dart';
-import 'package:moviebox/src/shared/widget/backdrop.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:moviebox/src/core/model/tv_model.dart';
+import 'package:moviebox/src/core/streams/network_stream.dart';
+import 'package:moviebox/src/responsive/responsive.dart';
+import 'package:moviebox/src/shared/widget/backdrop.dart';
 
 import '../../../themes.dart';
-
 
 class NetworkInfo extends StatelessWidget {
   final String id;
   final String title;
+
   const NetworkInfo({
     Key? key,
     required this.id,
@@ -36,8 +31,13 @@ class NetworkInfo extends StatelessWidget {
               title: Text(title, style: heading.copyWith(color: Colors.white)),
               bottom: TabBar(
                 indicatorColor: redColor,
-                labelStyle: normalText.copyWith(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
-                labelColor: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+                labelStyle: normalText.copyWith(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
+                labelColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
                 labelPadding: EdgeInsets.only(top: 10.0),
                 unselectedLabelColor: Colors.grey,
                 tabs: [
@@ -72,11 +72,13 @@ class NetworkInfo extends StatelessWidget {
 class NetworkResult extends StatelessWidget {
   final String query;
   final int results;
+
   const NetworkResult({
     Key? key,
     required this.query,
     required this.results,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +99,7 @@ class NetworkResultWidget extends StatefulWidget {
     required this.query,
     required this.results,
   }) : super(key: key);
+
   @override
   _NetworkResultWidgetState createState() => _NetworkResultWidgetState();
 }
@@ -145,48 +148,58 @@ class _NetworkResultWidgetState extends State<NetworkResultWidget> {
                   return Container(
                     child: Column(
                       children: [
-                           Responsive.isMobile(context)|| Responsive.isTablet(context)?ListView(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            ...repo.tvshows
-                                .map((movie) => new BackdropPoster(
-                                    poster: movie.poster,
-                                    backdrop: movie.backdrop,
-                                    name: movie.title,
-                                    date: movie.release_date,
-                                    id: movie.id,
-                                    color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
-                                    isMovie: false,
-                                    rate: 9))
-                                .toList()
-                          ],
-                        ):   GridView(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, childAspectRatio: 28 / 16),
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          children: [
-                           
-                            ...repo.tvshows
-                                .map((movie) => Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: new BackdropPoster(
-                                        poster: movie.poster,
-                                        backdrop: movie.backdrop,
-                                        name: movie.title,
-                                        date: movie.release_date,
-                                        id: movie.id,
-                                        color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
-                                        isMovie: false,
-                                        rate: 9)))
-                                .toList()
-                          ],
-                        ),
+                        Responsive.isMobile(context) ||
+                                Responsive.isTablet(context)
+                            ? ListView(
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                children: [
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  ...repo.tvshows
+                                      .map((movie) => new BackdropPoster(
+                                          poster: movie.poster,
+                                          backdrop: movie.backdrop,
+                                          name: movie.title,
+                                          date: movie.release_date,
+                                          id: movie.id,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black,
+                                          isMovie: false,
+                                          rate: 9))
+                                      .toList()
+                                ],
+                              )
+                            : GridView(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 28 / 16),
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                children: [
+                                  ...repo.tvshows
+                                      .map((movie) => Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: new BackdropPoster(
+                                              poster: movie.poster,
+                                              backdrop: movie.backdrop,
+                                              name: movie.title,
+                                              date: movie.release_date,
+                                              id: movie.id,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              isMovie: false,
+                                              rate: 9)))
+                                      .toList()
+                                ],
+                              ),
                         SizedBox(
                           height: 20,
                         ),
@@ -202,7 +215,11 @@ class _NetworkResultWidgetState extends State<NetworkResultWidget> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 "Look like you reach the end!",
-                                style: normalText.copyWith(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
+                                style: normalText.copyWith(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black),
                               ),
                             ),
                           ),

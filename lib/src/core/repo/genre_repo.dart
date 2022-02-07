@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/tv_model.dart';
@@ -8,6 +9,7 @@ import 'package:moviebox/src/shared/util/utilities.dart';
 class GenreRepo {
   var movieResultsCount;
   var showsResultsCount;
+
   Future<MovieModelList> getMovies(String id, int no) async {
     String? language = await currentLanguage();
     var url = Uri.parse(

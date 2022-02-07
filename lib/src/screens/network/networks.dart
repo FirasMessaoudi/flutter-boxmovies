@@ -1,15 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/model/network.dart';
 import 'package:moviebox/src/responsive/responsive.dart';
 import 'package:moviebox/src/screens/network/company_info.dart';
 import 'package:moviebox/src/screens/network/network_info.dart';
-import 'package:moviebox/src/shared/util/config.dart';
-import 'package:moviebox/src/shared/util/scroll_behaviour.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 import '../../../themes.dart';
 
@@ -39,22 +34,25 @@ class Networks extends StatelessWidget {
                     SizedBox(
                       height: 30,
                     ),
-              
-                      Padding(
+
+                    Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 10),
                         child: Row(
                           children: [
                             IconButton(
-                              tooltip: 'Back',
-                              onPressed: (){
-                                Navigator.of(context).pop();
-                              },
-                               icon: Icon(Icons.arrow_back_sharp)),
+                                tooltip: 'Back',
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                icon: Icon(Icons.arrow_back_sharp)),
                             Text(
                               "networks.popular_network".tr(),
                               style: heading.copyWith(
-                                color:Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
                                 fontSize: 16,
                               ),
                             ),
@@ -86,7 +84,9 @@ class Networks extends StatelessWidget {
                       child: Text(
                         "networks.popular_studios".tr(),
                         style: heading.copyWith(
-                          color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
                           fontSize: 16,
                         ),
                       ),
@@ -127,8 +127,10 @@ class Networks extends StatelessWidget {
 class NetworkTile extends StatelessWidget {
   final Network network;
   final bool isMovie;
+
   NetworkTile({Key? key, required this.network, required this.isMovie})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -159,8 +161,6 @@ class NetworkTile extends StatelessWidget {
           ),
         ),
       ],
-
-      
     );
     return GestureDetector(
       child: card,

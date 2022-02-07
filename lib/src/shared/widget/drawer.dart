@@ -1,4 +1,4 @@
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/responsive/custom_app_bar.dart';
@@ -8,17 +8,12 @@ import 'package:moviebox/src/screens/home/all_shows.dart';
 import 'package:moviebox/src/shared/util/theme_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:wiredash/wiredash.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class DrawerUi extends StatelessWidget {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  var isSwitched;
   @override
   Widget build(BuildContext context) {
-
     return new Container(
-      
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -42,15 +37,14 @@ class DrawerUi extends StatelessWidget {
             context: context,
           ),
           Divider(),
-        if(FirebaseAuth.instance.currentUser?.uid==null)
-        _createDrawerItem(
-            icon: Icons.login,
-            text: 'login.login'.tr(),
-            action: 'login',
-            context: context,
-          ),
-
-          _createThemeItme(context),
+          if (FirebaseAuth.instance.currentUser?.uid == null)
+            _createDrawerItem(
+              icon: Icons.login,
+              text: 'login.login'.tr(),
+              action: 'login',
+              context: context,
+            ),
+          _createThemeItem(context),
           Divider(),
           DropdownScreen()
         ],
@@ -71,10 +65,11 @@ class DrawerUi extends StatelessWidget {
   }
 
   Widget _createDrawerItem(
-      {required IconData icon, required String text,required String action,required BuildContext context}) {
-
+      {required IconData icon,
+      required String text,
+      required String action,
+      required BuildContext context}) {
     return ListTile(
-    
       title: Row(
         children: <Widget>[
           Icon(icon),
@@ -85,54 +80,47 @@ class DrawerUi extends StatelessWidget {
         ],
       ),
       onTap: () async {
-        if(action=='feedback')
-      Wiredash.of(context)!.show();
-      if(action=='login'){
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ));
-      }
-        if(action=='logout'){
-         await _firebaseAuth.signOut();
-         Navigator.pop(context);
-        
-      }
-      if(action=='movie'){
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Movies(),
-        ));
-      }
-      if(action=='tv'){
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => TvShows(),
-        ));
-      }
-  
+        if (action == 'feedback') Wiredash.of(context)!.show();
+        if (action == 'login') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ));
+        }
+        if (action == 'logout') {
+          await _firebaseAuth.signOut();
+          Navigator.pop(context);
+        }
+        if (action == 'movie') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Movies(),
+          ));
+        }
+        if (action == 'tv') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => TvShows(),
+          ));
+        }
       },
     );
   }
 
-  Widget _createThemeItme(
-     BuildContext context ) {
-
+  Widget _createThemeItem(BuildContext context) {
     return ListTile(
-    
-      title: Row(
-        children: <Widget>[
-          Icon(Theme.of(context).brightness==Brightness.dark?Icons.wb_sunny:Icons.brightness_3),
-          Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Text(Theme.of(context).brightness==Brightness.dark?'Light Mode':'Dark mode'),
-          )
-        ],
-      ),
-      onTap: () async {
-         Provider.of<MyTheme>(context,listen: false).switchTheme();
-        
-      }
-     
-  
-
-    );
+        title: Row(
+          children: <Widget>[
+            Icon(Theme.of(context).brightness == Brightness.dark
+                ? Icons.wb_sunny
+                : Icons.brightness_3),
+            Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text(Theme.of(context).brightness == Brightness.dark
+                  ? 'edit_profile.light_mode'.tr()
+                  : 'edit_profile.dark_mode'.tr()),
+            )
+          ],
+        ),
+        onTap: () async {
+          Provider.of<MyTheme>(context, listen: false).switchTheme();
+        });
   }
 }

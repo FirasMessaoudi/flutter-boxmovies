@@ -1,11 +1,9 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:decorated_icon/decorated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/shared/widget/image_view.dart';
-
 
 class SliverAppBarWithShadow extends StatelessWidget {
   SliverAppBarWithShadow({

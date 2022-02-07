@@ -6,29 +6,31 @@ class Network {
   final String image;
   final Color color;
   final String logo_path;
-  Network({
-    required this.color,
-    required this.image,
-    required this.id,
-    required this.name,
-    required this.logo_path
-  });
+
+  Network(
+      {required this.color,
+      required this.image,
+      required this.id,
+      required this.name,
+      required this.logo_path});
+
   factory Network.fromJson(json) {
     return Network(
-      id: json['id'].toString(),
-      name: json['name'],
-      image: json['image'].toString(),
-      color: json['color'],
-      logo_path: json['logo_path'].toString()
-    );
+        id: json['id'].toString(),
+        name: json['name'],
+        image: json['image'].toString(),
+        color: json['color'],
+        logo_path: json['logo_path'].toString());
   }
 }
 
 class NetworkList {
   final List<Network> list;
+
   NetworkList({
     required this.list,
   });
+
   factory NetworkList.fromJson(json) {
     return NetworkList(
         list: (json as List).map((genre) => Network.fromJson(genre)).toList());
@@ -39,74 +41,53 @@ final networklist = [
   {
     "id": 213,
     "name": "NETFLIX",
-    "image":
-        "netflix.png",
+    "image": "netflix.png",
     "color": Color(0xff526605),
   },
   {
     "id": 1024,
     "name": "AMAZON PRIME",
-    "image":
-        "amazon.jpg",
+    "image": "amazon.jpg",
     "color": Color(0xff1d0d87)
   },
-  {
-    "id": 71,
-    "name": "CW",
-    "image":
-        "cw.jpg",
-    "color": Color(0xff51ac06)
-  },
+  {"id": 71, "name": "CW", "image": "cw.jpg", "color": Color(0xff51ac06)},
   {
     "id": 2552,
     "name": "Apple",
-    "image":
-        "Apple-tv-logo.jpg",
+    "image": "Apple-tv-logo.jpg",
     "color": Color(0xff375304)
   },
   {
     "id": 2360,
     "name": "History",
-    "image":
-        "history.jpg",
+    "image": "history.jpg",
     "color": Color(0xff4004d7)
   },
-  {
-    "id": 453,
-    "name": "HULU",
-    "image":
-        "hulu.jpg",
-    "color": Color(0xff0b6a33)
-  },
+  {"id": 453, "name": "HULU", "image": "hulu.jpg", "color": Color(0xff0b6a33)},
   {
     "id": 318,
     "name": "Starz",
-    "image":
-        "starzplay.png",
+    "image": "starzplay.png",
     "color": Color(0xff039620)
   },
   {
     "id": 2739,
     "name": "Disney +",
-    "image":
-        "disneyplus.jpg",
+    "image": "disneyplus.jpg",
     "color": Color(0xff4004d7)
   },
   {
     "id": 3186,
     "name": "HBO Max",
-    "image":
-        "hbomax.jpg",
+    "image": "hbomax.jpg",
     "color": Color(0xff039620)
   },
-   {
+  {
     "id": 67,
     "name": "Showtime",
-    "image":
-        "showtime-logo.png",
+    "image": "showtime-logo.png",
     "color": Color(0xff039620)
   },
-  
 
   // {
   //   "id": 10762,
@@ -145,81 +126,54 @@ final companylist = [
   {
     "id": 420,
     "name": "Marvel",
-    "image":
-        "marvel.jpg",
+    "image": "marvel.jpg",
     "color": Color(0xff526605),
   },
   {
     "id": 429,
     "name": "DC Universe",
-    "image":
-        "DC_Comics_logo.svg.png",
+    "image": "DC_Comics_logo.svg.png",
     "color": Color(0xff1d0d87)
   },
   {
     "id": 174,
     "name": "WARNER",
-    "image":
-        "warner.png",
+    "image": "warner.png",
     "color": Color(0xff51ac06)
   },
-  {
-    "id": 34,
-    "name": "Sony",
-    "image":
-        "sony.jpg",
-    "color": Color(0xff375304)
-  },
+  {"id": 34, "name": "Sony", "image": "sony.jpg", "color": Color(0xff375304)},
   {
     "id": 2,
     "name": "Disney",
-    "image":
-        "waltdisney.jpg",
+    "image": "waltdisney.jpg",
     "color": Color(0xff4004d7)
   },
   {
     "id": 33,
     "name": "Universal",
-    "image":
-        "universal.jpg",
+    "image": "universal.jpg",
     "color": Color(0xff0b6a33)
   },
-  {
-    "id": 25,
-    "name": "Fox",
-    "image":
-        "20fox.png",
-    "color": Color(0xff039620)
-  },
+  {"id": 25, "name": "Fox", "image": "20fox.png", "color": Color(0xff039620)},
   {
     "id": 4,
     "name": "Paramount",
-    "image":
-        "paramount.jpg",
+    "image": "paramount.jpg",
     "color": Color(0xff4004d7)
   },
   {
     "id": 1632,
     "name": "Lionsgate",
-    "image":
-        "lionsgate.jpg",
+    "image": "lionsgate.jpg",
     "color": Color(0xff039620)
   },
-   {
+  {
     "id": 5,
     "name": "Columbia",
-    "image":
-        "columbia.png",
+    "image": "columbia.png",
     "color": Color(0xff039620)
   },
-   {
-    "id": 21,
-    "name": "MGM",
-    "image":
-        "mgm.jpg",
-    "color": Color(0xff039620)
-  },
-  
+  {"id": 21, "name": "MGM", "image": "mgm.jpg", "color": Color(0xff039620)},
 
   // {
   //   "id": 10762,
@@ -251,11 +205,14 @@ final companylist = [
   //   "name": "War & Politics",
   // },
 ];
+
 class NetworksList {
   final List<Network> list;
+
   NetworksList({
     required this.list,
   });
+
   factory NetworksList.fromJson(json) {
     return NetworksList(
         list: (json as List).map((genre) => Network.fromJson(genre)).toList());

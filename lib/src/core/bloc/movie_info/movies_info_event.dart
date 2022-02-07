@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 abstract class MoviesInfoEvent extends Equatable {
@@ -10,6 +9,7 @@ abstract class MoviesInfoEvent extends Equatable {
 
 class LoadMoviesInfo extends MoviesInfoEvent {
   final String id;
+
   LoadMoviesInfo({
     required this.id,
   });

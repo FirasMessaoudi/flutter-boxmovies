@@ -1,28 +1,23 @@
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/bloc/season/season_info_bloc.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/core/model/season_info.dart';
 import 'package:moviebox/src/screens/cast/cast_list.dart';
-import 'package:moviebox/src/core/bloc/cast_info/cast_info.dart';
 import 'package:moviebox/src/shared/util/fav_type.dart';
 import 'package:moviebox/src/shared/widget/error_page.dart';
 import 'package:moviebox/src/shared/widget/favorite_button/cubit/fav_cubit.dart';
 import 'package:moviebox/src/shared/widget/favorite_button/fav_button.dart';
 import 'package:moviebox/src/shared/widget/loading.dart';
 import 'package:moviebox/src/shared/widget/sliver_app_bar.dart';
-import 'package:moviebox/src/shared/widget/star_icon.dart';
 import 'package:moviebox/src/shared/widget/trailers_widget.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../../../../themes.dart';
 import 'episode_info.dart';
-import 'package:easy_localization/easy_localization.dart';
-
 
 class SeasonInfo extends StatelessWidget {
   final String image;
@@ -76,6 +71,7 @@ class SeasonInfoWidget extends StatelessWidget {
   final List<ImageBackdrop> backdrops;
   final List<TrailerModel> trailers;
   final Color textColor;
+
   const SeasonInfoWidget({
     Key? key,
     required this.info,
@@ -96,12 +92,11 @@ class SeasonInfoWidget extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBarCast(
-            color: color,
-            textColor: textColor,
-            title: '',
-            image: info.posterPath,
-            isSeason: true
-          ),
+              color: color,
+              textColor: textColor,
+              title: '',
+              image: info.posterPath,
+              isSeason: true),
           SliverToBoxAdapter(
             child: Container(
                 child: Padding(
@@ -142,11 +137,14 @@ class SeasonInfoWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("movie_info.overview".tr(), style: heading.copyWith(color: textColor)),
+                  Text("movie_info.overview".tr(),
+                      style: heading.copyWith(color: textColor)),
                   SizedBox(height: 10),
                   ReadMoreText(
                     info.overview == "N/A"
-                        ? "${title}"+ "movie_info.premiered".tr() + info.customDate
+                        ? "${title}" +
+                            "movie_info.premiered".tr() +
+                            info.customDate
                         : info.overview,
                     trimLines: 8,
                     colorClickableText: Colors.pink,
@@ -274,17 +272,18 @@ class SeasonInfoWidget extends StatelessWidget {
                             Row(
                               children: [
                                 IconTheme(
-                                  data: IconThemeData(
-                                    color: textColor == Colors.white
-                                        ? Colors.amber
-                                        : redColor,
-                                    size: 20,
-                                  ),
-                                  child: Icon(Icons.star,color: Colors.amber)
-                                ),
+                                    data: IconThemeData(
+                                      color: textColor == Colors.white
+                                          ? Colors.amber
+                                          : redColor,
+                                      size: 20,
+                                    ),
+                                    child:
+                                        Icon(Icons.star, color: Colors.amber)),
                                 Text(
                                   "  " +
-                                      info.episodes[i].voteAverage.toStringAsFixed(1) +
+                                      info.episodes[i].voteAverage
+                                          .toStringAsFixed(1) +
                                       "/10",
                                   style: normalText.copyWith(
                                     color: textColor == Colors.white
@@ -295,11 +294,12 @@ class SeasonInfoWidget extends StatelessWidget {
                                 ),
                                 SizedBox(width: 10),
                                 BlocProvider(
-                                  create: (context) =>
-                                  FavMovieCubit()..init(info.episodes[i].id),
+                                  create: (context) => FavMovieCubit()
+                                    ..init(info.episodes[i].id),
                                   child: FavIcon(
                                     type: FavType.episode,
-                                    title:title+' : '+info.episodes[i].name,
+                                    title:
+                                        title + ' : ' + info.episodes[i].name,
                                     movieid: info.episodes[i].id,
                                     poster: info.episodes[i].stillPath,
                                     date: info.episodes[i].date,
@@ -308,7 +308,6 @@ class SeasonInfoWidget extends StatelessWidget {
                                     color: textColor,
                                     age: '',
                                     backdrop: '',
-
                                   ),
                                 ),
                               ],

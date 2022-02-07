@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/bloc/collection_tab/collection_tab_bloc.dart';
 import 'package:moviebox/src/core/repo/collection_repo.dart';
 import 'package:moviebox/src/shared/widget/empty_collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 import '../../../themes.dart';
 import 'add_to_empty_collection.dart';
@@ -75,14 +75,16 @@ class _CollectionsTabState extends State<CollectionsTab> {
                                       builder: (BuildContext context) {
                                         return new AlertDialog(
                                           title: new Text(
-                                              "my_list.confirm_delete_collection".tr(),
+                                              "my_list.confirm_delete_collection"
+                                                  .tr(),
                                               style: normalText.copyWith()),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: Text("my_list.btn_cancel".tr(),
+                                                child: Text(
+                                                    "my_list.btn_cancel".tr(),
                                                     style:
                                                         normalText.copyWith())),
                                             TextButton(

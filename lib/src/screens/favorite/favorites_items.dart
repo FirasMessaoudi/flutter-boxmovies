@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/watchlist.dart';
-import 'package:moviebox/src/core/repo/movies_repo.dart';
-import 'package:moviebox/src/core/repo/watchlist_repo.dart';
 import 'package:moviebox/src/core/streams/favorites_stream.dart';
-import 'package:moviebox/src/core/streams/watchlist_stream.dart';
+import 'package:moviebox/src/responsive/responsive.dart';
 import 'package:moviebox/src/shared/util/fav_type.dart';
 import 'package:moviebox/src/shared/util/profile_list_items.dart';
 import 'package:moviebox/src/shared/widget/empty_poster.dart';
@@ -15,7 +12,9 @@ import 'fav_item.dart';
 
 class FavoritesItems extends StatefulWidget {
   final FavType type;
+
   const FavoritesItems({Key? key, required this.type}) : super(key: key);
+
   @override
   _FavoritesItemsState createState() => _FavoritesItemsState();
 }
@@ -65,7 +64,8 @@ class _FavoritesItemsState extends State<FavoritesItems> {
                     return Container(
                       child: Column(
                         children: [
-                          ListView(
+                       !Responsive.isDesktop(context) || (widget.type!=FavType.person && widget.type!=FavType.episode)?
+                       ListView(
                             physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             children: [
@@ -75,26 +75,49 @@ class _FavoritesItemsState extends State<FavoritesItems> {
                               if (repo.movies.isNotEmpty)
                                 ...repo.movies
                                     .map((movie) => FavoriteMovieContainer(
-                                  movie: movie,
-                                  isFavorite: true,
-                                  isEpisode: widget.type==FavType.episode?true:false,
-                                  isActor: widget.type==FavType.person?true:false,
-                                  isMovie: widget.type==FavType.movie?true:false,
-                                ))
+                                          movie: movie,
+                                          isFavorite: true,
+                                          isEpisode:
+                                              widget.type == FavType.episode
+                                                  ? true
+                                                  : false,
+                                          isActor: widget.type == FavType.person
+                                              ? true
+                                              : false,
+                                          isMovie: widget.type == FavType.movie
+                                              ? true
+                                              : false,
+                                        ))
                                     .toList(),
-                              if(widget.type==FavType.movie || widget.type==FavType.tv)
-                              Row(children: [
-                              if(widget.type==FavType.movie)
-                              EmptyPoster(isMovie:true,action:ProfileItems.fav)
-                              else
-                                EmptyPoster(isMovie:false,action:ProfileItems.fav)
-                                ])
-
                             ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          ):
+                       GridView(
+                         gridDelegate:
+                         SliverGridDelegateWithFixedCrossAxisCount(
+                           crossAxisCount: widget.type==FavType.person?4:3,
+                         ),
+                         physics: BouncingScrollPhysics(),
+                         shrinkWrap: true,
+                         children: [
+                           if (repo.movies.isNotEmpty)
+                             ...repo.movies
+                                 .map((movie) => FavoriteMovieContainer(
+                               movie: movie,
+                               isFavorite: true,
+                               isEpisode:
+                               widget.type == FavType.episode
+                                   ? true
+                                   : false,
+                               isActor: widget.type == FavType.person
+                                   ? true
+                                   : false,
+                               isMovie: widget.type == FavType.movie
+                                   ? true
+                                   : false,
+                             ))
+                                 .toList(),
+                         ],
+                       ),
                           if (repo.movies.isNotEmpty)
                             if (repo.movies.length > 4)
                               Center(
@@ -107,28 +130,22 @@ class _FavoritesItemsState extends State<FavoritesItems> {
                       ),
                     );
                   } else {
-                      return EmptyFavorites(isMovie:widget.type==FavType.movie?true:false,type:widget.type);
+                    return EmptyFavorites(
+                        isMovie: widget.type == FavType.movie ? true : false,
+                        type: widget.type);
                     //return Container();
                   }
-                } else if(snapshot.connectionState==ConnectionState.waiting) {
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
                   return Container(
                       height: 500,
                       child: Center(
                           child: CircularProgressIndicator(
-                            color: redColor,
-                          )));
-                }else {
-                  if(widget.type==FavType.movie || widget.type==FavType.tv) {
-                    return Row(children: [
-                      if(widget.type == FavType.movie)
-                        EmptyPoster(isMovie: true, action: ProfileItems.fav)
-                      else
-                        EmptyPoster(isMovie: false, action: ProfileItems.fav)
-                    ]);
-                  }else {
+                        color: redColor,
+                      )));
+                } else {
                     return Container();
                   }
-                }
               },
             ),
           ),

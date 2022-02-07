@@ -1,10 +1,10 @@
-
 class Categorie {
   final int id;
   final String name;
+
   Categorie({
-     required this.id,
-     required this.name,
+    required this.id,
+    required this.name,
   });
 
   Map<String, dynamic> toMap() {

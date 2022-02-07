@@ -1,19 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:moviebox/src/screens/home/navigation.dart';
 import 'package:moviebox/src/core/service/facebook_provider.dart';
 import 'package:moviebox/src/core/service/google_provider.dart';
 import 'package:moviebox/src/core/service/twitter_provider.dart';
+import 'package:moviebox/src/screens/home/navigation.dart';
 import 'package:moviebox/src/shared/util/login_type.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
-import 'package:moviebox/themes.dart';
 import 'package:provider/provider.dart';
 
 class Socials extends StatelessWidget {
   final String action;
 
   const Socials({Key? key, required this.action}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -98,7 +98,8 @@ class Socials extends StatelessWidget {
       case LoginType.google:
         {
           showLoaderDialog(context);
-          final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+          final provider =
+              Provider.of<GoogleSignInProvider>(context, listen: false);
           await provider.googleLogin();
           await Navigator.of(context).pushReplacement(
             MaterialPageRoute(

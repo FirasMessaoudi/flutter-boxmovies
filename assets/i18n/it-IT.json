@@ -29,7 +29,9 @@
     "custom_lists": "Le Mie Collezioni",
     "stat": "Statistiche",
     "settings": "Impostazioni",
-    "logout": "Logout"
+    "logout": "Logout",
+    "time_spent": "Tempo Impiegato"
+
   },
   "login": {
     "password": "Parola d'ordine",
@@ -93,6 +95,7 @@
     "nb_seasons": "Numero Di Stagioni",
     "episode_runtime": "Runtime dell'episodio",
     "released_tv": "Primo Episodio rilasciato su",
+    "next_episode": "Data del prossimo episodio",
     "tagline_tv": "Mostra Tagline",
     "tagline_movie": "Film Tagline",
     "seasons": "Stagioni",
@@ -116,24 +119,31 @@
     "share": "Condividi"
   },
   "filter": {
+    "all": "Tutti",
+    "finished": "Finito",
+    "watching": "Guardando",
+    "up_to_date": "Aggiornato",
+    "not_started": "Non iniziato",
     "sort_by": "Ordina per",
     "popularity": "Popolarità",
     "vote": "Voto",
     "companies": "Società",
     "networks": "Reti",
     "certifications": "Certificazioni",
+    "countries": "lingua originale",
     "reset": "Reset",
-    "apply": "Applicare",
-    "my_list": {
-      "my_favorites": "Preferiti",
-      "how_was_it": "Com'è stato?",
-      "remove_from_watchlist": "Rimuovi dalla lista degli osservati",
-      "remove_from_favorite": "Rimuovi dai preferiti",
-      "add_to_list": "Aggiungi alla lista",
-      "all": "Tutti",
-      "finished": "Finito",
-      "not_started": "Non dichiarato",
-      "remove_from_collection": "Rimuovi dalla raccolta",
+    "apply": "Applicare"
+  },
+  "my_list": {
+    "my_favorites": "Preferiti",
+    "how_was_it": "Com'è stato?",
+    "remove_from_watchlist": "Rimuovi dalla lista degli osservati",
+    "remove_from_favorite": "Rimuovi dai preferiti",
+    "add_to_list": "Aggiungi alla lista",
+    "all": "Tutti",
+    "finished": "Finito",
+    "not_started": "Non dichiarato",
+    "remove_from_collection": "Rimuovi dalla raccolta",
       "confirm_delete_collection": "Vuoi davvero rimuovere l'intera raccolta ?",
       "btn_remove": "Rimuovi",
       "btn_cancel": "Annulla",
@@ -159,6 +169,14 @@
       "empty_collection_message": "Crea la tua raccolta di film e programmi TV.",
       "watched": "già guardato",
       "not_watched": "non guardato"
-    }
+    },
+  "bottom_sheet_actions":
+  {
+    "add_to_watchlist": "Aggiungi alla lista",
+    "remove_from_watchlist": "Rimuovi dalla lista",
+    "add_to_collection": "Aggiungi alla raccolta",
+    "already_in": "Già in ",
+    "add_to_favourite": "Aggiungi ai preferiti",
+    "remove_from_favourite": "Rimuovi dai preferiti"
   }
 }

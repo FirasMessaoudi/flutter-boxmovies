@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:equatable/equatable.dart';
 import 'package:moviebox/src/core/model/cast_info.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
@@ -30,16 +31,16 @@ class MoviesInfoLoaded extends MoviesInfoState {
   final Color textColor;
   final List<ImageBackdrop> images;
   final SocialMediaInfo sinfo;
-  MoviesInfoLoaded({
-    required this.images,
-    required this.tmdbData,
-    required this.imdbData,
-    required this.similar,
-    required this.cast,
-    required this.backdrops,
-    required this.trailers,
-    required this.color,
-    required this.textColor,
-    required this.sinfo
-  });
+
+  MoviesInfoLoaded(
+      {required this.images,
+      required this.tmdbData,
+      required this.imdbData,
+      required this.similar,
+      required this.cast,
+      required this.backdrops,
+      required this.trailers,
+      required this.color,
+      required this.textColor,
+      required this.sinfo});
 }

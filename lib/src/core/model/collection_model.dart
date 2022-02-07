@@ -70,7 +70,7 @@ class Collection {
           DateTime.parse(doc.data()['time'].toDate().toString()).toString(),
           'dd/MM/yy');
       string =
-      "${monthgenrater(date.split('/')[1])} ${date.split("/")[0]}, 20${date.split("/")[2]}";
+          "${monthgenrater(date.split('/')[1])} ${date.split("/")[0]}, 20${date.split("/")[2]}";
     } catch (e) {}
 
     return new Collection(
@@ -83,9 +83,11 @@ class Collection {
 
 class CollectionList {
   final List<Collection> list;
+
   CollectionList({
     required this.list,
   });
+
   factory CollectionList.fromDoc(QuerySnapshot<Map<String, dynamic>> doc) {
     return new CollectionList(
         list: doc.docs.map((all) => Collection.fromDoc(all)).toList());

@@ -1,23 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/model/movie_model.dart';
-import 'package:moviebox/src/core/model/tv_model.dart';
-import 'package:moviebox/src/core/streams/all_movies_stream.dart';
 import 'package:moviebox/src/core/streams/collection_stream.dart';
-import 'package:moviebox/src/core/streams/movies_stream.dart';
-import 'package:moviebox/src/core/streams/tv_stream.dart';
-import 'package:moviebox/src/shared/util/fav_type.dart';
-import 'package:moviebox/src/shared/util/profile_list_items.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/src/shared/widget/collection_button/add_collection_button.dart';
 import 'package:moviebox/src/shared/widget/collection_button/cubit/add_collection_cubit.dart';
-import 'package:moviebox/src/shared/widget/favorite_button/cubit/fav_cubit.dart';
-import 'package:moviebox/src/shared/widget/favorite_button/fav_button.dart';
-import 'package:moviebox/src/shared/widget/watchlist_button/state/watchlist_cubit.dart';
-import 'package:moviebox/src/shared/widget/watchlist_button/widget/watchlist_icon.dart';
 
 import '../../../themes.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class AddToEmptyCollection extends StatefulWidget {
   @override
@@ -28,6 +18,7 @@ class _AddToEmptyCollectionState extends State<AddToEmptyCollection> {
   CollectionStream repo = CollectionStream();
   ScrollController controller = ScrollController();
   String query = '';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -97,106 +88,106 @@ class _AddToEmptyCollectionState extends State<AddToEmptyCollection> {
         slivers: [
           SliverToBoxAdapter(
               child: Padding(
-            padding:
+                padding:
                 const EdgeInsets.symmetric(horizontal: 3.0, vertical: 10.0),
-            child: StreamBuilder<List<dynamic>>(
-              stream: repo.controller.stream,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  print(snapshot.data!.length);
-                  // final movies = snapshot.data!;
-                  return Container(
-                    child: Column(
-                      children: [
-                        ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: repo.movies.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {
-                                  moveToInfo(
-                                      context,
-                                      repo.movies[index] is MovieModel,
-                                      repo.movies[index].id,
-                                      repo.movies[index].backdrop,
-                                      repo.movies[index].title);
-                                },
-                                leading:
+                child: StreamBuilder<List<dynamic>>(
+                  stream: repo.controller.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      print(snapshot.data!.length);
+                      // final movies = snapshot.data!;
+                      return Container(
+                        child: Column(
+                          children: [
+                            ListView.separated(
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: repo.movies.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () {
+                                      moveToInfo(
+                                          context,
+                                          repo.movies[index] is MovieModel,
+                                          repo.movies[index].id,
+                                          repo.movies[index].backdrop,
+                                          repo.movies[index].title);
+                                    },
+                                    leading:
                                     Image.network(repo.movies[index].poster),
-                                title: Text(repo.movies[index].title),
-                                trailing: BlocProvider(
-                                  create: (context) => CollectionCubit()
-                                    ..init(repo.movies[index].id),
-                                  child: AddCollectionIcon(
-                                    date: repo.movies[index].release_date,
-                                    image: repo.movies[index].poster,
-                                    isMovie: repo.movies[index] is MovieModel,
-                                    rate: repo.movies[index].vote_average,
-                                    title: repo.movies[index].title,
-                                    movieid: repo.movies[index].id,
-                                    likeColor: Theme.of(context).brightness ==
+                                    title: Text(repo.movies[index].title),
+                                    trailing: BlocProvider(
+                                      create: (context) => CollectionCubit()
+                                        ..init(repo.movies[index].id),
+                                      child: AddCollectionIcon(
+                                        date: repo.movies[index].release_date,
+                                        image: repo.movies[index].poster,
+                                        isMovie: repo.movies[index] is MovieModel,
+                                        rate: repo.movies[index].vote_average,
+                                        title: repo.movies[index].title,
+                                        movieid: repo.movies[index].id,
+                                        likeColor: Theme.of(context).brightness ==
                                             Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black45,
-                                    unLikeColor: Theme.of(context).brightness ==
+                                            ? Colors.white
+                                            : Colors.black45,
+                                        unLikeColor: Theme.of(context).brightness ==
                                             Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black45,
-                                    backdrop: repo.movies[index].backdrop,
-                                    justIcon: true,
+                                            ? Colors.white
+                                            : Colors.black45,
+                                        backdrop: repo.movies[index].backdrop,
+                                        justIcon: true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return Divider(
+                                      color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black45);
+                                }),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            if (!repo.isfinish)
+                              Center(
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.black,
+                                    color: redColor,
+                                  ))
+                            else
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Look like you reach the end!",
+                                    style: normalText.copyWith(
+                                        color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black),
                                   ),
                                 ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return Divider(
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black45);
-                            }),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        if (!repo.isfinish)
-                          Center(
-                              child: CircularProgressIndicator(
-                            backgroundColor: Colors.black,
-                            color: redColor,
-                          ))
-                        else
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Look like you reach the end!",
-                                style: normalText.copyWith(
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black),
                               ),
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                        SizedBox(
-                          height: 10,
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return Container(
-                      height: 500,
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        backgroundColor: Colors.black,
-                        color: redColor,
-                      )));
-                }
-              },
-            ),
-          )),
+                      );
+                    } else {
+                      return Container(
+                          height: 500,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.black,
+                                color: redColor,
+                              )));
+                    }
+                  },
+                ),
+              )),
         ],
       ),
     );

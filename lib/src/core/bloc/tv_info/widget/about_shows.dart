@@ -1,10 +1,10 @@
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/core/model/tv_shows_info.dart';
+import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/src/shared/widget/expandable.dart';
 
 import '../../../../../themes.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class AboutShowWidget extends StatelessWidget {
   const AboutShowWidget({
@@ -39,6 +39,17 @@ class AboutShowWidget extends StatelessWidget {
             ),
           ),
           items: [
+            if (info.tagline != "")
+              ListTile(
+                title: Text(
+                  "movie_info.tagline_tv".tr(),
+                  style: heading.copyWith(color: textColor, fontSize: 16),
+                ),
+                subtitle: Text(
+                  info.tagline,
+                  style: normalText.copyWith(color: textColor),
+                ),
+              ),
             if (info.created.isNotEmpty)
               ListTile(
                 title: Text(
@@ -58,7 +69,6 @@ class AboutShowWidget extends StatelessWidget {
                   ),
                 ),
               ),
-         
             ListTile(
                 title: Text(
                   "movie_info.nb_seasons".tr(),
@@ -77,7 +87,7 @@ class AboutShowWidget extends StatelessWidget {
                   info.episoderuntime,
                   style: normalText.copyWith(color: textColor),
                 )),
-            if (info.formatedDate != "")
+            if (info.date != "")
               ListTile(
                 title: Text(
                   "movie_info.released_tv".tr(),
@@ -87,22 +97,29 @@ class AboutShowWidget extends StatelessWidget {
                   text: TextSpan(
                     style: normalText.copyWith(color: textColor),
                     children: [
-                      TextSpan(text: info.formatedDate),
+                      TextSpan(
+                          text: convertDate(
+                              info.date, context.locale.languageCode)),
                     ],
                   ),
                 ),
               ),
-            if (info.tagline != "")
-              ListTile(
-                title: Text(
-                  "movie_info.tagline_tv".tr(),
-                  style: heading.copyWith(color: textColor, fontSize: 16),
-                ),
-                subtitle: Text(
-                  info.tagline,
+            ListTile(
+              title: Text(
+                "movie_info.next_episode".tr(),
+                style: heading.copyWith(color: textColor, fontSize: 16),
+              ),
+              subtitle: RichText(
+                text: TextSpan(
                   style: normalText.copyWith(color: textColor),
+                  children: [
+                    TextSpan(
+                        text: convertDate(
+                            info.nextEpisode, context.locale.languageCode)),
+                  ],
                 ),
-              )
+              ),
+            ),
           ],
         ),
       ),

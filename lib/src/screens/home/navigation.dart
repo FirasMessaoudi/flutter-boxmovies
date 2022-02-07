@@ -1,19 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviebox/src/screens/auth/login_page.dart';
-import 'package:moviebox/src/screens/profile/edit_profile.dart';
 import 'package:moviebox/src/responsive/app_bar_cubit.dart';
 import 'package:moviebox/src/responsive/responsive.dart';
+import 'package:moviebox/src/screens/auth/welcome_screen.dart';
 import 'package:moviebox/src/screens/genre/genre_page.dart';
 import 'package:moviebox/src/screens/network/networks.dart';
-import 'package:moviebox/src/screens/auth/welcome_screen.dart';
-import 'package:moviebox/src/screens/profile/profile_info.dart';
 import 'package:moviebox/src/shared/widget/drawer.dart';
-import 'package:moviebox/src/screens/search/search_delegate.dart';
-import 'package:moviebox/themes.dart';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'home_page.dart';
 
 class Home extends StatefulWidget {
@@ -60,7 +56,7 @@ class _HomeState extends State<Home> {
       if (!isLoggedIn) 'login.login'.tr(): Icons.login,
       if (isLoggedIn) 'home.profile'.tr(): Icons.person,
     };
- 
+
     return Scaffold(
       body: BlocProvider<AppBarCubit>(
         create: (_) => AppBarCubit(),
@@ -68,26 +64,26 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: !Responsive.isDesktop(context)
           ? BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              // backgroundColor: Colors.black,
-              items: _iconsLoggedIn
-                  .map((title, icon) => MapEntry(
-                      title,
-                      BottomNavigationBarItem(
-                        icon: Icon(icon, size: 30.0),
-                        label: title,
-                      )))
-                  .values
-                  .toList(),
-              currentIndex: _currentIndex,
-              selectedItemColor: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
-              selectedFontSize: 11.0,
-              unselectedItemColor: Colors.grey,
-              unselectedFontSize: 11.0,
-              onTap: (index) => setState(() => _currentIndex = index),
-            )
+        type: BottomNavigationBarType.fixed,
+        // backgroundColor: Colors.black,
+        items: _iconsLoggedIn
+            .map((title, icon) => MapEntry(
+            title,
+            BottomNavigationBarItem(
+              icon: Icon(icon, size: 30.0),
+              label: title,
+            )))
+            .values
+            .toList(),
+        currentIndex: _currentIndex,
+        selectedItemColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,
+        selectedFontSize: 11.0,
+        unselectedItemColor: Colors.grey,
+        unselectedFontSize: 11.0,
+        onTap: (index) => setState(() => _currentIndex = index),
+      )
           : null,
       drawer: Drawer(child: new DrawerUi()),
       key: _scaffoldKey,
@@ -99,5 +95,4 @@ class _HomeState extends State<Home> {
       _currentIndex = index;
     });
   }
-
 }

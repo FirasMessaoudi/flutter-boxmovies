@@ -17,6 +17,7 @@ class SeasonInfoLoaded extends SeasonInfoState {
   final List<CastInfo> cast;
   final Color color;
   final Color textColor;
+
   SeasonInfoLoaded({
     required this.seasonInfo,
     required this.backdrops,

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:moviebox/src/core/model/watchlist.dart';
@@ -7,13 +6,25 @@ import 'package:moviebox/src/shared/util/profile_list_items.dart';
 
 class WatchListStream {
   final StreamController<List<FavoriteWatchListModel>> controller =
-  StreamController<List<FavoriteWatchListModel>>();
+      StreamController<List<FavoriteWatchListModel>>();
   final repo = WatchListRepo();
   var isfinish = false;
   var lastRepo;
   List<FavoriteWatchListModel> movies = [];
+
   void addData(ProfileItems type, bool? watched) async {
-    final favorites = watched==null?await repo.getWatchList(null,type==ProfileItems.movies?true:false):await repo.getFilteredWatchlist(null,type==ProfileItems.movies?true:false, watched);
+    final List<dynamic> favorites;
+    if (type == ProfileItems.movies) {
+      favorites = watched == null
+          ? await repo.getWatchList(null, true)
+          : await repo.getFilteredWatchlist(null, true, watched);
+    } else {
+      if(watched==null) {
+        favorites = await repo.getTvList(null);
+      }else{
+        favorites = await repo.getFilteredTvList(null, watched);
+      }
+    }
     final List<FavoriteWatchListModel> fetchedMovies = favorites[0].list;
     controller.sink.add(fetchedMovies);
     movies.addAll(fetchedMovies);
@@ -21,7 +32,14 @@ class WatchListStream {
   }
 
   void getNextMovies(ProfileItems type, bool? watched) async {
-    final favorites =  watched==null?await repo.getWatchList(lastRepo,type==ProfileItems.movies?true:false): await repo.getFilteredWatchlist(lastRepo, type==ProfileItems.movies?true:false, watched);
+    final List<dynamic> favorites;
+    if (type == ProfileItems.movies) {
+      favorites = watched == null
+          ? await repo.getWatchList(lastRepo, true)
+          : await repo.getFilteredWatchlist(lastRepo, true, watched);
+    } else {
+      favorites = await repo.getTvList(lastRepo);
+    }
     final List<FavoriteWatchListModel> fetchedMovies = favorites[0].list;
 
     controller.sink.add(fetchedMovies);

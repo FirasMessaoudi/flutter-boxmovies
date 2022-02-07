@@ -1,3 +1,1 @@
-enum FavType {
-  movie,tv,episode,person
-}
+enum FavType { movie, tv, episode, person }

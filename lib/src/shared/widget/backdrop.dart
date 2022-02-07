@@ -1,15 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moviebox/src/core/bloc/movie_info/movies_info.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_event.dart';
-
 import 'package:moviebox/src/core/bloc/tv_info/show_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/tv_info/show_info_event.dart';
-
 import 'package:moviebox/src/core/bloc/tv_info/widget/tv_show_info.dart';
-import 'package:moviebox/src/core/bloc/movie_info/movies_info.dart';
-import 'package:moviebox/src/shared/widget/star_icon.dart';
 
 import '../../../themes.dart';
 
@@ -19,21 +16,22 @@ class BackdropPoster extends StatelessWidget {
   final String backdrop;
   final String date;
   final String id;
-  final Color color;
   final double rate;
   final bool isMovie;
-  const BackdropPoster(
-      {Key? key,
-      required this.poster,
-      required this.rate,
-      required this.name,
-      required this.backdrop,
-      required this.date,
-      required this.id,
-      required this.color,
-      required this.isMovie,
-    })
-      : super(key: key);
+  final Color? color;
+
+  const BackdropPoster({
+    Key? key,
+    required this.poster,
+    required this.rate,
+    required this.name,
+    required this.backdrop,
+    required this.date,
+    required this.id,
+    required this.isMovie,
+    this.color,
+  }) : super(key: key);
+
   moveToInfo(BuildContext context) {
     print(isMovie);
     if (isMovie) {
@@ -69,7 +67,7 @@ class BackdropPoster extends StatelessWidget {
           moveToInfo(context);
         },
         child: Container(
-          constraints: BoxConstraints(minHeight: 240),
+         // constraints: BoxConstraints(minHeight: 240),
           child: Column(
             children: [
               Container(
@@ -88,7 +86,7 @@ class BackdropPoster extends StatelessWidget {
               // SizedBox(height: 5),
               Container(
                 // width: 330,
-               // height: 120,
+                // height: 120,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +98,6 @@ class BackdropPoster extends StatelessWidget {
                       style: normalText.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: color,
                       ),
                     ),
                     Text(
@@ -110,10 +107,8 @@ class BackdropPoster extends StatelessWidget {
                       style: normalText.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w900,
-                        color: color.withOpacity(.8),
                       ),
                     ),
-
                   ],
                 ),
               )

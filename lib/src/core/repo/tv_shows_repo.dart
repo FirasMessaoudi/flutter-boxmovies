@@ -1,28 +1,28 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:moviebox/src/core/model/cast_info.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
-import 'dart:convert';
-
 import 'package:moviebox/src/core/model/tv_model.dart';
 import 'package:moviebox/src/core/model/tv_shows_info.dart';
 import 'package:moviebox/src/shared/util/constant.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 
-
 class TVRepo {
-   String _url="api.themoviedb.org";
-      Future<TvModelList> getTvByType(String type) async {
-        String? language = await currentLanguage();
+  String _url = "api.themoviedb.org";
 
-        final url = Uri.https(_url, '3/$type',
-        {'api_key': '$apiKey', 'language': '$language'});
-     final response = await http.get(url);
+  Future<TvModelList> getTvByType(String type) async {
+    String? language = await currentLanguage();
+
+    final url = Uri.https(
+        _url, '3/$type', {'api_key': '$apiKey', 'language': '$language'});
+    final response = await http.get(url);
     final data1 = json.decode(response.body);
     List<dynamic> list = data1['results'];
     return TvModelList.fromJson(list);
   }
+
   Future<TvModelList> getTvShows() async {
     String? language = await currentLanguage();
 
@@ -55,16 +55,18 @@ class TVRepo {
     List<dynamic> list = data1['results'];
     return TvModelList.fromJson(list);
   }
- Future<TvModelList> discover(int page) async {
-   String? language = await currentLanguage();
 
-   var url = Uri.parse(
+  Future<TvModelList> discover(int page) async {
+    String? language = await currentLanguage();
+
+    var url = Uri.parse(
         'https://api.themoviedb.org/3/discover/tv/?api_key=$apiKey&language=$language&page=$page');
     final response = await http.get(url);
     final data1 = json.decode(response.body);
     List<dynamic> list = data1['results'];
     return TvModelList.fromJson(list);
   }
+
   Future<TvModelList> getSimilarShows(String id) async {
     String? language = await currentLanguage();
 
@@ -119,31 +121,38 @@ class TVRepo {
     final data = json.decode(response6.body);
     return CastInfoList.fromJson(data);
   }
-      Future<TvModelList> getTvByNetwork(String id,int page) async {
-        String? language = await currentLanguage();
 
-        final url = Uri.https(_url, '3/discover/tv',
-        {'api_key': '$apiKey','language':'$language', 'with_network':id,'page':page});
-     final response = await http.get(url);
+  Future<TvModelList> getTvByNetwork(String id, int page) async {
+    String? language = await currentLanguage();
+
+    final url = Uri.https(_url, '3/discover/tv', {
+      'api_key': '$apiKey',
+      'language': '$language',
+      'with_network': id,
+      'page': page
+    });
+    final response = await http.get(url);
     final data1 = json.decode(response.body);
     List<dynamic> list = data1['results'];
     return TvModelList.fromJson(list);
   }
-   Future<TvModelList> filter(int page, String query) async {
-     String? language = await currentLanguage();
 
-     var url = Uri.parse(
-         'https://api.themoviedb.org/3/discover/tv/?api_key=$apiKey$query&language=$language&page=$page');
-     final response = await http.get(url);
-     final data1 = json.decode(response.body);
-     List<dynamic> list = data1['results'];
-     return TvModelList.fromJson(list);
-   }
-   Future<SocialMediaInfo> getSocialMedia(String id) async {
-     var urlNew = Uri.parse(
-         'https://api.themoviedb.org/3/tv/$id/external_ids?api_key=$apiKey&language=en-US&include_image_language=en');
-     final response6 = await http.get(urlNew);
-     final data6 = json.decode(response6.body);
-     return SocialMediaInfo.fromJson(data6);
-   }
+  Future<TvModelList> filter(int page, String query) async {
+    String? language = await currentLanguage();
+
+    var url = Uri.parse(
+        'https://api.themoviedb.org/3/discover/tv/?api_key=$apiKey$query&language=$language&page=$page');
+    final response = await http.get(url);
+    final data1 = json.decode(response.body);
+    List<dynamic> list = data1['results'];
+    return TvModelList.fromJson(list);
+  }
+
+  Future<SocialMediaInfo> getSocialMedia(String id) async {
+    var urlNew = Uri.parse(
+        'https://api.themoviedb.org/3/tv/$id/external_ids?api_key=$apiKey&language=en-US&include_image_language=en');
+    final response6 = await http.get(urlNew);
+    final data6 = json.decode(response6.body);
+    return SocialMediaInfo.fromJson(data6);
+  }
 }

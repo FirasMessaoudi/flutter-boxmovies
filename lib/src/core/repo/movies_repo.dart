@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:moviebox/src/core/model/cast_info.dart';
@@ -8,7 +9,6 @@ import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/shared/util/constant.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ColorGenrator {
   Future<Color> getImagePalette(ImageProvider imageProvider) async {
@@ -23,27 +23,29 @@ class ColorGenrator {
 }
 
 class MoviesRepo {
+  String _url = "api.themoviedb.org";
 
-    String _url="api.themoviedb.org";
-      Future<MovieModelList> getMovieByType(String program,String type) async {
-        String? language = await currentLanguage();
+  Future<MovieModelList> getMovieByType(String program, String type) async {
+    String? language = await currentLanguage();
 
-        final url = Uri.https(_url, '3/$type',
-        {'api_key': '$apiKey', 'language': '$language'});
-     final response = await http.get(url);
+    final url = Uri.https(
+        _url, '3/$type', {'api_key': '$apiKey', 'language': '$language'});
+    final response = await http.get(url);
     final data1 = json.decode(response.body);
     List<dynamic> list = data1['results'];
     return MovieModelList.fromJson(list);
   }
-    Future<MovieModelList> filter(int page,String query) async {
-      String? language = await currentLanguage();
-      var url = Uri.parse(
-          'https://api.themoviedb.org/3/discover/movie/?api_key=$apiKey&language=$language&page=$page$query');
-      final response = await http.get(url);
-      final data1 = json.decode(response.body);
-      List<dynamic> list = data1['results'];
-      return MovieModelList.fromJson(list);
-    }
+
+  Future<MovieModelList> filter(int page, String query) async {
+    String? language = await currentLanguage();
+    var url = Uri.parse(
+        'https://api.themoviedb.org/3/discover/movie/?api_key=$apiKey&language=$language&page=$page$query');
+    final response = await http.get(url);
+    final data1 = json.decode(response.body);
+    List<dynamic> list = data1['results'];
+    return MovieModelList.fromJson(list);
+  }
+
   Future<MovieModelList> getMovies() async {
     String? language = await currentLanguage();
 
@@ -54,6 +56,7 @@ class MoviesRepo {
     List<dynamic> list = data1['results'];
     return MovieModelList.fromJson(list);
   }
+
   Future<MovieModelList> discover(int page) async {
     String? language = await currentLanguage();
 
@@ -64,6 +67,7 @@ class MoviesRepo {
     List<dynamic> list = data1['results'];
     return MovieModelList.fromJson(list);
   }
+
   Future<MovieModelList> getNowPlayingMovies() async {
     String? language = await currentLanguage();
 
@@ -98,7 +102,7 @@ class MoviesRepo {
   }
 
   Future<MovieInfoModel> getMovieDataById(String id) async {
-        String? language = await currentLanguage();
+    String? language = await currentLanguage();
     var url = Uri.parse(
         'https://api.themoviedb.org/3/movie/$id?api_key=$apiKey&language=$language');
     final response = await http.get(url);
@@ -108,7 +112,6 @@ class MoviesRepo {
   }
 
   Future<TrailerList> getMovieTrailerById(String id) async {
-
     var url = Uri.parse(
         'https://api.themoviedb.org/3/movie/$id/videos?api_key=$apiKey');
     final response = await http.get(url);
@@ -117,7 +120,6 @@ class MoviesRepo {
   }
 
   Future<ImageBackdropList> getMovieImagesById(String id) async {
-
     List<dynamic> backdrops = [];
     List<dynamic> posters = [];
     List<dynamic> logos = [];
@@ -147,12 +149,12 @@ class MoviesRepo {
     final data = json.decode(response.body);
     return MovieInfoImdb.fromJson(data);
   }
-    Future<SocialMediaInfo> getSocialMedia(String id) async {
-      var urlNew = Uri.parse(
-          'https://api.themoviedb.org/3/movie/$id/external_ids?api_key=$apiKey&language=en-US&include_image_language=en');
-      final response6 = await http.get(urlNew);
-      final data6 = json.decode(response6.body);
-      return SocialMediaInfo.fromJson(data6);
-    }
 
+  Future<SocialMediaInfo> getSocialMedia(String id) async {
+    var urlNew = Uri.parse(
+        'https://api.themoviedb.org/3/movie/$id/external_ids?api_key=$apiKey&language=en-US&include_image_language=en');
+    final response6 = await http.get(urlNew);
+    final data6 = json.decode(response6.body);
+    return SocialMediaInfo.fromJson(data6);
+  }
 }

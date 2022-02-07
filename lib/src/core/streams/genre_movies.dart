@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/repo/genre_repo.dart';
 
-
 class GenreMovies {
   final StreamController<List<MovieModel>> controller =
       StreamController<List<MovieModel>>();
@@ -11,6 +10,7 @@ class GenreMovies {
   var isfinish = false;
   int page = 1;
   List<MovieModel> movies = [];
+
   void addData(String query) async {
     final fetchedmovies = await repo.getMovies(query, page);
 

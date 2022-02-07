@@ -1,14 +1,14 @@
-import 'package:flutter/foundation.dart';
-
 class PeopleModel {
   final String profile;
   final String name;
   final String id;
+
   PeopleModel({
     required this.profile,
     required this.name,
     required this.id,
   });
+
   factory PeopleModel.fromJson(json) {
     return PeopleModel(
       name: json['name'] ?? "",
@@ -22,9 +22,11 @@ class PeopleModel {
 
 class PeopleModelList {
   final List<PeopleModel> peoples;
+
   PeopleModelList({
     required this.peoples,
   });
+
   factory PeopleModelList.fromJson(json) {
     return new PeopleModelList(
       peoples:

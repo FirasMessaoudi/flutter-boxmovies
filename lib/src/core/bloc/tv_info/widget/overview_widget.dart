@@ -1,11 +1,9 @@
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/core/model/tv_shows_info.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../../../../themes.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 
 class OverviewWidget extends StatelessWidget {
   const OverviewWidget({
@@ -26,7 +24,8 @@ class OverviewWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("movie_info.overview".tr(), style: heading.copyWith(color: textColor)),
+            Text("movie_info.overview".tr(),
+                style: heading.copyWith(color: textColor)),
             SizedBox(height: 10),
             ReadMoreText(
               info.overview,

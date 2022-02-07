@@ -1,19 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:moviebox/src/screens/auth/title.dart';
-import 'package:moviebox/src/screens/home/navigation.dart';
 import 'package:moviebox/src/core/service/auth_service.dart';
 import 'package:moviebox/src/screens/auth/socials.dart';
+import 'package:moviebox/src/screens/auth/title.dart';
+import 'package:moviebox/src/screens/home/navigation.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/themes.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'signup_page.dart';
+
 import 'bezier_container.dart';
+import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
-
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -21,6 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -32,7 +32,10 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color:Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
+              child: Icon(Icons.keyboard_arrow_left,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black),
             ),
             Text('login.back'.tr(),
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
@@ -142,8 +145,8 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(
                 builder: (context) => SignUpPage(
-                      title: '',
-                    )));
+                  title: '',
+                )));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10),
@@ -184,77 +187,77 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Container(
-      height: height,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-              top: -height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer()),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: height * .2),
-                  new TitleLogin(),
-                  SizedBox(height: 30),
-                  _emailPasswordWidget(),
-                  SizedBox(height: 20),
-                  _submitButton(),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.centerRight,
-                    child: Text('login.forgot_password'.tr(),
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
+          height: height,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                  top: -height * .15,
+                  right: -MediaQuery.of(context).size.width * .4,
+                  child: BezierContainer()),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: height * .2),
+                      new TitleLogin(),
+                      SizedBox(height: 30),
+                      _emailPasswordWidget(),
+                      SizedBox(height: 20),
+                      _submitButton(),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        alignment: Alignment.centerRight,
+                        child: Text('login.forgot_password'.tr(),
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500)),
+                      ),
+                      _divider(),
+                      // _facebookButton(),
+                      Socials(action: 'login'),
+                      SizedBox(height: height * .035),
+                      _createAccountLabel(),
+                    ],
                   ),
-                  _divider(),
-                  // _facebookButton(),
-                  Socials(action: 'login'),
-                  SizedBox(height: height * .035),
-                  _createAccountLabel(),
-                ],
+                ),
               ),
-            ),
+              Positioned(top: 40, left: 0, child: _backButton()),
+            ],
           ),
-          Positioned(top: 40, left: 0, child: _backButton()),
-        ],
-      ),
-    ));
+        ));
   }
 
   handleLogin() async {
-    final _auth = Provider.of<AuthService>(context,listen: false);
+    final _auth = Provider.of<AuthService>(context, listen: false);
 
     try {
-     showLoaderDialog(context);
-     UserCredential? user = await _auth.login(email, password);
-     if(user!=null){
-      await Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (contex) => Home(),
-        ),
-      );
-     }else {
-       Navigator.pop(context);
+      showLoaderDialog(context);
+      UserCredential? user = await _auth.login(email, password);
+      if (user != null) {
+        await Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (contex) => Home(),
+          ),
+        );
+      } else {
+        Navigator.pop(context);
         showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: Text('login.login_failed'.tr()),
-                content: Text('login.login_error'.tr()),
-              ));
-     }
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('login.login_failed'.tr()),
+                  content: Text('login.login_error'.tr()),
+                ));
+      }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text('login.login_failed'.tr()),
-                content: Text('${e.message}'),
-              ));
+            title: Text('login.login_failed'.tr()),
+            content: Text('${e.message}'),
+          ));
     }
   }
 }

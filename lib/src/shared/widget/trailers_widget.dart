@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/shared/widget/video_player.dart';
 import 'package:share/share.dart';
 
 import '../../../themes.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class TrailersWidget extends StatelessWidget {
   const TrailersWidget({
@@ -31,7 +31,8 @@ class TrailersWidget extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(14.0),
-            child: Text("movie_info.trailers".tr(), style: heading.copyWith(color: textColor)),
+            child: Text("movie_info.trailers".tr(),
+                style: heading.copyWith(color: textColor)),
           ),
           SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -97,17 +98,18 @@ class TrailersWidget extends StatelessWidget {
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
-                                     GestureDetector(
-                                       onTap: (){
-                                         Share.share('Check the trailer '+ 'https://www.youtube.com/embed/${trailers[i].key}');
-                                       },
-                                         child: Icon(Icons.share, size: 15.0, color: textColor,)
-
-                                     )
-
+                                  GestureDetector(
+                                      onTap: () {
+                                        Share.share('Check the trailer ' +
+                                            'https://www.youtube.com/embed/${trailers[i].key}');
+                                      },
+                                      child: Icon(
+                                        Icons.share,
+                                        size: 15.0,
+                                        color: textColor,
+                                      ))
                                 ],
                               )
-
                             ],
                           ),
                         ),

@@ -1,8 +1,7 @@
-import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_state.dart';
 import 'package:moviebox/src/core/model/cast_info.dart';
@@ -12,21 +11,16 @@ import 'package:moviebox/src/shared/util/fav_type.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/src/shared/widget/error_page.dart';
 import 'package:moviebox/src/shared/widget/expandable.dart';
-import 'package:moviebox/src/shared/widget/sliver_app_bar.dart';
-import 'package:moviebox/src/shared/widget/appbar.dart';
-import 'package:moviebox/src/shared/widget/image_view.dart';
 import 'package:moviebox/src/shared/widget/loading.dart';
 import 'package:moviebox/src/shared/widget/movie_poster.dart';
+import 'package:moviebox/src/shared/widget/sliver_app_bar.dart';
 import 'package:moviebox/src/shared/widget/star_icon.dart';
 import 'package:moviebox/src/shared/widget/trailers_widget.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../themes.dart';
-import 'package:readmore/readmore.dart';
-
 import '../../../screens/cast/cast_list.dart';
-import '../cast_info/cast_info.dart';
 
 class MoivesInfo extends StatelessWidget {
   final String image;
@@ -56,17 +50,16 @@ class MoivesInfo extends StatelessWidget {
                 print(state.color);
                 print(state.textColor);
                 return MovieInfoScrollableWidget(
-                  info: state.tmdbData,
-                  backdrops: state.backdrops,
-                  similar: state.similar,
-                  castList: state.cast,
-                  images: images,
-                  color: state.color,
-                  imdbInfo: state.imdbData,
-                  trailers: state.trailers,
-                  textColor: state.textColor,
-                  sinfo:state.sinfo
-                );
+                    info: state.tmdbData,
+                    backdrops: state.backdrops,
+                    similar: state.similar,
+                    castList: state.cast,
+                    images: images,
+                    color: state.color,
+                    imdbInfo: state.imdbData,
+                    trailers: state.trailers,
+                    textColor: state.textColor,
+                    sinfo: state.sinfo);
               } else if (state is MoviesInfoError) {
                 return ErrorPage();
               } else {
@@ -89,19 +82,20 @@ class MovieInfoScrollableWidget extends StatelessWidget {
   final List<MovieModel> similar;
   final Color color;
   final SocialMediaInfo sinfo;
-  const MovieInfoScrollableWidget({
-    Key? key,
-    required this.info,
-    required this.imdbInfo,
-    required this.backdrops,
-    required this.trailers,
-    required this.castList,
-    required this.textColor,
-    required this.similar,
-    required this.color,
-    required this.images,
-    required this.sinfo
-  }) : super(key: key);
+
+  const MovieInfoScrollableWidget(
+      {Key? key,
+      required this.info,
+      required this.imdbInfo,
+      required this.backdrops,
+      required this.trailers,
+      required this.castList,
+      required this.textColor,
+      required this.similar,
+      required this.color,
+      required this.images,
+      required this.sinfo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,23 +105,22 @@ class MovieInfoScrollableWidget extends StatelessWidget {
         physics: BouncingScrollPhysics(parent: BouncingScrollPhysics()),
         slivers: [
           SliverAppBarCast(
-            image: info.backdrops,
-            title: info.title,
-            color: color,
-            textColor: textColor,
-            id: info.tmdbId,
-            type: FavType.movie,
-            poster: info.poster,
-             releaseDate: info.dateByMonth,
-            homePage: info.homepage,
-            trailer: trailers[0].key,
-            // homepage: info.homepage,
-            // images: images,
-             rate: info.rateing,
-            isMovie: true,
-            genres:getOnlyIds(info.genres)
-          ),
-           SliverToBoxAdapter(
+              image: info.backdrops,
+              title: info.title,
+              color: color,
+              textColor: textColor,
+              id: info.tmdbId,
+              type: FavType.movie,
+              poster: info.poster,
+              releaseDate: info.dateByMonth,
+              homePage: info.homepage,
+              trailer: trailers[0].key,
+              // homepage: info.homepage,
+              // images: images,
+              rate: info.rateing,
+              isMovie: true,
+              genres: getOnlyIds(info.genres)),
+          SliverToBoxAdapter(
             child: IconTheme(
               data: IconThemeData(
                 color: textColor,
@@ -138,31 +131,30 @@ class MovieInfoScrollableWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                      IconButton(
-                        icon: FaIcon(FontAwesomeIcons.facebookSquare, size: 40),
-                        onPressed: () {
-                           launch(sinfo.facebook);
-                        },
-                      ),
-                      IconButton(
-                        icon: FaIcon(FontAwesomeIcons.twitterSquare, size: 40),
-                        onPressed: () {
-                           launch(sinfo.twitter);
-                        },
-                      ),
-                      IconButton(
-                        icon:
-                            FaIcon(FontAwesomeIcons.instagramSquare, size: 40),
-                        onPressed: () {
-                          launch(sinfo.instagram);
-                        },
-                      ),
-                      IconButton(
-                        icon: FaIcon(FontAwesomeIcons.imdb, size: 40),
-                        onPressed: () {
-                          launch(sinfo.imdbId);
-                        },
-                     ),
+                    IconButton(
+                      icon: FaIcon(FontAwesomeIcons.facebookSquare, size: 40),
+                      onPressed: () {
+                        launch(sinfo.facebook);
+                      },
+                    ),
+                    IconButton(
+                      icon: FaIcon(FontAwesomeIcons.twitterSquare, size: 40),
+                      onPressed: () {
+                        launch(sinfo.twitter);
+                      },
+                    ),
+                    IconButton(
+                      icon: FaIcon(FontAwesomeIcons.instagramSquare, size: 40),
+                      onPressed: () {
+                        launch(sinfo.instagram);
+                      },
+                    ),
+                    IconButton(
+                      icon: FaIcon(FontAwesomeIcons.imdb, size: 40),
+                      onPressed: () {
+                        launch(sinfo.imdbId);
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -194,13 +186,14 @@ class MovieInfoScrollableWidget extends StatelessWidget {
                         Icon(Icons.calendar_today, color: textColor),
                         SizedBox(width: 5),
                         Text(
-                          imdbInfo.released,
+                          convertDate(
+                              info.releaseDate, context.locale.languageCode),
                           style: normalText.copyWith(color: textColor),
                         )
                       ],
                     ),
                     SizedBox(height: 10),
-                     Row(
+                    Row(
                       children: [
                         IconTheme(
                           data: IconThemeData(
@@ -235,7 +228,8 @@ class MovieInfoScrollableWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("movie_info.overview".tr(), style: heading.copyWith(color: textColor)),
+                    Text("movie_info.overview".tr(),
+                        style: heading.copyWith(color: textColor)),
                     SizedBox(height: 10),
                     ReadMoreText(
                       info.overview,
@@ -268,8 +262,8 @@ class MovieInfoScrollableWidget extends StatelessWidget {
                   SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(14.0),
-                    child:
-                        Text("movie_info.cast".tr(), style: heading.copyWith(color: textColor)),
+                    child: Text("movie_info.cast".tr(),
+                        style: heading.copyWith(color: textColor)),
                   ),
                   CastList(castList: castList, textColor: textColor),
                 ],
@@ -294,16 +288,16 @@ class MovieInfoScrollableWidget extends StatelessWidget {
                 ),
               ),
               items: [
-                if(info.tagline!='')
-                ListTile(
-                    title: Text(
-                      "movie_info.tagline_movie".tr(),
-                      style: heading.copyWith(color: textColor, fontSize: 16),
-                    ),
-                    subtitle: Text(
-                      info.tagline,
-                      style: normalText.copyWith(color: textColor),
-                    )),
+                if (info.tagline != '')
+                  ListTile(
+                      title: Text(
+                        "movie_info.tagline_movie".tr(),
+                        style: heading.copyWith(color: textColor, fontSize: 16),
+                      ),
+                      subtitle: Text(
+                        info.tagline,
+                        style: normalText.copyWith(color: textColor),
+                      )),
                 ListTile(
                     title: Text(
                       "movie_info.runtime".tr(),
@@ -337,7 +331,8 @@ class MovieInfoScrollableWidget extends StatelessWidget {
                       style: heading.copyWith(color: textColor, fontSize: 16),
                     ),
                     subtitle: Text(
-                      imdbInfo.released,
+                      convertDate(
+                          info.releaseDate, context.locale.languageCode),
                       style: normalText.copyWith(color: textColor),
                     )),
                 ListTile(

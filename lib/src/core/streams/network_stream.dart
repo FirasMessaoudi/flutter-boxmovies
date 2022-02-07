@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:moviebox/src/core/model/tv_model.dart';
-import 'package:moviebox/src/core/repo/genre_repo.dart';
 import 'package:moviebox/src/core/repo/network_repo.dart';
-import 'package:moviebox/src/core/repo/tv_shows_repo.dart';
-
 
 class NetworkStream {
   final StreamController<List<TvModel>> controller =
@@ -13,6 +10,7 @@ class NetworkStream {
   var isfinish = false;
   int page = 1;
   List<TvModel> tvshows = [];
+
   void addData(String query) async {
     final fetchedTv = await repo.getTvShows(query, page);
     controller.sink.add(fetchedTv.movies);

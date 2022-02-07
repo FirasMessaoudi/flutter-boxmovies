@@ -7,7 +7,6 @@ import 'package:moviebox/src/shared/util/constant.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 
 class SeasonRepo {
-
   Future<SeasonModel> getSeasonInfo(String id, String snum) async {
     String? language = await currentLanguage();
 

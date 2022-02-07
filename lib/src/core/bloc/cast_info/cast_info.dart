@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:decorated_icon/decorated_icon.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_movies_bloc.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_movies_state.dart';
 import 'package:moviebox/src/core/model/cast_info.dart';
@@ -12,19 +10,13 @@ import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/tv_model.dart';
 import 'package:moviebox/src/shared/util/fav_type.dart';
-
 import 'package:moviebox/src/shared/widget/error_page.dart';
-import 'package:moviebox/src/shared/widget/favorite_button/cubit/fav_cubit.dart';
-import 'package:moviebox/src/shared/widget/favorite_button/fav_button.dart';
 import 'package:moviebox/src/shared/widget/image_view.dart';
 import 'package:moviebox/src/shared/widget/loading.dart';
 import 'package:moviebox/src/shared/widget/movie_poster.dart';
 import 'package:moviebox/src/shared/widget/sliver_app_bar.dart';
-import 'package:moviebox/src/shared/widget/watchlist_button/state/watchlist_cubit.dart';
-import 'package:moviebox/src/shared/widget/watchlist_button/widget/watchlist_icon.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../../themes.dart';
 
@@ -83,6 +75,7 @@ class CastInfoLoaded extends StatelessWidget {
   final SocialMediaInfo sinfo;
   final List<MovieModel> movies;
   final List<ImageBackdrop> images;
+
   const CastInfoLoaded({
     Key? key,
     required this.info,
@@ -103,16 +96,15 @@ class CastInfoLoaded extends StatelessWidget {
         physics: BouncingScrollPhysics(parent: BouncingScrollPhysics()),
         slivers: [
           SliverAppBarCast(
-            color: color,
-            textColor: textColor,
-            title: info.name,
-            image: backgroundImage,
-            id: info.id,
-            type: FavType.person,
-            poster: info.image,
-            age:info.old,
-            isActor:true
-          ),
+              color: color,
+              textColor: textColor,
+              title: info.name,
+              image: backgroundImage,
+              id: info.id,
+              type: FavType.person,
+              poster: info.image,
+              age: info.old,
+              isActor: true),
           SliverToBoxAdapter(
             child: IconTheme(
               data: IconThemeData(
@@ -120,7 +112,7 @@ class CastInfoLoaded extends StatelessWidget {
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

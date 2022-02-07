@@ -13,8 +13,16 @@ class CollectionRepo {
     return CollectionList.fromDoc(docs);
   }
 
-  Future<void> addToCollection(String devid,String movieid,String collName,String title,
-      String image, String backdrop,double rate,String date, bool isMovie) async{
+  Future<void> addToCollection(
+      String devid,
+      String movieid,
+      String collName,
+      String title,
+      String image,
+      String backdrop,
+      double rate,
+      String date,
+      bool isMovie) async {
     FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)
@@ -36,11 +44,7 @@ class CollectionRepo {
         .doc(devid)
         .collection('CollectionInfo')
         .doc(collName)
-        .set({
-      "name": collName,
-      "image": image,
-      "time": DateTime.now()
-    });
+        .set({"name": collName, "image": image, "time": DateTime.now()});
     FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)
@@ -51,7 +55,16 @@ class CollectionRepo {
     });
   }
 
-  addToNewCollection(String devid,String name, String movieid,String title, String image, double rate,String date, String backdrop, bool isMovie ) async {
+  addToNewCollection(
+      String devid,
+      String name,
+      String movieid,
+      String title,
+      String image,
+      double rate,
+      String date,
+      String backdrop,
+      bool isMovie) async {
     await FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)
@@ -73,11 +86,7 @@ class CollectionRepo {
         .doc(devid)
         .collection('CollectionInfo')
         .doc(name)
-        .set({
-      "name": name,
-      "image": image,
-      "time": DateTime.now()
-    });
+        .set({"name": name, "image": image, "time": DateTime.now()});
     await FirebaseFirestore.instance
         .collection('UserCollections')
         .doc(devid)

@@ -2,18 +2,21 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:confetti/confetti.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/core/model/watchlist.dart';
 import 'package:moviebox/src/core/repo/fav_repo.dart';
+import 'package:moviebox/src/core/repo/movies_repo.dart';
+import 'package:moviebox/src/core/repo/tv_shows_repo.dart';
 import 'package:moviebox/src/core/repo/watchlist_repo.dart';
+import 'package:moviebox/src/responsive/responsive.dart';
 import 'package:moviebox/src/shared/util/fav_type.dart';
+import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/src/shared/widget/actions_bottom_sheet.dart';
-import 'package:moviebox/src/shared/widget/confetti_widget.dart';
 import 'package:moviebox/src/shared/widget/episode_fav.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+
 import '../../../themes.dart';
-import 'package:moviebox/src/shared/util/utilities.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class FavoriteMovieContainer extends StatefulWidget {
   final FavoriteWatchListModel movie;
@@ -21,6 +24,7 @@ class FavoriteMovieContainer extends StatefulWidget {
   final bool isEpisode;
   final bool isActor;
   final bool isMovie;
+
   const FavoriteMovieContainer(
       {Key? key,
       required this.movie,
@@ -37,15 +41,30 @@ class FavoriteMovieContainer extends StatefulWidget {
 class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
   bool isDeleted = false;
   bool isWatched = false;
-  final repo = FavRepo();
+  final repo = new FavRepo();
   final watchlistRepo = new WatchListRepo();
+  final tvRepo = new TVRepo();
+  final movieRepo = new MoviesRepo();
+  dynamic tvInfo;
+  int nbEpisodes = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     isWatched = widget.movie.watched;
+    if(!widget.isMovie && !widget.isFavorite && !widget.isActor && !widget.isEpisode){
+      tvRepo.getTvDataById(widget.movie.id).then((value) => {
+        setState(() {
+      tvInfo = value;
+        })
+      });
+      watchlistRepo.getNbWatchedEpisodesBySerie(widget.movie.id).then((value) => {
+        nbEpisodes = value
+      });
+    }
   }
+
 
   @override
   void dispose() {
@@ -56,11 +75,8 @@ class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
-        // child: InkWell(
-        //     onTap: () {
-        //       // moveToInfo(context);
-        //     },
         child: !widget.isEpisode && !widget.isActor && !isDeleted
+        //future of info tv / movie
             ? Container(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,15 +118,14 @@ class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
                                             : FavType.tv,
                                         '',
                                         '',
-                                      null
-                                    ),
+                                        null),
                                   );
                                 });
                           },
                           child: Container(
                             color: Colors.grey.shade900,
                             child: CachedNetworkImage(
-                              imageUrl: widget.movie.poster,
+                              imageUrl: Responsive.isDesktop(context)?widget.movie.backdrop:widget.movie.poster,
                               height: 190,
                               fit: BoxFit.cover,
                             ),
@@ -119,7 +134,7 @@ class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
                     Expanded(
                       flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(left:8.0, right: 8.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,60 +190,67 @@ class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
                                     ],
                                   ),
                                   SizedBox(height: 9),
-                                 Text(widget.movie.genres, style: normalText,),
+                                  Text(
+                                    widget.movie.genres,
+                                    style: normalText,
+                                  ),
                                   SizedBox(height: 9),
-                                  if(!widget.isFavorite)
-                                  OutlinedButton(
-                                    onPressed: () async {
-                                      if (isWatched == true) {
-                                        await watchlistRepo.updateWatchlist(
-                                            widget.movie, false);
-                                        setState(() {
-                                          isWatched = false;
-                                        });
-                                      } else {
-                                        await watchlistRepo.updateWatchlist(
-                                            widget.movie, true);
-                                        setState(() {
-                                          isWatched = true;
-
-                                        });
-                                      }
-                                      print(isWatched);
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                        side: BorderSide(
-                                            width: 1.0,
-                                            color: Theme.of(context)
-                                                        .brightness ==
-                                                    Brightness.dark
-                                                ? Colors.white
-                                                : Colors.black) // side: Bord
-                                        ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          isWatched == true
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                          size: 20,
-                                          color: redColor,
-                                        ),
-                                        Text(
-                                          isWatched == true
-                                              ? 'my_list.not_watched'.tr()+ ' ?'
-                                              : 'my_list.watched'.tr()+ ' ?',
-                                          style: TextStyle(
+                                  if(!widget.isFavorite && !widget.isMovie)
+                                    tvInfo!=null?Text(
+                                      nbEpisodes.toString()+'/'+tvInfo.numberEpisodes.toString(),
+                                      style: normalText,
+                                    ):Text(''),
+                                  if (!widget.isFavorite && widget.isMovie)
+                                    OutlinedButton(
+                                      onPressed: () async {
+                                        if (isWatched == true) {
+                                          await watchlistRepo.updateWatchlist(
+                                              widget.movie, false);
+                                          setState(() {
+                                            isWatched = false;
+                                          });
+                                        } else {
+                                          await watchlistRepo.updateWatchlist(
+                                              widget.movie, true);
+                                          setState(() {
+                                            isWatched = true;
+                                          });
+                                        }
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(
+                                              width: 1.0,
                                               color: Theme.of(context)
                                                           .brightness ==
                                                       Brightness.dark
                                                   ? Colors.white
-                                                  : Colors.black),
-                                        )
-                                      ],
+                                                  : Colors.black) // side: Bord
+                                          ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            isWatched == true
+                                                ? Icons.visibility_off
+                                                : Icons.visibility,
+                                            size: 20,
+                                            color: redColor,
+                                          ),
+                                          Text(
+                                            isWatched == true
+                                                ? 'my_list.not_watched'.tr() +
+                                                    ' ?'
+                                                : 'my_list.watched'.tr() + ' ?',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                   SizedBox(height: 9),
                                   if (isWatched == true && !widget.isFavorite)
                                     Wrap(
@@ -239,10 +261,12 @@ class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
                                             letterSpacing: 0.5,
                                           ),
                                         ),
-                                       SmoothStarRating(
+                                        SmoothStarRating(
                                             allowHalfRating: true,
-                                            onRated: (v) async{
-                                              await watchlistRepo.rateMovieOrTvShow(widget.movie, v);
+                                            onRated: (v) async {
+                                              await watchlistRepo
+                                                  .rateMovieOrTvShow(
+                                                      widget.movie, v);
                                             },
                                             starCount: 5,
                                             rating: widget.movie.note,
@@ -287,40 +311,40 @@ class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
     if (widget.isFavorite)
       await repo.deleteFromFav(widget.movie.id);
     else
-      await watchlistRepo.deleteFromWatchList(widget.movie.id);
+      await watchlistRepo.deleteFromWatchList(widget.movie.id, widget.isMovie);
     setState(() {
       isDeleted = true;
     });
   }
 }
 
-class ConfettiAnimation extends StatefulWidget{
-  static final GlobalKey<ConfettiAnimationState> globalKey = GlobalKey();
-
+class ConfettiAnimation extends StatefulWidget {
   @override
   State<ConfettiAnimation> createState() => ConfettiAnimationState();
 }
 
 class ConfettiAnimationState extends State<ConfettiAnimation> {
-  late  ConfettiController _controllerCenter;
+  late ConfettiController _controllerCenter;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controllerCenter = ConfettiController(duration: const Duration(seconds: 10));
-
+    _controllerCenter =
+        ConfettiController(duration: const Duration(seconds: 10));
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _controllerCenter.dispose();
-
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return     GestureDetector(
+    return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         if (_controllerCenter.state == ConfettiControllerState.playing) {
@@ -336,29 +360,33 @@ class ConfettiAnimationState extends State<ConfettiAnimation> {
       ),
     );
   }
-  Widget _buildConfetti(){
+
+  Widget _buildConfetti() {
     return Align(
       alignment: Alignment.center,
       child: ConfettiWidget(
         confettiController: _controllerCenter,
-        blastDirectionality: BlastDirectionality
-            .explosive, // don't specify a direction, blast randomly
-        shouldLoop:
-        true, // start again as soon as the animation is finished
+        blastDirectionality: BlastDirectionality.explosive,
+        // don't specify a direction, blast randomly
+        shouldLoop: true,
+        // start again as soon as the animation is finished
         colors: const [
           Colors.green,
           Colors.blue,
           Colors.pink,
           Colors.orange,
           Colors.purple
-        ], // manually specify the colors to be used
+        ],
+        // manually specify the colors to be used
         createParticlePath: drawStar, // define a custom shape/path.
       ),
     );
   }
-  void play(){
+
+  void play() {
     _controllerCenter.play();
   }
+
   Path drawStar(Size size) {
     // Method to convert degree to radians
     double degToRad(double deg) => deg * (pi / 180.0);
@@ -382,5 +410,4 @@ class ConfettiAnimationState extends State<ConfettiAnimation> {
     path.close();
     return path;
   }
-
 }

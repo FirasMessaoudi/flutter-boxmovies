@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviebox/src/core/bloc/cast_info/cast_movies_bloc.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_info.dart';
+import 'package:moviebox/src/core/bloc/cast_info/cast_movies_bloc.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_movies_event.dart';
 
 import '../../../themes.dart';
@@ -13,6 +13,7 @@ class CastPoster extends StatelessWidget {
   final String name;
   final Color color;
   final String id;
+
   const CastPoster({
     Key? key,
     required this.id,
@@ -20,19 +21,18 @@ class CastPoster extends StatelessWidget {
     required this.name,
     required this.color,
   }) : super(key: key);
+
   moveToInfo(BuildContext context) {
-     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                              create: (context) => CastMoviesBloc()
-                                ..add(LoadCastInfo(id: this.id)),
-                              child: CastPersonalInfoScreen(
-                                image: this.poster,
-                                title: this.name,
-                              ),
-                            )));
-    }
-
-
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BlocProvider(
+              create: (context) =>
+                  CastMoviesBloc()..add(LoadCastInfo(id: this.id)),
+              child: CastPersonalInfoScreen(
+                image: this.poster,
+                title: this.name,
+              ),
+            )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class CastPoster extends StatelessWidget {
                       imageUrl: poster,
                       fit: BoxFit.cover,
                       height: 200,
-                              width: 130,
+                      width: 130,
                     ),
                   )),
               SizedBox(height: 5),

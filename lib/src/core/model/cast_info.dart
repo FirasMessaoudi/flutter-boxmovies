@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 class CastPersonalInfo {
@@ -12,6 +11,7 @@ class CastPersonalInfo {
   final String imdbId;
   final String old;
   final String gender;
+
   CastPersonalInfo({
     required this.image,
     required this.name,
@@ -24,6 +24,7 @@ class CastPersonalInfo {
     required this.old,
     required this.gender,
   });
+
   factory CastPersonalInfo.fromJson(json) {
     getyears(String birthDateString) {
       String datePattern = "yyyy-MM-dd";
@@ -93,7 +94,7 @@ class CastPersonalInfo {
       id: json['id'].toString(),
       image: json['profile_path'] != null
           ? "https://image.tmdb.org/t/p/original" + json['profile_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       imdbId: json['imdb_id'] ?? "",
       name: json['name'] ?? '',
       placeOfBirth: json['place_of_birth'] ?? '',
@@ -111,12 +112,14 @@ class SocialMediaInfo {
   final String twitter;
   final String facebook;
   final String imdbId;
+
   SocialMediaInfo({
     required this.instagram,
     required this.twitter,
     required this.facebook,
     required this.imdbId,
   });
+
   factory SocialMediaInfo.fromJson(json) {
     return new SocialMediaInfo(
       facebook: json['facebook_id'] != null

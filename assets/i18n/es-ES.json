@@ -29,7 +29,8 @@
     "following": "Mis Actores favoritos",
     "stat": "Estadística",
     "settings": "Paramétros",
-    "logout": "Iniciar sesión en"
+    "logout": "Iniciar sesión en",
+    "time_spent": "Tiempo Usado"
   },
   "login": {
     "password": "Contraseña del usuario",
@@ -93,6 +94,7 @@
     "nb_seasons": "Número de temporada",
     "episode_runtime": "Duración del episodio",
     "released_tv": "Fecha de salida de la primera etapa",
+    "next_episode": "Fecha del próximo episodio",
     "tagline_tv": "Slogan de la serie",
     "tagline_movie": "Slogan de Film",
     "seasons": "Temporadas",
@@ -116,24 +118,31 @@
     "share": "Compartir"
   },
   "filter": {
+    "all": "Todo",
+    "finished": "Finalizado",
+    "watching": "Viendo",
+    "up_to_date": "Hasta la fecha",
+    "not_started": "No ha empezado",
     "sort_by": "Ordenar por",
     "popularity": "Popularidad",
     "vote": "Votar",
     "companies": "Empresas",
     "networks": "Plataformas",
     "certifications": "Certificaciones",
+    "countries": "Idioma original",
     "reset": "Restablecer",
-    "apply": "Aplicar",
-    "my_list": {
-      "my_favorites": "Mis favoritos",
-      "how_was_it": "¿Cómo estuvo?",
-      "remove_from_watchlist": "Eliminar de la lista de seguimiento",
-      "remove_from_favorite": "Eliminar de favoritos",
-      "add_to_list": "Agregar a la lista",
-      "all": "Todos",
-      "finished": "Finalizado",
-      "not_started": "No declarado",
-      "remove_from_collection": "Eliminar de la colección",
+    "apply": "Aplicar"
+  },
+  "my_list": {
+    "my_favorites": "Mis favoritos",
+    "how_was_it": "¿Cómo estuvo?",
+    "remove_from_watchlist": "Eliminar de la lista de seguimiento",
+    "remove_from_favorite": "Eliminar de favoritos",
+    "add_to_list": "Agregar a la lista",
+    "all": "Todos",
+    "finished": "Finalizado",
+    "not_started": "No declarado",
+    "remove_from_collection": "Eliminar de la colección",
       "confirm_delete_collection": "¿Realmente desea eliminar toda la colección? ?",
       "btn_remove": "Eliminar",
       "btn_cancel": "Cancelar",
@@ -159,6 +168,14 @@
       "empty_collection_message": "Crea tu propia colección de películas y programas de televisión",
       "watched": "ya mirado",
       "not_watched": "no visto"
-    }
+    },
+  "bottom_sheet_actions":
+  {
+    "add_to_watchlist": "Agregar a la lista de observación",
+    "remove_from_watchlist": "Eliminar de la lista de observación",
+    "add_to_collection": "Agregar a la colección",
+    "already_in": "Ya está en",
+    "add_to_favourite": "Agregar a favoritos",
+    "remove_from_favourite": "Eliminar de favoritos"
   }
 }

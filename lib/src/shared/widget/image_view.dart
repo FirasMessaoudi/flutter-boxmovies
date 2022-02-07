@@ -1,23 +1,23 @@
-
-import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:moviebox/src/core/model/movie_info_model.dart';
 import 'package:moviebox/themes.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-
 class ViewPhotos extends StatefulWidget {
   final int imageIndex;
   final Color color;
   final List<ImageBackdrop> imageList;
+
   ViewPhotos({
     Key? key,
     required this.imageIndex,
     required this.color,
     required this.imageList,
   }) : super(key: key);
+
   @override
   _ViewPhotosState createState() => _ViewPhotosState();
 }
@@ -25,6 +25,7 @@ class ViewPhotos extends StatefulWidget {
 class _ViewPhotosState extends State<ViewPhotos> {
   late PageController pageController;
   late int currentIndex;
+
   // late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   @override
   void initState() {

@@ -1,12 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/screens/search/search_result_movie.dart';
 import 'package:moviebox/src/screens/search/search_result_people.dart';
 import 'package:moviebox/src/screens/search/search_result_tv.dart';
-import 'package:easy_localization/easy_localization.dart';
+
 import '../../../themes.dart';
+
 class SearchResult extends StatefulWidget {
   final String id;
   final String title;
+
   const SearchResult({
     Key? key,
     required this.id,
@@ -33,8 +36,13 @@ class _SearchResultState extends State<SearchResult> {
               // title: Text(widget.title, style: heading.copyWith(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black)),
               flexibleSpace: TabBar(
                 indicatorColor: redColor,
-                labelStyle: normalText.copyWith(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
-                labelColor: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+                labelStyle: normalText.copyWith(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
+                labelColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
                 labelPadding: EdgeInsets.only(top: 10.0),
                 unselectedLabelColor: Colors.grey,
                 tabs: [
@@ -46,7 +54,7 @@ class _SearchResultState extends State<SearchResult> {
                     text: 'home.series'.tr(),
                     iconMargin: EdgeInsets.only(bottom: 10.0),
                   ),
-                   Tab(
+                  Tab(
                     text: 'movie_info.cast'.tr(),
                     iconMargin: EdgeInsets.only(bottom: 10.0),
                   ),

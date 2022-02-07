@@ -2,30 +2,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviebox/src/core/bloc/movie_info/movies_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/season/season_info_bloc.dart';
-import 'package:moviebox/src/core/bloc/tv_info/show_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/tv_info/widget/season_info.dart';
-import 'package:moviebox/src/core/bloc/tv_info/widget/tv_show_info.dart';
 import 'package:moviebox/src/core/model/tv_shows_info.dart';
-import 'package:moviebox/src/core/bloc/movie_info/movies_info.dart';
-import 'package:moviebox/src/shared/util/animation.dart';
 
 import '../../../themes.dart';
 
 class SeasonPoster extends StatelessWidget {
- final TvInfoModel info;
- final Seasons season;
- final Color color;
-  const SeasonPoster({
-    Key? key,
-    required this.season,
-  required this.info,
-    required this.color
-  }) : super(key: key);
-  moveToInfo(BuildContext context) {
-   
-  }
+  final TvInfoModel info;
+  final Seasons season;
+  final Color color;
+
+  const SeasonPoster(
+      {Key? key, required this.season, required this.info, required this.color})
+      : super(key: key);
+
+  moveToInfo(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +25,11 @@ class SeasonPoster extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-             Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => BlocProvider(
                     create: (context) => SeasonInfoBloc()
-                      ..add(LoadSeasonInfo(id: info.id.toString(), snum: season.snum)),
+                      ..add(LoadSeasonInfo(
+                          id: info.id.toString(), snum: season.snum)),
                     child: SeasonInfo(
                       image: info.poster,
                       title: info.title + " (${season.name})",
@@ -80,19 +73,19 @@ class SeasonPoster extends StatelessWidget {
                       ),
                     ),
                     RichText(
-                          text: TextSpan(
-                            style: normalText.copyWith(
-                                color: color, fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                text: season.date.split("-")[0] + " | ",
-                              ),
-                              TextSpan(
-                                text: season.episodes + " Episodes",
-                              ),
-                            ],
+                      text: TextSpan(
+                        style: normalText.copyWith(
+                            color: color, fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                            text: season.date.split("-")[0] + " | ",
                           ),
-                        ),
+                          TextSpan(
+                            text: season.episodes + " Episodes",
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               )

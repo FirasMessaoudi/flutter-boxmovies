@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +10,6 @@ import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/src/shared/widget/info_modal.dart';
 import 'package:moviebox/src/shared/widget/watchlist_button/state/watchlist_cubit.dart';
 import 'package:moviebox/src/shared/widget/watchlist_button/widget/watchlist_icon.dart';
-import 'package:video_player/video_player.dart';
-import 'package:easy_localization/easy_localization.dart';
-
-import '../../themes.dart';
 
 class ContentHeader extends StatelessWidget {
   final MovieModel featuredContent;
@@ -81,7 +77,19 @@ class _ContentHeaderMobile extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  getMoviesCategorieNames(featuredContent.genres),
+                  context.locale.languageCode == 'ar'
+                      ? getMoviesCategorieNamesAr(featuredContent.genres)
+                          .substring(
+                              0,
+                              getMoviesCategorieNamesAr(featuredContent.genres)
+                                      .lastIndexOf(',') -
+                                  1)
+                      : getMoviesCategorieNames(featuredContent.genres)
+                          .substring(
+                              0,
+                              getMoviesCategorieNames(featuredContent.genres)
+                                      .lastIndexOf(',') -
+                                  1),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     textStyle: TextStyle(
@@ -107,7 +115,9 @@ class _ContentHeaderMobile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                        padding: EdgeInsets.only(left: 5.0),
+                        padding: context.locale.languageCode == 'ar'
+                            ? EdgeInsets.only(right: 5.0)
+                            : EdgeInsets.only(left: 5.0),
                         child: Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -280,6 +290,7 @@ class VerticalIconButton extends StatelessWidget {
   final IconData icon;
   final String title;
   final MovieModel movie;
+
   // final Function onTap;
 
   const VerticalIconButton(
@@ -310,17 +321,17 @@ class VerticalIconButton extends StatelessWidget {
         children: [
           title == 'List'
               ? BlocProvider(
-                  create: (context) => WatchlistCubit()..init(movie.id),
+            create: (context) => WatchlistCubit()..init(movie.id, true),
                   child: WatchListIcon(
-                    movieid: movie.id,
-                    title: movie.title,
-                    poster: movie.poster,
-                    backdrop: movie.backdrop,
-                    date: movie.release_date,
-                    rate: movie.vote_average,
-                    isMovie: true,
-                    color: Colors.white,
-                  ),
+                      movieid: movie.id,
+                      title: movie.title,
+                      poster: movie.poster,
+                      backdrop: movie.backdrop,
+                      date: movie.release_date,
+                      rate: movie.vote_average,
+                      isMovie: true,
+                      color: Colors.white,
+                      genres: movie.genres),
                 )
               : Icon(icon, color: Colors.white),
           const SizedBox(height: 2.0),

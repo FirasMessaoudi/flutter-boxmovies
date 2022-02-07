@@ -28,7 +28,8 @@
     "custom_lists": "My Collections",
     "stat":"Statistics",
     "settings":"Settings",
-    "logout":"Logout"
+    "logout":"Logout",
+    "time_spent": "Time Spent"
 },
 "login":{
     "password":"Password",
@@ -82,23 +83,24 @@
         "about_movie": "About Movie",
         "about_tv": "About Show",
         "runtime": "Runtime",
-        "writers": "Created By",
-        "director": "Director",
-        "released_movie": "Release Date",
-        "rating": "Rated",
-        "similar_movie": "You might also like",
-        "similar_tv": "You might also like",
-        "watch_on": "Watch it on ",
-        "nb_seasons": "Number Of Seasons",
-        "episode_runtime": "Episode runtime",
-        "released_tv": "First Episode released on",
-        "tagline_tv": "Show Tagline",
-        "tagline_movie": "Movie Tagline",
-        "seasons": "Seasons",
-        "guest": "Guest stars",
-        "show_more": "Show more",
-        "show_less": "Show less",
-        "premiered": "Premiered on "
+      "writers": "Created By",
+      "director": "Director",
+      "released_movie": "Release Date",
+      "rating": "Rated",
+      "similar_movie": "You might also like",
+      "similar_tv": "You might also like",
+      "watch_on": "Watch it on ",
+      "nb_seasons": "Number Of Seasons",
+      "episode_runtime": "Episode runtime",
+      "released_tv": "First Episode released on",
+      "next_episode": "Next Episode To Air",
+      "tagline_tv": "Show Tagline",
+      "tagline_movie": "Movie Tagline",
+      "seasons": "Seasons",
+      "guest": "Guest stars",
+      "show_more": "Show more",
+      "show_less": "Show less",
+      "premiered": "Premiered on "
     },
     "cast": {
         "info": "Personal Information",
@@ -115,14 +117,20 @@
         "share": "Share"
     },
     "filter": {
-        "sort_by": "Sort By",
-        "popularity": "Popularity",
-        "vote": "Vote",
-        "companies": "Companies",
-        "networks": "Networks",
-        "certifications": "Certifications",
-        "reset": "Reset",
-        "apply": "Apply"
+        "all":"All",
+        "finished":"Finished",
+        "watching":"Watching",
+        "up_to_date":"Up To Date",
+        "not_started":"Haven't Started",
+      "sort_by": "Sort By",
+      "popularity": "Popularity",
+      "vote": "Vote",
+      "companies": "Companies",
+      "networks": "Networks",
+      "certifications": "Certifications",
+      "countries": "Original language",
+      "reset": "Reset",
+      "apply": "Apply"
     },
     "my_list": {
         "my_favorites": "My Favorites",
@@ -160,5 +168,13 @@
         "watched": "Watched",
         "not_watched": "Not Watched"
 
+    },
+    "bottom_sheet_actions": {
+        "add_to_watchlist": "Add to watchlist",
+        "remove_from_watchlist": "Remove from watchlist",
+        "add_to_collection": "Add to collection",
+        "already_in": "Already in ",
+        "add_to_favourite": "Add to favourite",
+        "remove_from_favourite": "Remove from favourite"
     }
 }

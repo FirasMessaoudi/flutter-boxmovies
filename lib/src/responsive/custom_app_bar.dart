@@ -1,18 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:moviebox/src/screens/auth/login_page.dart';
 import 'package:moviebox/src/responsive/responsive.dart';
+import 'package:moviebox/src/screens/auth/login_page.dart';
 import 'package:moviebox/src/screens/genre/genre_page.dart';
 import 'package:moviebox/src/screens/home/all_movies.dart';
-import 'package:moviebox/src/screens/network/networks.dart';
 import 'package:moviebox/src/screens/home/all_shows.dart';
+import 'package:moviebox/src/screens/network/networks.dart';
 import 'package:moviebox/src/screens/profile/profile_info.dart';
 import 'package:moviebox/src/screens/search/search_delegate.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class CustomAppBar extends StatelessWidget {
   final double scrollOffset;
@@ -32,7 +32,7 @@ class CustomAppBar extends StatelessWidget {
         horizontal: 24.0,
       ),
       color:
-          Colors.black.withOpacity((scrollOffset / 350).clamp(0, 1).toDouble()),
+      Colors.black.withOpacity((scrollOffset / 350).clamp(0, 1).toDouble()),
       child: Responsive(
         mobile: _CustomAppBarMobile(scaffoldKey: this.scaffoldKey),
         desktop: _CustomAppBarDesktop(),
@@ -47,6 +47,7 @@ class _CustomAppBarMobile extends StatelessWidget {
 
   const _CustomAppBarMobile({Key? key, required this.scaffoldKey})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -61,7 +62,10 @@ class _CustomAppBarMobile extends StatelessWidget {
               onPressed: () {
                 scaffoldKey.currentState!.openDrawer();
               },
-              icon: Icon(Icons.menu,color: Colors.white,),
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
             ),
           ),
           const SizedBox(width: 12.0),
@@ -144,7 +148,7 @@ class _CustomAppBarDesktop extends StatelessWidget {
                   iconSize: 28.0,
                   color: Colors.white,
                   onPressed: () =>
-                      {showSearch(context: context, delegate: DataSearch())},
+                  {showSearch(context: context, delegate: DataSearch())},
                 ),
                 // _AppBarButton(
                 //   title: 'Feedbacks',
@@ -157,18 +161,18 @@ class _CustomAppBarDesktop extends StatelessWidget {
                 // ),
 
                 DropdownScreen(),
-                FirebaseAuth.instance.currentUser!=null?
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(Icons.person),
-                  iconSize: 28.0,
-                  color: Colors.white,
-                  onPressed: () => {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ProfileAppBar()))
-                  },
-                ):
-                SignInButton(),
+                FirebaseAuth.instance.currentUser != null
+                    ? IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.person),
+                        iconSize: 28.0,
+                        color: Colors.white,
+                        onPressed: () => {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProfileAppBar()))
+                        },
+                      )
+                    : SignInButton(),
                 // IconButton(
                 //   padding: EdgeInsets.zero,
                 //   icon: Icon(Icons.notifications),
@@ -243,7 +247,7 @@ class SignInButton extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(primary: redColor),
       // icon: const Icon(Icons.play_arrow, size: 30.0, color: Colors.black),
-      child:  Text(
+      child: Text(
         'login.login'.tr(),
         style: TextStyle(
           fontSize: 14.0,
@@ -261,17 +265,15 @@ class DropdownScreen extends StatefulWidget {
 
 class DropdownScreenState extends State<DropdownScreen> {
   late String selectedLanguage = 'English';
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getCurrentLanguageLabel().then((value) =>
-    {
-      print(value),
-      selectedLanguage = value!
-    }
-    );
+    getCurrentLanguageLabel()
+        .then((value) => {print(value), selectedLanguage = value!});
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -288,38 +290,35 @@ class DropdownScreenState extends State<DropdownScreen> {
             color: Colors.transparent,
           ),
           onChanged: (String? value) {
-            setState(() async{
+            setState(() async {
               selectedLanguage = value!;
-              if(value=='English'){
-    this.setState(() async {
-    context.setLocale(Locale('en','US'));
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('language', 'en-US');
-    });
-    }else if(value=='French'){
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('language', 'fr-FR');
-    context.setLocale(Locale('fr','FR'));
-    }
-    else if(value=='Arabic'){
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('language', 'ar-SA');
-    context.setLocale(Locale('ar','SA'));
-    }
-              else if(value=='Spanish'){
+              if (value == 'English') {
+                this.setState(() async {
+                  context.setLocale(Locale('en', 'US'));
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.setString('language', 'en-US');
+                });
+              } else if (value == 'French') {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                pref.setString('language', 'fr-FR');
+                context.setLocale(Locale('fr', 'FR'));
+              } else if (value == 'Arabic') {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                pref.setString('language', 'ar-SA');
+                context.setLocale(Locale('ar', 'SA'));
+              } else if (value == 'Spanish') {
                 SharedPreferences pref = await SharedPreferences.getInstance();
                 pref.setString('language', 'es-ES');
-                context.setLocale(Locale('es','ES'));
-              }
-              else if(value=='Italian'){
+                context.setLocale(Locale('es', 'ES'));
+              } else if (value == 'Italian') {
                 SharedPreferences pref = await SharedPreferences.getInstance();
                 pref.setString('language', 'it-IT');
-                context.setLocale(Locale('it','IT'));
+                context.setLocale(Locale('it', 'IT'));
               }
-
             });
           },
-          items: <String>['English', 'French', 'Arabic','Spanish','Italian']
+          items: <String>['English', 'French', 'Arabic', 'Spanish', 'Italian']
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -330,7 +329,7 @@ class DropdownScreenState extends State<DropdownScreen> {
                   ),
                   Text(
                     value,
-                   // style: TextStyle(color: Colors.white),
+                    // style: TextStyle(color: Colors.white),
                   ),
                 ],
               ),

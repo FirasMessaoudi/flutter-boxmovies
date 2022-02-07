@@ -1,5 +1,3 @@
-import 'package:google_fonts/google_fonts.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/shared/widget/star_icon.dart';
@@ -315,8 +313,7 @@ class FavoritesLoading extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: Text(
                   "Activity",
-                  style:
-                      heading.copyWith(color: redColor, fontSize: 26),
+                  style: heading.copyWith(color: redColor, fontSize: 26),
                 ),
               ),
               Padding(

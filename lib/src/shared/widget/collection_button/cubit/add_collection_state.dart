@@ -1,16 +1,18 @@
-
 import 'package:equatable/equatable.dart';
 
 class CollectionState extends Equatable {
   final bool isCollection;
   final String collectionname;
+
   const CollectionState(
-      this.isCollection,
-      this.collectionname,
-      );
+    this.isCollection,
+    this.collectionname,
+  );
+
   factory CollectionState.initial() {
     return CollectionState(false, '');
   }
+
   @override
   List<Object> get props => [isCollection, collectionname];
 

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class TvModel {
   final String title;
   final String poster;
@@ -19,7 +17,6 @@ class TvModel {
     required this.year,
     required this.release_date,
     required this.genres,
-
   });
 
   factory TvModel.fromJson(Map<String, dynamic> json) {
@@ -82,26 +79,27 @@ class TvModel {
     return new TvModel(
       backdrop: json['backdrop_path'] != null
           ? "https://image.tmdb.org/t/p/original" + json['backdrop_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       poster: json['poster_path'] != null
           ? "https://image.tmdb.org/t/p/w500" + json['poster_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       id: json['id'].toString(),
       title: json['name'],
       year: json['first_air_date'].toString(),
       vote_average: json['vote_average'].toDouble() ?? 0.0,
       release_date: string,
       genres: List<int>.from(json["genre_ids"].map((x) => x)),
-
     );
   }
 }
 
 class TvModelList {
   final List<TvModel> movies;
+
   TvModelList({
     required this.movies,
   });
+
   factory TvModelList.fromJson(List<dynamic> json) {
     return new TvModelList(
         movies: (json as List).map((list) => TvModel.fromJson(list)).toList());

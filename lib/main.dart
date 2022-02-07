@@ -1,24 +1,24 @@
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/repo/watchlist_repo.dart';
-import 'package:moviebox/src/screens/home/navigation.dart';
 import 'package:moviebox/src/core/service/auth_service.dart';
 import 'package:moviebox/src/core/service/facebook_provider.dart';
 import 'package:moviebox/src/core/service/google_provider.dart';
 import 'package:moviebox/src/core/service/twitter_provider.dart';
+import 'package:moviebox/src/screens/home/navigation.dart';
 import 'package:moviebox/src/shared/util/theme_switch.dart';
 import 'package:moviebox/src/shared/widget/collection_button/cubit/add_collection_cubit.dart';
 import 'package:moviebox/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:wiredash/wiredash.dart';
-import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-    await EasyLocalization.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
@@ -30,7 +30,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FacebookProvider()),
         ChangeNotifierProvider(create: (_) => TwitterProvider()),
         ChangeNotifierProvider(create: (_) => MyTheme()),
-        ChangeNotifierProvider(create: (_)=>WatchListRepo())
+        ChangeNotifierProvider(create: (_) => WatchListRepo())
       ],
       child: EasyLocalization(
         child: MyApp(),
@@ -38,9 +38,9 @@ void main() async {
         supportedLocales: [
           Locale('en', 'US'),
           Locale('fr', 'FR'),
-          Locale('ar','SA'),
-          Locale('it','IT'),
-          Locale('es','ES')
+          Locale('ar', 'SA'),
+          Locale('it', 'IT'),
+          Locale('es', 'ES')
         ],
       )));
 }
@@ -48,6 +48,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     MyTheme theme = Provider.of(context);
@@ -56,13 +57,15 @@ class MyApp extends StatelessWidget {
         projectId: 'movies-box-w8fewxn',
         secret: 'C70EUlrPDvbqIbQ1ar-RGkOSevQ-qypg',
         navigatorKey: _navigatorKey,
-        options: WiredashOptionsData(locale: new Locale(context.locale.languageCode)),
+        options: WiredashOptionsData(
+            locale: new Locale(context.locale.languageCode)),
         theme: WiredashThemeData(
           brightness: Theme.of(context).brightness,
         ),
-        child:
-        Directionality(
-          textDirection: context.locale.languageCode=='ar'?TextDirection.rtl:TextDirection.ltr,
+        child: Directionality(
+          textDirection: context.locale.languageCode == 'ar'
+              ? TextDirection.rtl
+              : TextDirection.ltr,
           child: MaterialApp(
             navigatorKey: _navigatorKey,
             debugShowCheckedModeBanner: false,
@@ -72,17 +75,17 @@ class MyApp extends StatelessWidget {
                 appBarTheme: AppBarTheme(
                     brightness: Brightness.light, backgroundColor: redColor)),
             darkTheme: ThemeData(
-                brightness: Brightness.dark, scaffoldBackgroundColor: Colors.black
-              /* dark theme settings */
-            ),
+                brightness: Brightness.dark,
+                scaffoldBackgroundColor: Colors.black
+                /* dark theme settings */
+                ),
             themeMode: theme.currentMode(),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             home: Home(),
-          ) ,
-        )
-       );
+          ),
+        ));
   }
 }
 

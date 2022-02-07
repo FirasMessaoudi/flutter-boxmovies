@@ -1,5 +1,5 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/bloc/season/season_info_bloc.dart';
@@ -8,7 +8,6 @@ import 'package:moviebox/src/core/model/tv_shows_info.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../../../../themes.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class SeasonsWidget extends StatelessWidget {
   const SeasonsWidget({

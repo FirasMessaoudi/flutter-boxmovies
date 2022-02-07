@@ -1,16 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:moviebox/src/screens/auth/login_page.dart';
 import 'package:moviebox/src/screens/auth/socials.dart';
 import 'package:moviebox/src/screens/auth/title.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:moviebox/src/shared/util/validators.dart';
 import 'package:moviebox/themes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+
 import '../../core/service/auth_service.dart';
 import 'bezier_container.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key? key, required this.title}) : super(key: key);
@@ -36,7 +36,10 @@ class _SignUpPageState extends State<SignUpPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color:Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
+              child: Icon(Icons.keyboard_arrow_left,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black),
             ),
             Text('login.back'.tr(),
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
@@ -53,7 +56,11 @@ class _SignUpPageState extends State<SignUpPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            title=='Password'?'login.password'.tr():title=='Name'?'login.name'.tr():'edit_profile.email'.tr(),
+            title == 'Password'
+                ? 'login.password'.tr()
+                : title == 'Name'
+                    ? 'login.name'.tr()
+                    : 'edit_profile.email'.tr(),
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
           SizedBox(
@@ -113,11 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginPage(
-                  
-                    )));
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -232,49 +235,49 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   handleRegister() async {
-    final _auth = Provider.of<AuthService>(context,listen: false);
+    final _auth = Provider.of<AuthService>(context, listen: false);
 
     try {
-       if (!isEmail(widget.email) && widget.password.length<6){
-          showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: Text('login.validation_error'.tr()),
-                content: Text('login.validation_message'.tr()),
-              ));
-              return;
+      if (!isEmail(widget.email) && widget.password.length < 6) {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('login.validation_error'.tr()),
+                  content: Text('login.validation_message'.tr()),
+                ));
+        return;
       }
       showLoaderDialog(context);
-      UserCredential? user =  await _auth.signup(widget.email, widget.password);
+      UserCredential? user = await _auth.signup(widget.email, widget.password);
       print(user);
-      if(user!=null){
-      await _auth.saveUser(widget.name, widget.email);
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('login.register_success'.tr()),
-          duration: Duration(seconds: 5),
-        ),
-        // duration: Duration(seconds: 5),
-      );
-      Navigator.of(context).pop();
+      if (user != null) {
+        await _auth.saveUser(widget.name, widget.email);
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('login.register_success'.tr()),
+            duration: Duration(seconds: 5),
+          ),
+          // duration: Duration(seconds: 5),
+        );
+        Navigator.of(context).pop();
       } else {
         Navigator.pop(context);
-         showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: Text('login.register_failed'.tr()),
-                content: Text('login.email_exist'.tr()),
-              ));
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('login.register_failed'.tr()),
+                  content: Text('login.email_exist'.tr()),
+                ));
       }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text(' Ops! Registration Failed'),
-                content: Text('${e.message}'),
-              ));
+            title: Text(' Ops! Registration Failed'),
+            content: Text('${e.message}'),
+          ));
     }
   }
 }

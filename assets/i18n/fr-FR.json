@@ -28,7 +28,9 @@
         "following":"Mes Acteurs préférés",
         "stat":"Statistiques",
         "settings":"Paramétres",
-        "logout":"Se deconnecter"
+        "logout":"Se deconnecter",
+        "time_spent": "Temps Passé"
+
     },
     "login":{
         "password":"Mot de passe",
@@ -84,24 +86,24 @@
         "about_movie": "A propos ce film",
         "about_tv": "A propos cette série",
         "runtime": "Durée",
-        "writers": "Auteurs",
-        "director": "Réalisateur",
-        "released_movie": "Date de sortie",
-        "rating": "Classification",
-        "similar_movie": "Films similaires",
-        "similar_tv": "Séries similaires",
-        "watch_on": "Regarder on ",
-        "nb_seasons": "Nombre de saisons",
-        "episode_runtime": "Durée de l'épisode",
-        "released_tv": "Date de sortie du premiére épisode",
-        "tagline_tv": "Slogan du série",
-        "tagline_movie": "Slogan du Film",
-        "seasons": "Saisons",
-        "guest": "Invités",
-        "show_more": "Afficher plus",
-        "show_less": "Afficher moins",
-        "premiered": "Sortie le "
-
+      "writers": "Auteurs",
+      "director": "Réalisateur",
+      "released_movie": "Date de sortie",
+      "rating": "Classification",
+      "similar_movie": "Films similaires",
+      "similar_tv": "Séries similaires",
+      "watch_on": "Regarder on ",
+      "nb_seasons": "Nombre de saisons",
+      "episode_runtime": "Durée de l'épisode",
+      "released_tv": "Date de sortie du premiére épisode",
+      "next_episode": "Date du prochain épisode",
+      "tagline_tv": "Slogan du série",
+      "tagline_movie": "Slogan du Film",
+      "seasons": "Saisons",
+      "guest": "Invités",
+      "show_more": "Afficher plus",
+      "show_less": "Afficher moins",
+      "premiered": "Sortie le "
     },
     "cast": {
         "info": "Infomations personnel",
@@ -119,14 +121,20 @@
     },
 
     "filter": {
-        "sort_by": "Trier par",
-        "popularity": "Popularité",
-        "vote": "Voter",
-        "companies": "Entreprises",
-        "networks": "Plateformes",
-        "certifications": "Certifications",
-        "reset": "Réinitialiser",
-        "apply": "Appliquer"
+        "all": "Tous",
+        "finished": "Terminé",
+        "watching": "En Cours",
+        "up_to_date": "À jour",
+        "not_started": "N'a pas commencé",
+      "sort_by": "Trier par",
+      "popularity": "Popularité",
+      "vote": "Voter",
+      "companies": "Entreprises",
+      "networks": "Plateformes",
+      "certifications": "Certifications",
+      "countries": "Langue",
+      "reset": "Réinitialiser",
+      "apply": "Appliquer"
     },
     "my_list": {
         "my_favorites": "Mes favoris",
@@ -163,6 +171,15 @@
         "empty_collection_message": "Créez votre propre collection de films et d'émissions de télévision.",
         "watched": "Deja Vu",
         "not_watched": "Non regardé"
+    },
+    "bottom_sheet_actions":
+    {
+        "add_to_watchlist": "Ajouter à la liste",
+        "remove_from_watchlist": "Supprimer de la liste",
+        "add_to_collection": "Ajouter à la collection",
+        "already_in": "Déjà dans ",
+        "add_to_favourite": "Ajouter aux favoris",
+        "remove_from_favourite": "Supprimer des favoris"
     }
 
 }

@@ -1,16 +1,18 @@
-
 import 'package:equatable/equatable.dart';
 
 class FavMovieState extends Equatable {
   final bool isFavMovie;
+
   const FavMovieState(
-      this.isFavMovie,
-      );
+    this.isFavMovie,
+  );
+
   factory FavMovieState.initial() {
     return FavMovieState(
       false,
     );
   }
+
   @override
   List<Object> get props => [isFavMovie];
 

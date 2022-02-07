@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
@@ -32,15 +31,15 @@ class ShowInfoLoaded extends ShowInfoState {
   final Color color;
   final Color textColor;
   final SocialMediaInfo sinfo;
-  ShowInfoLoaded({
-    required this.images,
-    required this.tmdbData,
-    required this.similar,
-    required this.cast,
-    required this.backdrops,
-    required this.trailers,
-    required this.color,
-    required this.textColor,
-    required this.sinfo
-  });
+
+  ShowInfoLoaded(
+      {required this.images,
+      required this.tmdbData,
+      required this.similar,
+      required this.cast,
+      required this.backdrops,
+      required this.trailers,
+      required this.color,
+      required this.textColor,
+      required this.sinfo});
 }

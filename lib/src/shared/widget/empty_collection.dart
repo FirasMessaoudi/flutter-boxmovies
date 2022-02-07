@@ -1,7 +1,6 @@
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/screens/collection/add_to_empty_collection.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 import '../../../themes.dart';
 
@@ -23,13 +22,14 @@ class EmptyCollections extends StatelessWidget {
                       borderRadius:
                       BorderRadius.circular(18.0),
                       side: BorderSide(
-                          color:Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
                           width: 2.0))),
               child: Text('my_list.btn_empty_collection'.tr()),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => new AddToEmptyCollection(
-                       )));
+                    builder: (context) => new AddToEmptyCollection()));
                 //refresh();
                 // Navigator.of(context).pop();
 

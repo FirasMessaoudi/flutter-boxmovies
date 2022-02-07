@@ -1,4 +1,3 @@
-
 import '../model/movie_info_model.dart';
 
 class EpisodeModel {
@@ -90,7 +89,7 @@ class EpisodeModel {
       seasonNumber: json['season_number'].toString(),
       stillPath: json['still_path'] != null
           ? "https://image.tmdb.org/t/p/w500" + json['still_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       voteAverage: json['vote_average'] ?? 0.0,
       date: json['air_date'],
       number: json['episode_number'].toString(),
@@ -110,6 +109,7 @@ class SeasonModel {
   final String seasonNumber;
   final String customDate;
   final List<EpisodeModel> episodes;
+
   SeasonModel({
     required this.name,
     required this.overview,
@@ -175,7 +175,6 @@ class SeasonModel {
         print(e.toString());
       }
     }
-
     getString();
     return SeasonModel(
       name: json['name'] ?? '',
@@ -183,7 +182,7 @@ class SeasonModel {
       id: json['id'].toString(),
       posterPath: json['poster_path'] != null
           ? "https://image.tmdb.org/t/p/w500" + json['poster_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       seasonNumber: json['season_number'].toString(),
       episodes: (json['episodes'] as List)
           .map((episode) => EpisodeModel.fromJson(episode))

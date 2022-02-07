@@ -1,10 +1,9 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moviebox/src/core/bloc/movie_info/movies_info.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_event.dart';
-import 'package:moviebox/src/core/bloc/movie_info/movies_info.dart';
 import 'package:moviebox/src/shared/widget/star_icon.dart';
 
 import '../../../themes.dart';
@@ -18,6 +17,7 @@ class HorizontalMoviePoster extends StatelessWidget {
   final Color color;
   final bool isMovie;
   final double rate;
+
   const HorizontalMoviePoster({
     Key? key,
     this.poster,
@@ -29,36 +29,37 @@ class HorizontalMoviePoster extends StatelessWidget {
     required this.isMovie,
     required this.rate,
   }) : super(key: key);
+
   moveToInfo(BuildContext context) {
     if (isMovie) {
-     Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) =>
-                      MoviesInfoBloc()..add(LoadMoviesInfo(id: this.id)),
-                  child: MoivesInfo(
-                    image: this.backdrop!,
-                    title: this.name!,
-                  ),
-                )));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => BlocProvider(
+                create: (context) =>
+                    MoviesInfoBloc()..add(LoadMoviesInfo(id: this.id)),
+                child: MoivesInfo(
+                  image: this.backdrop!,
+                  title: this.name!,
+                ),
+              )));
       // Navigator.of(context).push(MaterialPageRoute(
       //     builder: (context) =>));
-    // } else {
-    //   pushNewScreen(
-    //     context,
-    //     screen: BlocProvider(
-    //       create: (context) => ShowInfoBloc()..add(LoadTvInfo(id: id)),
-    //       child: TvInfo(
-    //         image: backdrop!,
-    //         title: name!,
-    //       ),
-    //     ),
-    //     withNavBar: false, // OPTIONAL VALUE. True by default.
-    //     pageTransitionAnimation: PageTransitionAnimation.fade,
-    //   );
-    //   // Navigator.of(context).push(MaterialPageRoute(
-    //   //     builder: (context) => ));
-    // }
-  }
+      // } else {
+      //   pushNewScreen(
+      //     context,
+      //     screen: BlocProvider(
+      //       create: (context) => ShowInfoBloc()..add(LoadTvInfo(id: id)),
+      //       child: TvInfo(
+      //         image: backdrop!,
+      //         title: name!,
+      //       ),
+      //     ),
+      //     withNavBar: false, // OPTIONAL VALUE. True by default.
+      //     pageTransitionAnimation: PageTransitionAnimation.fade,
+      //   );
+      //   // Navigator.of(context).push(MaterialPageRoute(
+      //   //     builder: (context) => ));
+      // }
+    }
   }
 
   @override

@@ -4,7 +4,6 @@ import 'package:moviebox/src/core/model/people_model.dart';
 import 'package:moviebox/src/core/repo/cast_movies.dart';
 import 'package:moviebox/src/core/repo/search_repo.dart';
 
-
 class GetSearchResultsPeople {
   final StreamController<List<PeopleModel>> controller =
       StreamController<List<PeopleModel>>();
@@ -13,12 +12,13 @@ class GetSearchResultsPeople {
   var isfinish = false;
   int page = 1;
   List<PeopleModel> people = [];
+
   void addData(String query) async {
-    if(query!='') {
+    if (query != '') {
       final fetchedTv = await repo.getPeoples(query, page);
       controller.sink.add(fetchedTv.peoples);
       people.addAll(fetchedTv.peoples);
-    }else {
+    } else {
       final fetchedTv = await popularRepo.findPopular(page);
       controller.sink.add(fetchedTv.peoples);
       people.addAll(fetchedTv.peoples);
@@ -27,11 +27,11 @@ class GetSearchResultsPeople {
   }
 
   void getNextMovies(String name) async {
-    if(name!='') {
+    if (name != '') {
       final fetchedTv = await repo.getPeoples(name, page);
       controller.sink.add(fetchedTv.peoples);
       people.addAll(fetchedTv.peoples);
-    }else {
+    } else {
       final fetchedTv = await popularRepo.findPopular(page);
       controller.sink.add(fetchedTv.peoples);
       people.addAll(fetchedTv.peoples);

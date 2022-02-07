@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
@@ -24,6 +23,7 @@ class CastMoviesLoaded extends CastMoviesState {
   final List<TvModel> tvShows;
   final List<ImageBackdrop> images;
   final List<MovieModel> movies;
+
   CastMoviesLoaded({
     required this.info,
     required this.color,

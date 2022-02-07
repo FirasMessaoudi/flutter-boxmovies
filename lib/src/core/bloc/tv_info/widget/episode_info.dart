@@ -1,15 +1,16 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/model/season_info.dart';
 import 'package:moviebox/src/screens/cast/cast_list.dart';
+import 'package:moviebox/src/shared/util/fav_type.dart';
+import 'package:moviebox/src/shared/widget/favorite_button/cubit/fav_cubit.dart';
+import 'package:moviebox/src/shared/widget/favorite_button/fav_button.dart';
 import 'package:moviebox/src/shared/widget/star_icon.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../../../../themes.dart';
-import 'package:easy_localization/easy_localization.dart';
-
-
 
 class EpisodeInfo extends StatelessWidget {
   final EpisodeModel model;
@@ -110,7 +111,23 @@ class EpisodeInfo extends StatelessWidget {
                               : Colors.blue,
                           letterSpacing: 1.2,
                         ),
-                      )
+                      ),
+                      BlocProvider(
+                        create: (context) => FavMovieCubit()
+                          ..init(model.id),
+                        child: FavIcon(
+                          type: FavType.episode,
+                          title: model.name,
+                          movieid: model.id,
+                          poster: model.stillPath,
+                          date: model.date,
+                          rate: model.voteAverage,
+                          age: '',
+                          color: redColor,
+                          isEpisode: true,
+                          backdrop: model.stillPath,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -128,8 +145,7 @@ class EpisodeInfo extends StatelessWidget {
                           style: heading.copyWith(color: textColor)),
                     ),
                     CastList(
-                        castList: model.castInfoList, textColor: textColor
-                    ),
+                        castList: model.castInfoList, textColor: textColor),
                   ],
                 ),
               ),

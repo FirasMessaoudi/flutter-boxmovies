@@ -1,19 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_event.dart';
 import 'package:moviebox/src/core/model/movie_model.dart';
+import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../../themes.dart';
-
 
 class InfoModal extends StatelessWidget {
   final MovieModel movie;
 
   const InfoModal({Key? key, required this.movie}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -56,17 +58,21 @@ class InfoModal extends StatelessWidget {
                               movie.title,
                               style: heading.copyWith(
                                 fontSize: 16,
-                                color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(
                               height: 5,
                             ),
-                            Text(movie.release_date,
+                            Text(
+                                convertDate(movie.release_date,
+                                    context.locale.languageCode),
                                 style: normalText.copyWith(
-                                  color: Colors.grey,
-                                )),
+                                    color: Colors.grey, fontSize: 12.0)),
                             ReadMoreText(
                               movie.overview,
                               trimLines: 6,
@@ -76,7 +82,10 @@ class InfoModal extends StatelessWidget {
                               trimExpandedText: 'Show less',
                               style: smalltext.copyWith(
                                   fontWeight: FontWeight.normal,
-                                  color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black),
                               moreStyle: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold),
                             ),
@@ -87,20 +96,27 @@ class InfoModal extends StatelessWidget {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Icon(Icons.info_outline),
-                                    Text(' Details & more',style: normalText.copyWith(fontSize: 13,fontWeight: FontWeight.bold)),
+                                    Text(' Details & more',
+                                        style: normalText.copyWith(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                                 IconButton(
-                                    onPressed: (){
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => BlocProvider(
-                                            create: (context) =>
-                                            MoviesInfoBloc()..add(LoadMoviesInfo(id: movie.id)),
-                                            child: MoivesInfo(
-                                              image: movie.backdrop,
-                                              title: movie.title,
-                                            ),
-                                          )));
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BlocProvider(
+                                                    create: (context) =>
+                                                        MoviesInfoBloc()
+                                                          ..add(LoadMoviesInfo(
+                                                              id: movie.id)),
+                                                    child: MoivesInfo(
+                                                      image: movie.backdrop,
+                                                      title: movie.title,
+                                                    ),
+                                                  )));
                                     },
                                     icon: Icon(Icons.arrow_forward_ios))
                               ],

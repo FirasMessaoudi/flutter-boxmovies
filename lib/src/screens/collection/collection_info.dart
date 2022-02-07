@@ -1,19 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
 import '../../../themes.dart';
 import 'add_to_empty_collection.dart';
 import 'collection_item.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class CollectionInfo extends StatefulWidget {
-
-   CollectionInfo(
+  CollectionInfo(
       {Key? key,
-        required this.deviceId,
-        required this.collectionName,
-        required this.image,
-        required this.date})
+      required this.deviceId,
+      required this.collectionName,
+      required this.image,
+      required this.date})
       : super(key: key);
   final String deviceId;
   final String collectionName;
@@ -47,8 +47,7 @@ class _CollectionInfoState extends State<CollectionInfo> {
                     ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => new AddToEmptyCollection(
-                          )));
+                          builder: (context) => new AddToEmptyCollection()));
                     },
                   ),
                 )
@@ -57,8 +56,8 @@ class _CollectionInfoState extends State<CollectionInfo> {
                 title: Text(
                   widget.collectionName,
                   style: heading.copyWith(
-                    //color: Colors.white,
-                  ),
+                      //color: Colors.white,
+                      ),
                 ),
                 stretchModes: [
                   StretchMode.fadeTitle,
@@ -79,11 +78,13 @@ class _CollectionInfoState extends State<CollectionInfo> {
                               height: 200,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image:
-                                      CachedNetworkImageProvider(widget.image))),
+                                      image: CachedNetworkImageProvider(
+                                          widget.image))),
                             ),
                             SizedBox(height: 10),
-                            Text('my_list.created_on'.tr() + widget.date.toUpperCase(),
+                            Text(
+                                'my_list.created_on'.tr() +
+                                    widget.date.toUpperCase(),
                                 style: normalText.copyWith(
                                     color: Colors.white, fontSize: 12))
                           ],
@@ -117,13 +118,17 @@ class _CollectionInfoState extends State<CollectionInfo> {
                       physics: NeverScrollableScrollPhysics(),
                       children: [
                         ...snp.data!.docs
-                            .map((doc) => CollectionItem(doc:doc,deviceId: widget.deviceId,collectionName: widget.collectionName,)
-                        )
+                            .map((doc) => CollectionItem(
+                                  doc: doc,
+                                  deviceId: widget.deviceId,
+                                  collectionName: widget.collectionName,
+                                ))
                             .toList()
                       ],
                     );
                   } else {
-                    return Container(child:Text('No items in this collection'));
+                    return Container(
+                        child: Text('No items in this collection'));
                   }
                 }),
           )

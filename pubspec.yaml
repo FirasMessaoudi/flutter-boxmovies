@@ -59,11 +59,13 @@ dependencies:
   google_sign_in: ^5.1.0 
   flutter_facebook_auth: ^3.5.1 
   flutter_twitter_login: ^1.1.0 
-  settings_ui: ^1.0.0
+  flutter_settings_ui: ^2.0.1
   shared_preferences: ^2.0.6
   easy_localization: ^3.0.0
   share: ^2.0.4
   confetti: ^0.6.0
+  percent_indicator: ^3.4.0
+
   responsive_size:
     git:
       url: git://github.com/marciovalim/flutter-responsive-size.git
@@ -92,6 +94,7 @@ flutter:
   assets:
   - assets/img/
   - assets/i18n/
+  - assets/data/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

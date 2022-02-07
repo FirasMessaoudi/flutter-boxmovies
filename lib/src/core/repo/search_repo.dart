@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/people_model.dart';
@@ -10,6 +11,7 @@ class SearchRepo {
   var movieResultsCount;
   var showsResultsCount;
   var peopleResultsCount;
+
   Future<MovieModelList> getMovies(String query, int page) async {
     String? language = await currentLanguage();
 

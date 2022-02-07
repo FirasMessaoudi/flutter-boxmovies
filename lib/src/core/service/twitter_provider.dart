@@ -11,6 +11,7 @@ class TwitterProvider extends ChangeNotifier {
     consumerKey: "4jErRhY1SDL0XfH8gaRdAtjxN",
     consumerSecret: "PlKsa5re3857sjsSIrFe1tj5m1ArFPMXODuSo0Z67BZd7KJalU",
   );
+
   Future<Resource?> signInWithTwitter() async {
     final authResult = await twitterLogin.authorize();
 

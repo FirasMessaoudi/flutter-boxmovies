@@ -1,16 +1,17 @@
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:moviebox/src/core/model/user.dart';
-import 'package:moviebox/src/screens/profile/profile_info.dart';
 import 'package:moviebox/src/core/service/auth_service.dart';
+import 'package:moviebox/src/screens/profile/profile_info.dart';
 import 'package:moviebox/src/shared/util/theme_switch.dart';
 import 'package:moviebox/src/shared/util/utilities.dart';
 import 'package:provider/provider.dart';
-import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../themes.dart';
@@ -32,46 +33,46 @@ class _EditProfileState extends State<EditProfile> {
   late File _imageFile;
   late File _coverFile;
   final AuthService _auth = new AuthService();
-  String name='';
-  String description ='';
+  String name = '';
+  String description = '';
   TextEditingController _textFieldController = new TextEditingController();
-  TextEditingController _textFieldControllerDescription = new TextEditingController();
-  String birthdate='';
+  TextEditingController _textFieldControllerDescription =
+      new TextEditingController();
+  String birthdate = '';
   final f = new DateFormat('dd/MM/yyyy');
-  String selectedCountry='';
+  String selectedCountry = '';
   String? selectedLanguage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton:  FloatingActionButton(
-          backgroundColor: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
           child: const Icon(Icons.save, color: Colors.red),
-          onPressed: ()async{
+          onPressed: () async {
             updateUser();
           },
         ),
         appBar: new AppBar(
           elevation: 0,
-         // brightness: Brightness.dark,
+          // brightness: Brightness.dark,
           centerTitle: true,
           title: Text('edit_profile.title'.tr(),
               style: heading.copyWith(color: Colors.white)),
           leading: IconButton(
-            icon:Icon(Icons.arrow_back),
-            onPressed: (){
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileAppBar(
-
-                  ),
+                  builder: (context) => ProfileAppBar(),
                 ),
               );
             },
-            
-            ),
-            
+          ),
         ),
         body: Stack(children: [
           SettingsList(
@@ -79,40 +80,100 @@ class _EditProfileState extends State<EditProfile> {
               SettingsSection(
                 titlePadding: EdgeInsets.all(20),
                 title: 'edit_profile.general_info'.tr(),
-                titleTextStyle:
-                    TextStyle(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black, fontWeight: FontWeight.bold),
+                titleTextStyle: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fontWeight: FontWeight.bold),
                 tiles: [
                   SettingsTile(
                     title: 'edit_profile.photo'.tr(),
                     // subtitle: 'English',
                     leading: displayedImage(),
                     onPressed: (BuildContext context) async {
-                      final pickedFile =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (mounted)
-                        setState(() {
-                          _imageFile = File(pickedFile!.path);
-                          isSelected = true;
-                        });
+                      showDialog(context: context, builder: (BuildContext context){
+                        return SimpleDialog(
+                          title: const Text('Select Source'),
+                          children: <Widget>[
+                            SimpleDialogOption(
+                              onPressed: () async{
+                                final pickedFile =
+                                    await picker.pickImage(source: ImageSource.camera);
+                                if (mounted)
+                                  setState(() {
+                                    _imageFile = File(pickedFile!.path);
+                                    isSelected = true;
+                                    Navigator.of(context).pop();
+                                  });
+                              },
+                              child: const Text('Camera'),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () async{ final pickedFile =
+                                  await picker.pickImage(source: ImageSource.gallery);
+                              if (mounted)
+                                setState(() {
+                                  _imageFile = File(pickedFile!.path);
+                                  isSelected = true;
+                                  Navigator.of(context).pop();
+
+                                }); },
+                              child: const Text('Gallery'),
+                            ),
+                          ],
+                        );
+                      });
+                      
+
                     },
                   ),
                   SettingsTile(
                     title: 'edit_profile.cover'.tr(),
-                    // subtitle: 'English',
                     leading: displayedCover(),
                     onPressed: (BuildContext context) async {
-                      final pickedFile =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (mounted)
-                        setState(() {
-                          _coverFile = File(pickedFile!.path);
-                          isSelectedCover = true;
-                        });
+                      showDialog(context: context, builder: (BuildContext context){
+                        return SimpleDialog(
+                          title: const Text('Select Source'),
+                          children: <Widget>[
+                            SimpleDialogOption(
+                              onPressed: () async{
+                                final pickedFile =
+                                await picker.pickImage(source: ImageSource.camera);
+                                if (mounted)
+                                  setState(() {
+                                    _coverFile = File(pickedFile!.path);
+                                    isSelectedCover = true;
+                                    Navigator.of(context).pop();
+                                  });
+                              },
+                              child: const Text('Camera'),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () async{ final pickedFile =
+                              await picker.pickImage(source: ImageSource.gallery);
+                              if (mounted)
+                                setState(() {
+                                  _coverFile = File(pickedFile!.path);
+                                  isSelectedCover = true;
+                                  Navigator.of(context).pop();
+
+                                }); },
+                              child: const Text('Gallery'),
+                            ),
+                          ],
+                        );
+                      });
+
+
                     },
                   ),
                   SettingsTile(
                     title: 'edit_profile.quote'.tr(),
-                    subtitle: 'edit_profile.description'.tr(),
+                    subtitle: description != ''
+                        ? description
+                        : widget.user.description != ''
+                            ? widget.user.description
+                            : 'edit_profile.description'.tr(),
                     leading: Icon(Icons.info),
                     onPressed: (BuildContext context) {
                       _displayDescriptionInputDialog(context);
@@ -123,8 +184,11 @@ class _EditProfileState extends State<EditProfile> {
               SettingsSection(
                 titlePadding: EdgeInsets.all(20),
                 title: 'edit_profile.personal_info'.tr(),
-                titleTextStyle:
-                    TextStyle(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black, fontWeight: FontWeight.bold),
+                titleTextStyle: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fontWeight: FontWeight.bold),
                 tiles: [
                   SettingsTile(
                     title: 'edit_profile.email'.tr(),
@@ -134,55 +198,72 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   SettingsTile(
                     title: 'edit_profile.name'.tr(),
-                    subtitle: name!=''?name:widget.user.name,
+                    subtitle: name != '' ? name : widget.user.name,
                     leading: Icon(Icons.person),
                     trailing: Icon(Icons.edit),
-                    onPressed: (BuildContext context)async {
+                    onPressed: (BuildContext context) async {
                       _displayTextInputDialog(context);
                     },
                   ),
                   SettingsTile(
                     title: 'edit_profile.birthdate'.tr(),
-                    subtitle: birthdate!=''?birthdate:widget.user.birthdate!=null?widget.user.birthdate:'N/A',
+                    subtitle: birthdate != ''
+                        ? birthdate
+                        : widget.user.birthdate != null
+                            ? widget.user.birthdate
+                            : 'N/A',
                     leading: Icon(Icons.calendar_today),
                     trailing: Icon(Icons.edit),
-                    onPressed: (BuildContext context) async{
+                    onPressed: (BuildContext context) async {
                       _selectDate();
                     },
                   ),
                   SettingsTile(
                     title: 'edit_profile.country'.tr(),
-                    subtitle: selectedCountry!=''?selectedCountry:widget.user.country!=null?widget.user.country:'N/A',
+                    subtitle: selectedCountry != ''
+                        ? selectedCountry
+                        : widget.user.country != null
+                            ? widget.user.country
+                            : 'N/A',
                     leading: Icon(Icons.flag),
                     trailing: dropdown('country'),
                     onPressed: (BuildContext context) {},
                   ),
-                  
                 ],
               ),
               SettingsSection(
-                titlePadding: EdgeInsets.all(20),
-                title: 'edit_profile.settings'.tr(),
-                titleTextStyle:
-                    TextStyle(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black, fontWeight: FontWeight.bold),
-                tiles: [
-                  SettingsTile(
-                    title: 'edit_profile.language'.tr(),
-                    subtitle: context.locale.languageCode=='en'?'English':context.locale.languageCode=='ar'?'Arabic':'Français',
-                    leading: Icon(Icons.language),
-                    trailing: dropdown('language'),
-                    onPressed: (BuildContext context) {},
-                  ),
-                   SettingsTile(
-                title: Theme.of(context).brightness==Brightness.dark?'edit_profile.light_mode'.tr():'edit_profile.dark_mode'.tr(),
-                leading:Theme.of(context).brightness==Brightness.dark?Icon(Icons.wb_sunny):Icon(Icons.brightness_3),
-                onPressed: (BuildContext context){
-                 Provider.of<MyTheme>(context,listen: false).switchTheme();
-                },
-              
-              ),
-                ]
-              )
+                  titlePadding: EdgeInsets.all(20),
+                  title: 'edit_profile.settings'.tr(),
+                  titleTextStyle: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                      fontWeight: FontWeight.bold),
+                  tiles: [
+                    SettingsTile(
+                      title: 'edit_profile.language'.tr(),
+                      subtitle: context.locale.languageCode == 'en'
+                          ? 'English'
+                          : context.locale.languageCode == 'ar'
+                              ? 'Arabic'
+                              : 'Français',
+                      leading: Icon(Icons.language),
+                      trailing: dropdown('language'),
+                      onPressed: (BuildContext context) {},
+                    ),
+                    SettingsTile(
+                      title: Theme.of(context).brightness == Brightness.dark
+                          ? 'edit_profile.light_mode'.tr()
+                          : 'edit_profile.dark_mode'.tr(),
+                      leading: Theme.of(context).brightness == Brightness.dark
+                          ? Icon(Icons.wb_sunny)
+                          : Icon(Icons.brightness_3),
+                      onPressed: (BuildContext context) {
+                        Provider.of<MyTheme>(context, listen: false)
+                            .switchTheme();
+                      },
+                    ),
+                  ])
             ],
           ),
         ]));
@@ -202,21 +283,20 @@ class _EditProfileState extends State<EditProfile> {
       coverPath = await uploadImageToFirebase('cover', _coverFile);
       userToUpdate.cover = coverPath;
     }
-    if(name!=''){
+    if (name != '') {
       userToUpdate.name = name;
     }
-    if(birthdate!=''){
+    if (birthdate != '') {
       userToUpdate.birthdate = birthdate;
     }
-    if(selectedCountry!=''){
-      userToUpdate.country=selectedCountry;
+    if (selectedCountry != '') {
+      userToUpdate.country = selectedCountry;
     }
-    if(description!=''){
+    if (description != '') {
       userToUpdate.description = description;
     }
     await _auth.updateUser(userToUpdate);
     Navigator.of(context).pop();
-
   }
 
   Future<String> uploadImageToFirebase(String type, File file) async {
@@ -254,37 +334,37 @@ class _EditProfileState extends State<EditProfile> {
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
     name = widget.user.name;
-   return showDialog(
-       context: context,
-       builder: (context) {
-         return AlertDialog(
-           title: Text('edit_profile.name'.tr()),
-           content: TextField(
-             onChanged: (value) {
-               setState(() {
-                 name = value;
-               });
-             },
-             controller: _textFieldController,
-             decoration: InputDecoration(hintText: name),
-           ),
-           actions: <Widget>[
-             FlatButton(
-               color: Colors.green,
-               textColor: Colors.white,
-               child: Text('OK'),
-               onPressed: () {
-                 setState(() {
-                  //  codeDialog = valueText;
-                   Navigator.pop(context);
-                 });
-               },
-             ),
-  
-           ],
-         );
-       });
- }
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('edit_profile.name'.tr()),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  name = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(hintText: name),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  setState(() {
+                    //  codeDialog = valueText;
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Future<void> _displayDescriptionInputDialog(BuildContext context) async {
     description = widget.user.description;
     return showDialog(
@@ -314,11 +394,11 @@ class _EditProfileState extends State<EditProfile> {
                   });
                 },
               ),
-
             ],
           );
         });
   }
+
   Future _selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
@@ -330,59 +410,84 @@ class _EditProfileState extends State<EditProfile> {
             birthdate = f.format(picked).toString(),
           });
   }
+
   Widget dropdown(String title) {
     return Container(
         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
         child: DropdownButton<String>(
-           icon: Icon(Icons.arrow_drop_down,color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,),
+          icon: Icon(
+            Icons.arrow_drop_down,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
           underline: Container(
             height: 2,
             color: Colors.transparent,
           ),
-          onChanged: (String? value)  {
+          onChanged: (String? value) {
             setState(() async {
-              if(title=='country')
-              selectedCountry = value!;
+              if (title == 'country')
+                selectedCountry = value!;
               else {
                 selectedLanguage = value;
-                if(value=='English'){
+                if (value == 'English') {
                   this.setState(() async {
-                    context.setLocale(Locale('en','US'));
-                    SharedPreferences pref = await SharedPreferences.getInstance();
+                    context.setLocale(Locale('en', 'US'));
+                    SharedPreferences pref =
+                        await SharedPreferences.getInstance();
                     pref.setString('language', 'en-US');
                   });
-                }else if(value=='French'){
-                  SharedPreferences pref = await SharedPreferences.getInstance();
+                } else if (value == 'French') {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
                   pref.setString('language', 'fr-FR');
-                  context.setLocale(Locale('fr','FR'));
-                }
-                else if(value=='Arabic'){
-                  SharedPreferences pref = await SharedPreferences.getInstance();
+                  context.setLocale(Locale('fr', 'FR'));
+                } else if (value == 'Arabic') {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
                   pref.setString('language', 'ar-SA');
-                  context.setLocale(Locale('ar','SA'));
+                  context.setLocale(Locale('ar', 'SA'));
+                } else if (value == 'Spanish') {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.setString('language', 'es-ES');
+                  context.setLocale(Locale('es', 'ES'));
+                } else if (value == 'Italian') {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.setString('language', 'it-IT');
+                  context.setLocale(Locale('it', 'IT'));
                 }
               }
             });
           },
-          items: title=='language'?<String>['English', 'French','Arabic']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child:Text(
-                    value,
-                    style: TextStyle(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
-                  ),
-            );
-          }).toList():countries.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child:Text(
-                    value,
-                    style: TextStyle(color: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black),
-                  ),
-            );
-          }).toList()
-          ,
+          items: title == 'language'
+              ? <String>['English', 'French', 'Arabic', 'Spanish', 'Italian']
+                  .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  );
+                }).toList()
+              : countries.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  );
+                }).toList(),
         ));
   }
 }

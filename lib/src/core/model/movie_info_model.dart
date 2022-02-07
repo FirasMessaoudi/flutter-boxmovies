@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import 'categorie.dart';
 
 class MovieInfoModel {
@@ -23,28 +21,29 @@ class MovieInfoModel {
   final List<Categorie> genres;
   final String releaseDate;
   final List<CompaniesModel> production_companies;
-  final List <CountriesModel> production_countries;
-  MovieInfoModel({
-    required this.id,
-    required this.tmdbId,
-    required this.overview,
-    required this.title,
-    required this.languages,
-    required this.backdrops,
-    required this.poster,
-    required this.budget,
-    required this.tagline,
-    required this.rateing,
-    required this.vote_count,
-    required this.dateByMonth,
-    required this.runtime,
-    required this.homepage,
-    required this.imdbid,
-    required this.genres,
-    required this.releaseDate,
-    required this.production_companies,
-    required this.production_countries
-  });
+  final List<CountriesModel> production_countries;
+
+  MovieInfoModel(
+      {required this.id,
+      required this.tmdbId,
+      required this.overview,
+      required this.title,
+      required this.languages,
+      required this.backdrops,
+      required this.poster,
+      required this.budget,
+      required this.tagline,
+      required this.rateing,
+      required this.vote_count,
+      required this.dateByMonth,
+      required this.runtime,
+      required this.homepage,
+      required this.imdbid,
+      required this.genres,
+      required this.releaseDate,
+      required this.production_companies,
+      required this.production_countries});
+
   factory MovieInfoModel.fromJson(json) {
     List<String> months = [
       'January',
@@ -111,14 +110,15 @@ class MovieInfoModel {
       languages: (json['spoken_languages'] as List)
           .map((laung) => laung['english_name'])
           .toList(),
-      genres: List<Categorie>.from(json['genres']?.map((x) => Categorie.fromMap(x))),
+      genres: List<Categorie>.from(
+          json['genres']?.map((x) => Categorie.fromMap(x))),
       overview: json['overview'] ?? json['actors'] ?? '',
       backdrops: json['backdrop_path'] != null
           ? "https://image.tmdb.org/t/p/original" + json['backdrop_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       poster: json['poster_path'] != null
           ? "https://image.tmdb.org/t/p/w500" + json['poster_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       rateing: json['vote_average'],
       vote_count: json['vote_count'],
       runtime: json['runtime'],
@@ -126,8 +126,10 @@ class MovieInfoModel {
       tmdbId: json['id'].toString(),
       releaseDate: json['release_date'] ?? '',
       dateByMonth: string,
-       production_companies: List<CompaniesModel>.from(json['production_companies']?.map((x) => CompaniesModel.fromMap(x))),
-      production_countries: List<CountriesModel>.from(json['production_countries']?.map((x) => CountriesModel.fromMap(x))),
+      production_companies: List<CompaniesModel>.from(
+          json['production_companies']?.map((x) => CompaniesModel.fromMap(x))),
+      production_countries: List<CountriesModel>.from(
+          json['production_countries']?.map((x) => CountriesModel.fromMap(x))),
     );
   }
 }
@@ -147,6 +149,7 @@ class MovieInfoImdb {
   final String rated;
   final String plot;
   final String production;
+
   MovieInfoImdb({
     required this.genre,
     required this.runtime,
@@ -163,6 +166,7 @@ class MovieInfoImdb {
     required this.plot,
     required this.production,
   });
+
   factory MovieInfoImdb.fromJson(json) {
     return MovieInfoImdb(
       actors: json['Actors'] ?? '',
@@ -188,12 +192,14 @@ class TrailerModel {
   final String site;
   final String name;
   final String key;
+
   TrailerModel({
     required this.id,
     required this.site,
     required this.name,
     required this.key,
   });
+
   factory TrailerModel.fromJson(json) {
     return TrailerModel(
       key: json['key'] ?? '',
@@ -206,9 +212,11 @@ class TrailerModel {
 
 class TrailerList {
   final List<TrailerModel> trailers;
+
   TrailerList({
     required this.trailers,
   });
+
   factory TrailerList.fromJson(json) {
     return TrailerList(
         trailers: (json['results'] as List)
@@ -219,9 +227,11 @@ class TrailerList {
 
 class ImageBackdrop {
   final String image;
+
   ImageBackdrop({
     required this.image,
   });
+
   factory ImageBackdrop.fromJson(json) {
     return new ImageBackdrop(
       image: "https://image.tmdb.org/t/p/original" + json['file_path'],
@@ -260,12 +270,14 @@ class CastInfo {
   final String character;
   final String image;
   final String id;
+
   CastInfo({
     required this.name,
     required this.character,
     required this.image,
     required this.id,
   });
+
   factory CastInfo.fromJson(json) {
     return new CastInfo(
       id: json['id'].toString(),
@@ -280,9 +292,11 @@ class CastInfo {
 
 class CastInfoList {
   final List<CastInfo> castList;
+
   CastInfoList({
     required this.castList,
   });
+
   factory CastInfoList.fromJson(json) {
     return CastInfoList(
       castList: (json['cast'] as List)
@@ -293,11 +307,12 @@ class CastInfoList {
 }
 
 class CompaniesModel {
-    final String name;
-    final int id;
+  final String name;
+  final int id;
+
   CompaniesModel({
     required this.name,
-     required this.id,
+    required this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -316,14 +331,16 @@ class CompaniesModel {
 
   String toJson() => json.encode(toMap());
 
-  factory CompaniesModel.fromJson(String source) => CompaniesModel.fromMap(json.decode(source));
+  factory CompaniesModel.fromJson(String source) =>
+      CompaniesModel.fromMap(json.decode(source));
 }
 
 class CountriesModel {
-  final  String iso_3166_1;
-    final String name;
+  final String iso_3166_1;
+  final String name;
+
   CountriesModel({
-   required  this.iso_3166_1,
+    required this.iso_3166_1,
     required this.name,
   });
 
@@ -343,5 +360,6 @@ class CountriesModel {
 
   String toJson() => json.encode(toMap());
 
-  factory CountriesModel.fromJson(String source) => CountriesModel.fromMap(json.decode(source));
+  factory CountriesModel.fromJson(String source) =>
+      CountriesModel.fromMap(json.decode(source));
 }

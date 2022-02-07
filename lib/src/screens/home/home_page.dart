@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,10 +7,9 @@ import 'package:moviebox/src/core/repo/movies_repo.dart';
 import 'package:moviebox/src/responsive/app_bar_cubit.dart';
 import 'package:moviebox/src/responsive/content_header.dart';
 import 'package:moviebox/src/responsive/custom_app_bar.dart';
-import 'package:moviebox/src/shared/util/movie_type.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:moviebox/src/screens/home/movie_list.dart';
 import 'package:moviebox/src/screens/home/tv_list.dart';
+import 'package:moviebox/src/shared/util/movie_type.dart';
 import 'package:wiredash/wiredash.dart';
 
 import '../../../themes.dart';
@@ -18,8 +17,10 @@ import '../../../themes.dart';
 /* EXTERNAL PACKAGES */
 
 class Homepage extends StatefulWidget {
-    final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
   const Homepage({Key? key, required this.scaffoldKey}) : super(key: key);
+
   @override
   _HomepageState createState() => _HomepageState();
 }
@@ -33,7 +34,7 @@ class _HomepageState extends State<Homepage> {
     // TODO: implement initState
 
     super.initState();
-    
+
     _scrollController = ScrollController()
       ..addListener(() {
         context.read<AppBarCubit>().setOffset(_scrollController.offset);
@@ -52,23 +53,27 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
         extendBodyBehindAppBar: true,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).brightness==Brightness.dark?Colors.white:Colors.black,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
           child: const Icon(Icons.feedback, color: Colors.red),
-          onPressed: () =>{
-            Wiredash.of(context)!.show()
+          onPressed: () => {
+
+           Wiredash.of(context)!.show()
+
           },
         ),
         appBar: PreferredSize(
           preferredSize: Size(screenSize.width, 50.0),
           child: BlocBuilder<AppBarCubit, double>(
             builder: (context, scrollOffset) {
-              return CustomAppBar(scrollOffset: scrollOffset,scaffoldKey:widget.scaffoldKey);
+              return CustomAppBar(
+                  scrollOffset: scrollOffset, scaffoldKey: widget.scaffoldKey);
             },
           ),
         ),
         body: CustomScrollView(
           controller: _scrollController,
-          
           slivers: [
             SliverToBoxAdapter(
               child: _swiperCards(),
@@ -84,7 +89,7 @@ class _HomepageState extends State<Homepage> {
                 },
               ),
             ),
-             SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: TvListView(
                 type: MovieListType.trendingTv,
                 title: 'home.popular_tv'.tr(),
@@ -104,7 +109,6 @@ class _HomepageState extends State<Homepage> {
                 },
               ),
             ),
-           
             SliverToBoxAdapter(
               child: MovieListView(
                 program: MovieListType.movie,
@@ -168,14 +172,13 @@ class _HomepageState extends State<Homepage> {
                             end: Alignment.bottomCenter,
                             begin: Alignment.bottomCenter,
                             colors: [
-                               Colors.black.withOpacity(.5),
+                              Colors.black.withOpacity(.5),
                               Colors.transparent,
                             ],
                           ),
                         ),
                         child: PageView(
                           scrollDirection: Axis.horizontal,
-                          
                           dragStartBehavior: DragStartBehavior.start,
                           physics: BouncingScrollPhysics(
                               parent: BouncingScrollPhysics()),
@@ -194,9 +197,10 @@ class _HomepageState extends State<Homepage> {
           print('no data yest');
           return Container(
             height: 500.0,
-            child: Center(child: CircularProgressIndicator(color: redColor,)
-            
-            ),
+            child: Center(
+                child: CircularProgressIndicator(
+              color: redColor,
+            )),
           );
         }
       },

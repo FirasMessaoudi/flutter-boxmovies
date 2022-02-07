@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 abstract class ShowInfoEvent extends Equatable {
@@ -10,6 +9,7 @@ abstract class ShowInfoEvent extends Equatable {
 
 class LoadTvInfo extends ShowInfoEvent {
   final String id;
+
   LoadTvInfo({
     required this.id,
   });

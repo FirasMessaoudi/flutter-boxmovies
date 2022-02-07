@@ -1,7 +1,3 @@
-import 'package:flutter/foundation.dart';
-
-import '../model/categorie.dart';
-
 class MovieModel {
   final String title;
   final String poster;
@@ -10,7 +6,8 @@ class MovieModel {
   final double vote_average;
   final String release_date;
   final String overview;
-   final List<int> genres;
+  final List<int> genres;
+
   MovieModel({
     required this.title,
     required this.poster,
@@ -80,27 +77,28 @@ class MovieModel {
 
     getString();
     return new MovieModel(
-      backdrop: json['backdrop_path'] != null
-          ? "https://image.tmdb.org/t/p/original" + json['backdrop_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
-      poster: json['poster_path'] != null
-          ? "https://image.tmdb.org/t/p/w500" + json['poster_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
-      id: json['id'].toString(),
-      title: json['title'],
-      vote_average: json['vote_average'].toDouble() ?? 0.0,
-      release_date: string,
+        backdrop: json['backdrop_path'] != null
+            ? "https://image.tmdb.org/t/p/original" + json['backdrop_path']
+            : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
+        poster: json['poster_path'] != null
+            ? "https://image.tmdb.org/t/p/w500" + json['poster_path']
+            : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
+        id: json['id'].toString(),
+        title: json['title'],
+        vote_average: json['vote_average'].toDouble() ?? 0.0,
+        release_date: json['release_date'],
         genres: List<int>.from(json["genre_ids"].map((x) => x)),
-      overview: json['overview']
-    );
+        overview: json['overview']);
   }
 }
 
 class MovieModelList {
   final List<MovieModel> movies;
+
   MovieModelList({
     required this.movies,
   });
+
   factory MovieModelList.fromJson(List<dynamic> json) {
     return new MovieModelList(
         movies:

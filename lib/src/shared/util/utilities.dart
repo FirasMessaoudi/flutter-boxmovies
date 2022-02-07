@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/movie_info/movies_info_event.dart';
 import 'package:moviebox/src/core/bloc/tv_info/show_info_bloc.dart';
 import 'package:moviebox/src/core/bloc/tv_info/show_info_event.dart';
 import 'package:moviebox/src/core/bloc/tv_info/widget/tv_show_info.dart';
+import 'package:moviebox/src/core/model/categorie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../themes.dart';
 
 final countries = [
@@ -218,25 +221,25 @@ final countries = [
   "Zimbabwe"
 ];
 final movieGenres = [
-  {"id": 28, "name": "Action"},
-  {"id": 12, "name": "Adventure"},
-  {"id": 16, "name": "Animation"},
-  {"id": 35, "name": "Comedy"},
-  {"id": 80, "name": "Crime"},
-  {"id": 99, "name": "Documentary"},
-  {"id": 18, "name": "Drama"},
-  {"id": 10751, "name": "Family"},
-  {"id": 14, "name": "Fantasy"},
-  {"id": 36, "name": "History"},
-  {"id": 27, "name": "Horror"},
-  {"id": 10402, "name": "Music"},
-  {"id": 9648, "name": "Mystery"},
-  {"id": 10749, "name": "Romance"},
-  {"id": 878, "name": "Science Fiction"},
-  {"id": 10770, "name": "TV Movie"},
-  {"id": 53, "name": "Thriller"},
-  {"id": 10752, "name": "War"},
-  {"id": 37, "name": "Western"}
+  {"id": 28, "name": "Action", "nameAr": "حركة"},
+  {"id": 12, "name": "Adventure", "nameAr": "مغامرة"},
+  {"id": 16, "name": "Animation", "nameAr": "إنيمشن"},
+  {"id": 35, "name": "Comedy", "nameAr": "كوميديا"},
+  {"id": 80, "name": "Crime", "nameAr": "جريمة"},
+  {"id": 99, "name": "Documentary", "nameAr": "وثائقي"},
+  {"id": 18, "name": "Drama", "nameAr": "دراما"},
+  {"id": 10751, "name": "Family", "nameAr": "عائلي"},
+  {"id": 14, "name": "Fantasy", "nameAr": "فانتازيا"},
+  {"id": 36, "name": "History", "nameAr": "تاريخي"},
+  {"id": 27, "name": "Horror", "nameAr": "رعب"},
+  {"id": 10402, "name": "Music", "nameAr": "موسيقي"},
+  {"id": 9648, "name": "Mystery", "nameAr": "غموض"},
+  {"id": 10749, "name": "Romance", "nameAr": "رومنسي"},
+  {"id": 878, "name": "Science Fiction", "nameAr": "خيال علمي"},
+  {"id": 10770, "name": "TV Movie", "nameAr": "فيلم تلفزي"},
+  {"id": 53, "name": "Thriller", "nameAr": "اثارة"},
+  {"id": 10752, "name": "War", "nameAr": "حرب"},
+  {"id": 37, "name": "Western", "nameAr": "غربي"}
 ];
 final tvGenres = [
   {"id": 10759, "name": "Action & Adventure"},
@@ -256,20 +259,59 @@ final tvGenres = [
   {"id": 10768, "name": "War & Politics"},
   {"id": 37, "name": "Western"}
 ];
- String getMoviesCategorieNames(List<int> ids){
-   String categories= '';
-   ids.forEach((id) {
-     categories += movieGenres.firstWhere((element) => element['id'] ==id)['name'].toString()+ ' , ';
-   });
-   return categories;
- }
-String getTvCategorieNames(List<int> ids){
-  String categories= '';
+
+convertDate(String stringDate, String local) {
+  try {
+    DateTime date = DateTime.parse(stringDate);
+    String formattedDate = DateFormat('dd MMMM yyyy', local).format(date);
+    return formattedDate;
+  } catch (e) {
+    return stringDate;
+  }
+}
+
+getCatgoryNameFromCatgeoryObject(List<Categorie> categories) {
+  String categoriesName = '';
+  categories.forEach((element) {
+    categoriesName += element.name + ', ';
+  });
+  print(categoriesName);
+  return categoriesName;
+}
+
+String getMoviesCategorieNamesAr(List<int> ids) {
+  String categories = '';
   ids.forEach((id) {
-    categories += tvGenres.firstWhere((element) => element['id'] ==id)['name'].toString() + ' , ';
+    categories += movieGenres
+            .firstWhere((element) => element['id'] == id)['nameAr']
+            .toString() +
+        ' , ';
   });
   return categories;
 }
+
+String getMoviesCategorieNames(List<int> ids) {
+  String categories = '';
+  ids.forEach((id) {
+    categories += movieGenres
+            .firstWhere((element) => element['id'] == id)['name']
+            .toString() +
+        ' , ';
+  });
+  return categories;
+}
+
+String getTvCategorieNames(List<int> ids) {
+  String categories = '';
+  ids.forEach((id) {
+    categories += tvGenres
+            .firstWhere((element) => element['id'] == id)['name']
+            .toString() +
+        ' , ';
+  });
+  return categories;
+}
+
 List<int> getOnlyIds(List<dynamic> list) {
   List<int> result = [];
   list.forEach((element) {
@@ -277,6 +319,7 @@ List<int> getOnlyIds(List<dynamic> list) {
   });
   return result;
 }
+
 Future<String?> currentLanguage() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   String? language = pref.getString('language');

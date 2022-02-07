@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:moviebox/src/core/repo/search_repo.dart';
 import 'package:moviebox/src/screens/search/search_result.dart';
 
@@ -8,6 +7,7 @@ import 'package:moviebox/src/screens/search/search_result.dart';
 class DataSearch extends SearchDelegate {
   String selection = '';
   final moviesProvider = new SearchRepo();
+
   @override
   List<Widget> buildActions(BuildContext context) {
     // Actions of our AppBar
@@ -52,8 +52,6 @@ class DataSearch extends SearchDelegate {
     if (query.isEmpty) {
       return Container();
     }
-    return new SearchResult(id:query,title: query);
+    return new SearchResult(id: query, title: query);
   }
-
-  
 }

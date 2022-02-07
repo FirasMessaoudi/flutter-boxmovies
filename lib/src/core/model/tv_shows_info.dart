@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:moviebox/src/core/model/network.dart';
 
 import 'categorie.dart';
@@ -13,7 +12,7 @@ class TvInfoModel {
   final String poster;
   final String tagline;
   final double rateing;
-  final  int vote_count;
+  final int vote_count;
   final String homepage;
   final List<Categorie> genres;
   final List<Seasons> seasons;
@@ -23,16 +22,20 @@ class TvInfoModel {
   final String date;
   final String formatedDate;
   final String episoderuntime;
-  TvInfoModel({
-    required this.id,
-    required this.tmdbId,
-    required this.overview,
-    required this.title,
-    required this.languages,
-    required this.backdrops,
-    required this.poster,
-    required this.tagline,
-    required this.rateing,
+  final String nextEpisode;
+  final int numberEpisodes;
+  final String status;
+
+  TvInfoModel(
+      {required this.id,
+      required this.tmdbId,
+      required this.overview,
+      required this.title,
+      required this.languages,
+      required this.backdrops,
+      required this.poster,
+      required this.tagline,
+      required this.rateing,
     required this.vote_count,
     required this.homepage,
     required this.genres,
@@ -43,7 +46,13 @@ class TvInfoModel {
     required this.date,
     required this.formatedDate,
     required this.episoderuntime,
-  });
+    required this.nextEpisode,
+        required this.numberEpisodes,
+        required this.status,
+
+      });
+
+
   factory TvInfoModel.fromJson(json) {
     List<String> months = [
       'January',
@@ -96,7 +105,7 @@ class TvInfoModel {
           "${monthgenrater(json['first_air_date'].split("-")[1])} ${json['first_air_date'].split("-")[2]}, ${json['first_air_date'].split("-")[0]}";
     } catch (e) {}
     return TvInfoModel(
-            id: json['id'],
+      id: json['id'],
       title: json['name'] ?? '',
       homepage: json['homepage'] ?? "",
       languages: (json['spoken_languages'] as List)
@@ -104,19 +113,23 @@ class TvInfoModel {
           .toList(),
       created:
           (json['created_by'] as List).map((laung) => laung['name']).toList(),
-      genres: List<Categorie>.from(json['genres']?.map((x) => Categorie.fromMap(x))),
+      genres: List<Categorie>.from(
+          json['genres']?.map((x) => Categorie.fromMap(x))),
       networks:
           List<Network>.from(json['networks']?.map((x) => Network.fromJson(x))),
       overview: json['overview'] ?? '',
       backdrops: json['backdrop_path'] != null
           ? "https://image.tmdb.org/t/p/original" + json['backdrop_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       poster: json['poster_path'] != null
           ? "https://image.tmdb.org/t/p/w500" + json['poster_path']
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       rateing: json['vote_average'],
       vote_count: json['vote_count'],
       tagline: json['tagline'] ?? '',
+      nextEpisode: json['next_episode_to_air'] != null
+          ? json['next_episode_to_air']['air_date']
+          : 'N/A',
       tmdbId: json['id'].toString(),
       numberOfSeasons: json['number_of_seasons'].toString(),
       seasons: (json['seasons'] as List)
@@ -127,8 +140,11 @@ class TvInfoModel {
           ? json['episode_run_time'][0].toString() + " Minutes"
           : "N/A",
       formatedDate: string,
+      numberEpisodes: json['number_of_episodes'],
+      status:  json['status']
     );
   }
+
 }
 
 class Seasons {
@@ -140,6 +156,7 @@ class Seasons {
   final String customOverView;
   final String episodes;
   final String snum;
+
   Seasons({
     required this.overview,
     required this.name,
@@ -214,7 +231,7 @@ class Seasons {
       id: json['id'].toString(),
       image: json['poster_path'] != null
           ? "https://image.tmdb.org/t/p/w500" + (json['poster_path'] ?? "")
-          : "https://images.pexels.com/photos/4089658/pexels-photo-4089658.jpeg?cs=srgb&dl=pexels-victoria-borodinova-4089658.jpg&fm=jpg",
+          : "https://www.prokerala.com/movies/assets/img/no-poster-available.jpg",
       name: json['name'] ?? '',
       overview: json['overview'] == "" ? "N/A" : json['overview'] ?? "",
       customOverView: string,

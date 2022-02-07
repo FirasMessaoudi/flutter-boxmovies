@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviebox/src/core/model/movie_model.dart';
 import 'package:moviebox/src/core/model/tv_model.dart';
-import 'package:moviebox/src/core/streams/all_movies_stream.dart';
 import 'package:moviebox/src/core/streams/movies_stream.dart';
 import 'package:moviebox/src/core/streams/tv_stream.dart';
 import 'package:moviebox/src/shared/util/fav_type.dart';
@@ -12,7 +12,6 @@ import 'package:moviebox/src/shared/widget/favorite_button/cubit/fav_cubit.dart'
 import 'package:moviebox/src/shared/widget/favorite_button/fav_button.dart';
 import 'package:moviebox/src/shared/widget/watchlist_button/state/watchlist_cubit.dart';
 import 'package:moviebox/src/shared/widget/watchlist_button/widget/watchlist_icon.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 import '../../../themes.dart';
 
@@ -20,9 +19,9 @@ class AddToLWatchlistFav extends StatefulWidget {
   final bool isMovie;
   final ProfileItems action;
 
-  const AddToLWatchlistFav(
-      {Key? key, required this.isMovie, required this.action})
+  const AddToLWatchlistFav({Key? key, required this.isMovie, required this.action})
       : super(key: key);
+
   @override
   State<AddToLWatchlistFav> createState() => _AddToLWatchlistFavState();
 }
@@ -32,6 +31,7 @@ class _AddToLWatchlistFavState extends State<AddToLWatchlistFav> {
   GetSearchResultsTv repoTv = GetSearchResultsTv();
   ScrollController controller = ScrollController();
   String query = '';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -81,7 +81,7 @@ class _AddToLWatchlistFavState extends State<AddToLWatchlistFav> {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text(widget.isMovie ? 'my_list.movies'.tr() : 'my_list.shows'.tr()),
+        Text(widget.isMovie ? 'my_list.movies'.tr() : 'my_list.shows'.tr()),
         centerTitle: true,
         leading: Icon(Icons.arrow_back_ios),
         bottom: PreferredSize(
@@ -114,46 +114,46 @@ class _AddToLWatchlistFavState extends State<AddToLWatchlistFav> {
           SliverToBoxAdapter(
             child: widget.isMovie
                 ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 3.0, vertical: 10.0),
-                    child: StreamBuilder<List<MovieModel>>(
-                      stream: repo.controller.stream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          print(snapshot.data!.length);
-                          // final movies = snapshot.data!;
-                          return Container(
-                            child: Column(
-                              children: [
-                                ListView.separated(
-                                    physics: BouncingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: repo.movies.length,
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                          onTap: () {
-                                            moveToInfo(
-                                                context,
-                                                true,
-                                                repo.movies[index].id,
-                                                repo.movies[index].backdrop,
-                                                repo.movies[index].title);
-                                          },
-                                          leading: Image.network(
-                                              repo.movies[index].poster),
-                                          title: Text(repo.movies[index].title),
-                                          trailing: widget.action ==
-                                                  ProfileItems.fav
-                                              ? BlocProvider(
-                                                  create: (context) =>
-                                                      FavMovieCubit()
-                                                        ..init(repo
-                                                            .movies[index].id),
-                                                  child: FavIcon(
-                                                      type: FavType.movie,
-                                                      title: repo
-                                                          .movies[index].title,
-                                                      movieid:
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 3.0, vertical: 10.0),
+              child: StreamBuilder<List<MovieModel>>(
+                stream: repo.controller.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    print(snapshot.data!.length);
+                    // final movies = snapshot.data!;
+                    return Container(
+                      child: Column(
+                        children: [
+                          ListView.separated(
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: repo.movies.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                    onTap: () {
+                                      moveToInfo(
+                                          context,
+                                          true,
+                                          repo.movies[index].id,
+                                          repo.movies[index].backdrop,
+                                          repo.movies[index].title);
+                                    },
+                                    leading: Image.network(
+                                        repo.movies[index].poster),
+                                    title: Text(repo.movies[index].title),
+                                    trailing: widget.action ==
+                                        ProfileItems.fav
+                                        ? BlocProvider(
+                                      create: (context) =>
+                                      FavMovieCubit()
+                                        ..init(repo
+                                            .movies[index].id),
+                                      child: FavIcon(
+                                          type: FavType.movie,
+                                          title: repo
+                                              .movies[index].title,
+                                          movieid:
                                                           repo.movies[index].id,
                                                       poster: repo
                                                           .movies[index].poster,
@@ -164,16 +164,19 @@ class _AddToLWatchlistFavState extends State<AddToLWatchlistFav> {
                                                       color: redColor,
                                                       isEpisode: true,
                                                       age: '',
-                                                      genres:repo.movies[index].genres,
+                                                      genres: repo
+                                                          .movies[index].genres,
                                                       backdrop: repo
                                                           .movies[index]
                                                           .backdrop),
-                                                )
-                                              : BlocProvider(
-                                                  create: (context) =>
+                                    )
+                                        : BlocProvider(
+                                        create: (context) =>
                                                       WatchlistCubit()
-                                                        ..init(repo
-                                                            .movies[index].id),
+                                                        ..init(
+                                                            repo.movies[index]
+                                                                .id,
+                                                            true),
                                                   child: WatchListIcon(
                                                       justIcon: true,
                                                       movieid:
@@ -188,198 +191,200 @@ class _AddToLWatchlistFavState extends State<AddToLWatchlistFav> {
                                                           .vote_average,
                                                       isMovie: true,
                                                       color: Colors.white,
-                                                      genres:repo.movies[index].genres,
+                                                      genres: repo
+                                                          .movies[index].genres,
                                                       backdrop: repo
                                                           .movies[index]
                                                           .backdrop)));
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return Divider(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.black45);
-                                    }),
-                                SizedBox(
-                                  height: 10,
+                              },
+                              separatorBuilder: (context, index) {
+                                return Divider(
+                                    color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black45);
+                              }),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          if (!repo.isfinish)
+                            Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.black,
+                                  color: redColor,
+                                ))
+                          else
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Look like you reach the end!",
+                                  style: normalText.copyWith(
+                                      color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black),
                                 ),
-                                if (!repo.isfinish)
-                                  Center(
-                                      child: CircularProgressIndicator(
-                                    backgroundColor: Colors.black,
-                                    color: redColor,
-                                  ))
-                                else
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Look like you reach the end!",
-                                        style: normalText.copyWith(
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
+                              ),
                             ),
-                          );
-                        } else {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            backgroundColor: Colors.black,
-                            color: redColor,
-                          ));
-                        }
-                      },
-                    ),
-                  )
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.black,
+                          color: redColor,
+                        ));
+                  }
+                },
+              ),
+            )
                 : Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 3.0, vertical: 10.0),
-                    child: StreamBuilder<List<TvModel>>(
-                      stream: repoTv.controller.stream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          print(snapshot.data!.length);
-                          // final movies = snapshot.data!;
-                          return Container(
-                            child: Column(
-                              children: [
-                                ListView.separated(
-                                    physics: BouncingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: repoTv.tvshows.length,
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                          onTap: () {
-                                            moveToInfo(
-                                                context,
-                                                false,
-                                                repoTv.tvshows[index].id,
-                                                repoTv.tvshows[index].backdrop,
-                                                repoTv.tvshows[index].title);
-                                          },
-                                          leading: Image.network(
-                                              repoTv.tvshows[index].poster),
-                                          title:
-                                              Text(repoTv.tvshows[index].title),
-                                          trailing:
-                                              widget.action == ProfileItems.fav
-                                                  ? BlocProvider(
-                                                      create: (context) =>
-                                                          FavMovieCubit()
-                                                            ..init(repoTv
-                                                                .tvshows[index]
-                                                                .id),
-                                                      child: FavIcon(
-                                                          type: FavType.tv,
-                                                          title: repoTv
-                                                              .tvshows[index]
-                                                              .title,
-                                                          movieid: repoTv
-                                                              .tvshows[index]
-                                                              .id,
-                                                          poster: repoTv
-                                                              .tvshows[index]
-                                                              .poster,
-                                                          date: repoTv
-                                                              .tvshows[index]
-                                                              .release_date,
-                                                          rate: repoTv
-                                                              .tvshows[index]
-                                                              .vote_average,
-                                                          color: redColor,
-                                                          isEpisode: true,
-                                                          age: '',
-                                                          genres:repoTv.tvshows[index].genres,
-                                                          backdrop: repoTv
-                                                              .tvshows[index]
-                                                              .backdrop),
-                                                    )
-                                                  : BlocProvider(
-                                                      create: (context) =>
-                                                          WatchlistCubit()
-                                                            ..init(repoTv
-                                                                .tvshows[index]
-                                                                .id),
-                                                      child: WatchListIcon(
-                                                        movieid: repoTv
-                                                            .tvshows[index].id,
-                                                        title: repoTv
-                                                            .tvshows[index]
-                                                            .title,
-                                                        poster: repoTv
-                                                            .tvshows[index]
-                                                            .poster,
-                                                        backdrop: repoTv
-                                                            .tvshows[index]
-                                                            .backdrop,
-                                                        date: repoTv
-                                                            .tvshows[index]
-                                                            .release_date,
-                                                        rate: repoTv
-                                                            .tvshows[index]
-                                                            .vote_average,
-                                                        isMovie: false,
-                                                        genres:repoTv.tvshows[index].genres,
-                                                        color: Colors.white,
-                                                        justIcon: true,
-                                                      )));
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 3.0, vertical: 10.0),
+              child: StreamBuilder<List<TvModel>>(
+                stream: repoTv.controller.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    print(snapshot.data!.length);
+                    // final movies = snapshot.data!;
+                    return Container(
+                      child: Column(
+                        children: [
+                          ListView.separated(
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: repoTv.tvshows.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                    onTap: () {
+                                      moveToInfo(
+                                          context,
+                                          false,
+                                          repoTv.tvshows[index].id,
+                                          repoTv.tvshows[index].backdrop,
+                                          repoTv.tvshows[index].title);
                                     },
-                                    separatorBuilder: (context, index) {
-                                      return Divider(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.black45);
-                                    }),
-                                SizedBox(
-                                  height: 10,
+                                    leading: Image.network(
+                                        repoTv.tvshows[index].poster),
+                                    title:
+                                    Text(repoTv.tvshows[index].title),
+                                    trailing:
+                                    widget.action == ProfileItems.fav
+                                        ? BlocProvider(
+                                      create: (context) =>
+                                      FavMovieCubit()
+                                        ..init(repoTv
+                                            .tvshows[index]
+                                            .id),
+                                      child: FavIcon(
+                                          type: FavType.tv,
+                                          title: repoTv
+                                              .tvshows[index]
+                                              .title,
+                                          movieid: repoTv
+                                              .tvshows[index]
+                                              .id,
+                                          poster: repoTv
+                                              .tvshows[index]
+                                                          .poster,
+                                                      date: repoTv
+                                                          .tvshows[index]
+                                                          .release_date,
+                                                      rate: repoTv
+                                                          .tvshows[index]
+                                                          .vote_average,
+                                                      color: redColor,
+                                                      isEpisode: true,
+                                                      age: '',
+                                                      genres: repoTv
+                                                          .tvshows[index]
+                                                          .genres,
+                                                      backdrop: repoTv
+                                                          .tvshows[index]
+                                                          .backdrop),
+                                    )
+                                        : BlocProvider(
+                                        create: (context) =>
+                                                      WatchlistCubit()
+                                                        ..init(
+                                                            repoTv
+                                                                .tvshows[index]
+                                                                .id,
+                                                            false),
+                                                  child: WatchListIcon(
+                                                    movieid: repoTv
+                                                        .tvshows[index].id,
+                                                    title: repoTv
+                                                        .tvshows[index].title,
+                                                    poster: repoTv
+                                                        .tvshows[index].poster,
+                                                    backdrop: repoTv
+                                                        .tvshows[index]
+                                                        .backdrop,
+                                                    date: repoTv.tvshows[index]
+                                                        .release_date,
+                                                    rate: repoTv.tvshows[index]
+                                                        .vote_average,
+                                                    isMovie: false,
+                                                    genres: repoTv
+                                                        .tvshows[index].genres,
+                                                    color: Colors.white,
+                                                    justIcon: true,
+                                                  )));
+                              },
+                              separatorBuilder: (context, index) {
+                                return Divider(
+                                    color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black45);
+                              }),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          if (!repoTv.isfinish)
+                            Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.black,
+                                  color: redColor,
+                                ))
+                          else
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Look like you reach the end!",
+                                  style: normalText.copyWith(
+                                      color:
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black),
                                 ),
-                                if (!repoTv.isfinish)
-                                  Center(
-                                      child: CircularProgressIndicator(
-                                    backgroundColor: Colors.black,
-                                    color: redColor,
-                                  ))
-                                else
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Look like you reach the end!",
-                                        style: normalText.copyWith(
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
+                              ),
                             ),
-                          );
-                        } else {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            backgroundColor: Colors.black,
-                            color: redColor,
-                          ));
-                        }
-                      },
-                    ),
-                  ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.black,
+                          color: redColor,
+                        ));
+                  }
+                },
+              ),
+            ),
           ),
         ],
       ),

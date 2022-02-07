@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:moviebox/src/screens/cast/add_cast_to_fav.dart';
 import 'package:moviebox/src/screens/watchlist/add_to_watchlist_fav.dart';
@@ -5,7 +6,6 @@ import 'package:moviebox/src/shared/util/fav_type.dart';
 import 'package:moviebox/src/shared/util/profile_list_items.dart';
 
 import '../../../themes.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({Key? key}) : super(key: key);
@@ -49,7 +49,10 @@ class ErrorPage extends StatelessWidget {
 class EmptyFavorites extends StatelessWidget {
   final bool isMovie;
   final FavType type;
-  const EmptyFavorites({Key? key, required this.isMovie, required this.type}) : super(key: key);
+
+  const EmptyFavorites({Key? key, required this.isMovie, required this.type})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,20 +63,17 @@ class EmptyFavorites extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: (){
-                if(type!=FavType.person)
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => new AddToLWatchlistFav(
-                        isMovie: isMovie, action: ProfileItems.fav)));
+              onPressed: () {
+                if (type != FavType.person)
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => new AddToLWatchlistFav(
+                          isMovie: isMovie, action: ProfileItems.fav)));
                 else {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => new AddCastToFav(
-                          )));
+                      builder: (context) => new AddCastToFav()));
                 }
               },
-              icon:Icon(
-              Icons.favorite,
-              size: 45),
+              icon: Icon(Icons.favorite, size: 45),
             ),
             SizedBox(
               height: 10,
@@ -101,6 +101,7 @@ class Emptywatchlist extends StatelessWidget {
   final bool isMovie;
 
   const Emptywatchlist({Key? key, required this.isMovie}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -111,14 +112,12 @@ class Emptywatchlist extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => new AddToLWatchlistFav(
                         isMovie: isMovie, action: ProfileItems.movies)));
               },
-              icon:Icon(
-                  Icons.bookmark_add,
-                  size: 45),
+              icon: Icon(Icons.bookmark_add, size: 45),
             ),
             SizedBox(
               height: 10,

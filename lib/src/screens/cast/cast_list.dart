@@ -1,14 +1,12 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviebox/src/core/bloc/cast_info/cast_movies_bloc.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_info.dart';
+import 'package:moviebox/src/core/bloc/cast_info/cast_movies_bloc.dart';
 import 'package:moviebox/src/core/bloc/cast_info/cast_movies_event.dart';
-
 
 import '../../../themes.dart';
 import '../../core/model/movie_info_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 
 class CastList extends StatelessWidget {
   const CastList({
