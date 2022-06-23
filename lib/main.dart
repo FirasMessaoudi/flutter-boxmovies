@@ -1,175 +1,157 @@
-import 'package:easy_localization/easy_localization.dart' hide TextDirection;
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviebox/src/core/repo/watchlist_repo.dart';
-import 'package:moviebox/src/core/service/auth_service.dart';
-import 'package:moviebox/src/core/service/facebook_provider.dart';
-import 'package:moviebox/src/core/service/google_provider.dart';
-import 'package:moviebox/src/core/service/twitter_provider.dart';
-import 'package:moviebox/src/screens/home/navigation.dart';
-import 'package:moviebox/src/shared/util/theme_switch.dart';
-import 'package:moviebox/src/shared/widget/collection_button/cubit/add_collection_cubit.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/locale.dart';
+import 'package:moviebox/core/service/auth.service.dart';
+import 'package:moviebox/core/service/cast_movies.service.dart';
+import 'package:moviebox/core/service/collection.service.dart';
+import 'package:moviebox/core/service/favorite.service.dart';
+import 'package:moviebox/core/service/genre.service.dart';
+import 'package:moviebox/core/service/movie.service.dart';
+import 'package:moviebox/core/service/network.service.dart';
+import 'package:moviebox/core/service/search.service.dart';
+import 'package:moviebox/core/service/season.service.dart';
+import 'package:moviebox/core/service/translation.service.dart';
+import 'package:moviebox/core/service/tv_episode_watchlist.service.dart';
+import 'package:moviebox/core/service/tv_shows.service.dart';
+import 'package:moviebox/core/service/user.service.dart';
+import 'package:moviebox/core/service/watchlist.service.dart';
+import 'package:moviebox/shared/util/theme_switch.dart';
 import 'package:moviebox/themes.dart';
-import 'package:provider/provider.dart';
+import 'package:moviebox/ui/auth/login/login.controller.dart';
+import 'package:moviebox/ui/auth/register/register.controller.dart';
+import 'package:moviebox/ui/cast_details/cast_details.controller.dart';
+import 'package:moviebox/ui/genre/results/movies_by_genre.controller.dart';
+import 'package:moviebox/ui/genre/results/tv_shows_by_genre.controller.dart';
+import 'package:moviebox/ui/home/all_movies/all_movies.controller.dart';
+import 'package:moviebox/ui/home/home_page.controller.dart';
+import 'package:moviebox/ui/home/navigation/navigation.dart';
+import 'package:moviebox/ui/movies_details/movies_details.controller.dart';
+import 'package:moviebox/ui/plateforms/companies/company_result.controller.dart';
+import 'package:moviebox/ui/plateforms/networks/network_result.controller.dart';
+import 'package:moviebox/ui/profile/profile.controller.dart';
+import 'package:moviebox/ui/home/all_tv_show/all_tv_shows.controller.dart';
+import 'package:moviebox/ui/tv_show_details/tv_show_details.controller.dart';
 import 'package:wiredash/wiredash.dart';
+
+import 'core/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await EasyLocalization.ensureInitialized();
+  await GetStorage.init();
+  await setPreferredOrientations();
+  await initDependencies();
+  final TranslationService translationService = TranslationService();
+  final AppTranslations translations =
+  await translationService.getTranslations();
+  return runZonedGuarded(() async {
+    runApp(MyApp(translations: translations));
+  }, (Object error, StackTrace stack) {});
+}
 
-  SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(MultiProvider(
-      providers: [
-        Provider<AuthService>(create: (_) => AuthService()),
-        BlocProvider<CollectionCubit>(create: (_) => CollectionCubit()),
-        ChangeNotifierProvider(create: (_) => GoogleSignInProvider()),
-        ChangeNotifierProvider(create: (_) => FacebookProvider()),
-        ChangeNotifierProvider(create: (_) => TwitterProvider()),
-        ChangeNotifierProvider(create: (_) => MyTheme()),
-        ChangeNotifierProvider(create: (_) => WatchListRepo())
-      ],
-      child: EasyLocalization(
-        child: MyApp(),
-        path: 'assets/i18n',
-        supportedLocales: [
-          Locale('en', 'US'),
-          Locale('fr', 'FR'),
-          Locale('ar', 'SA'),
-          Locale('it', 'IT'),
-          Locale('es', 'ES')
-        ],
-      )));
+Future<void> initDependencies() async {
+  Get.put<UserService>(UserService(), permanent: true);
+  Get.put<AuthService>(AuthService(), permanent: true);
+  Get.put<CastService>(CastService(), permanent: true);
+  Get.put<CollectionService>(CollectionService(), permanent: true);
+  Get.put<FavouriteService>(FavouriteService(), permanent: true);
+  Get.put<GenreService>(GenreService(), permanent: true);
+  Get.put<MoviesService>(MoviesService(), permanent: true);
+  Get.put<ColorGenerator>(ColorGenerator(), permanent: true);
+
+  Get.put<NetworkService>(NetworkService(), permanent: true);
+  Get.put<SearchService>(SearchService(), permanent: true);
+  Get.put<SeasonService>(SeasonService(), permanent: true);
+  Get.put<TvWatchlistService>(TvWatchlistService(), permanent: true);
+  Get.put<TvShowService>(TvShowService(), permanent: true);
+  Get.put<WatchListService>(WatchListService(), permanent: true);
+  Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
+  Get.lazyPut<RegisterController>(() => RegisterController(), fenix: true);
+  Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
+  Get.lazyPut<CastDetailsController>(() => CastDetailsController(), fenix: true);
+
+  Get.lazyPut<MoviesByGenreController>(() => MoviesByGenreController(), fenix: true);
+  Get.lazyPut<TvShowsByGenreController>(() => TvShowsByGenreController(), fenix: true);
+  Get.lazyPut<AllMoviesController>(() => AllMoviesController(), fenix: true);
+  Get.lazyPut<AllTvShowsController>(() => AllTvShowsController(), fenix: true);
+  Get.lazyPut<HomePageController>(() => HomePageController(), fenix: true);
+  Get.lazyPut<MoviesDetailsController>(() => MoviesDetailsController(), fenix: true);
+  Get.lazyPut<TvShowsDetailsController>(() => TvShowsDetailsController(), fenix: true);
+  Get.lazyPut<CompanyResultController>(() => CompanyResultController(), fenix: true);
+  Get.lazyPut<NetworkResultController>(() => NetworkResultController(), fenix: true);
+
+}
+Future<void> setPreferredOrientations() {
+  return SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    // Prevent Landscape mode
+    // DeviceOrientation.landscapeRight,
+    // DeviceOrientation.landscapeLeft,
+  ]);
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  final AppTranslations translations;
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  final MyTheme myTheme = MyTheme();
+   MyApp({Key? key, required this.translations}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    MyTheme theme = Provider.of(context);
 
     return Wiredash(
         projectId: 'movies-box-w8fewxn',
         secret: 'C70EUlrPDvbqIbQ1ar-RGkOSevQ-qypg',
         navigatorKey: _navigatorKey,
         options: WiredashOptionsData(
-            locale: new Locale(context.locale.languageCode)),
+            locale: myTheme.currentLocale),
         theme: WiredashThemeData(
           brightness: Theme.of(context).brightness,
         ),
         child: Directionality(
-          textDirection: context.locale.languageCode == 'ar'
+          textDirection: myTheme.language == 'ar'
               ? TextDirection.rtl
               : TextDirection.ltr,
-          child: MaterialApp(
+          child: GetMaterialApp(
             navigatorKey: _navigatorKey,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
                 brightness: Brightness.light,
                 scaffoldBackgroundColor: Colors.white,
-                appBarTheme: AppBarTheme(
-                    brightness: Brightness.light, backgroundColor: redColor)),
+               primaryColorDark: Colors.black,
+              primaryColorLight: Colors.white
+               ),
             darkTheme: ThemeData(
                 brightness: Brightness.dark,
+                primaryColorDark: Colors.white,
+                primaryColorLight: Colors.black,
+
                 scaffoldBackgroundColor: Colors.black
-                /* dark theme settings */
                 ),
-            themeMode: theme.currentMode(),
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            home: Home(),
+            themeMode: myTheme.currentMode(),
+            translations: translations,
+            locale: myTheme.currentLocale,
+            getPages: AppRoutes.routes,
+            localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+              // Built-in localization of basic text for Material widgets
+              GlobalMaterialLocalizations.delegate,
+              // Built-in localization for text direction LTR/RTL
+              GlobalWidgetsLocalizations.delegate,
+              // Built-in localization of basic text for Cupertino widgets
+              GlobalCupertinoLocalizations.delegate
+            ],
+            home: NavigationView(),
           ),
         ));
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
 }
