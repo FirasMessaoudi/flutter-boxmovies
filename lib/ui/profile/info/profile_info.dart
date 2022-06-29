@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:moviebox/core/bloc/collection_tab/collection_tab_bloc.dart';
 import 'package:moviebox/core/model/movie_info.model.dart';
 import 'package:moviebox/core/model/user.model.dart';
 import 'package:moviebox/core/routes/app_routes.dart';
@@ -342,12 +343,12 @@ class ProfileListItem extends GetView<ProfileController> {
               MaterialPageRoute(builder: (context) => new FavoritesTab()));
         }
         if (item == ProfileItems.collections) {
-         /* Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => BlocProvider<CollectionTabBloc>(
               create: (context) => CollectionTabBloc()..add(LoadCollections()),
               child: CollectionsTab(),
             ),
-          ));*/
+          ));
         }
       },
       child: Container(

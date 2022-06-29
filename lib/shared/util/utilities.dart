@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:moviebox/core/model/categorie.model.dart';
+import 'package:moviebox/core/routes/app_routes.dart';
+import 'package:moviebox/ui/home/all_movies/all_movies.controller.dart';
+import 'package:moviebox/ui/home/all_tv_show/all_tv_shows.controller.dart';
+import 'package:moviebox/ui/movies_details/movies_details.controller.dart';
+import 'package:moviebox/ui/tv_show_details/tv_show_details.controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../themes.dart';
@@ -371,8 +377,13 @@ void showToast([String? text]) {
 void moveToInfo(BuildContext context, bool isMovie, String id, String backdrop,
     String name) {
   if (isMovie) {
-   // go to movie
+    // go to movie
+    Get.toNamed(AppRoutes.movieDetails,arguments: backdrop);
+    MoviesDetailsController.instance.getDetails(id);
+
   } else {
-  // go to tv
+    // go to tv
+    Get.toNamed(AppRoutes.tvShowDetails,arguments: backdrop);
+    TvShowsDetailsController.instance.getDetails(id);
   }
 }

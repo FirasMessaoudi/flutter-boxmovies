@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moviebox/core/model/watchlist.model.dart';
@@ -318,96 +317,3 @@ class _FavoriteMovieContainerState extends State<FavoriteMovieContainer> {
   }
 }
 
-class ConfettiAnimation extends StatefulWidget {
-  @override
-  State<ConfettiAnimation> createState() => ConfettiAnimationState();
-}
-
-class ConfettiAnimationState extends State<ConfettiAnimation> {
-  late ConfettiController _controllerCenter;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controllerCenter =
-        ConfettiController(duration: const Duration(seconds: 10));
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _controllerCenter.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        if (_controllerCenter.state == ConfettiControllerState.playing) {
-          _controllerCenter.stop();
-        } else {
-          _controllerCenter.play();
-        }
-      },
-      child: Stack(
-        children: [
-          _buildConfetti(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildConfetti() {
-    return Align(
-      alignment: Alignment.center,
-      child: ConfettiWidget(
-        confettiController: _controllerCenter,
-        blastDirectionality: BlastDirectionality.explosive,
-        // don't specify a direction, blast randomly
-        shouldLoop: true,
-        // start again as soon as the animation is finished
-        colors: const [
-          Colors.green,
-          Colors.blue,
-          Colors.pink,
-          Colors.orange,
-          Colors.purple
-        ],
-        // manually specify the colors to be used
-        createParticlePath: drawStar, // define a custom shape/path.
-      ),
-    );
-  }
-
-  void play() {
-    _controllerCenter.play();
-  }
-
-  Path drawStar(Size size) {
-    // Method to convert degree to radians
-    double degToRad(double deg) => deg * (pi / 180.0);
-
-    const numberOfPoints = 5;
-    final halfWidth = size.width / 2;
-    final externalRadius = halfWidth;
-    final internalRadius = halfWidth / 2.5;
-    final degreesPerStep = degToRad(360 / numberOfPoints);
-    final halfDegreesPerStep = degreesPerStep / 2;
-    final path = Path();
-    final fullAngle = degToRad(360);
-    path.moveTo(size.width, halfWidth);
-
-    for (double step = 0; step < fullAngle; step += degreesPerStep) {
-      path.lineTo(halfWidth + externalRadius * cos(step),
-          halfWidth + externalRadius * sin(step));
-      path.lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep),
-          halfWidth + internalRadius * sin(step + halfDegreesPerStep));
-    }
-    path.close();
-    return path;
-  }
-}
